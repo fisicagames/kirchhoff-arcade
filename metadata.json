@@ -1,0 +1,6 @@
+{
+  "name": "Kirchhoff Arcade",
+  "description": "Um motor de simulação de circuitos eletrônicos tipo Tetris, resolvendo o fluxo de corrente com Modified Nodal Analysis (MNA).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
