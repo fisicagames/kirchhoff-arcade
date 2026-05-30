@@ -3,12 +3,31 @@ import { nctx, nextCanvas } from '../core/canvasSetup';
 import { state } from '../model/gameState';
 import { drawCell } from './drawUtils';
 
+const LED_NAMES: Record<string, string> = {
+  red:    'LED Vermelho',
+  green:  'LED Verde',
+  yellow: 'LED Amarelo',
+};
+
+/** Returns [name, detail] describing the upcoming piece. */
+function describePiece(): [string, string] {
+  const p = state.nextPiece!;
+  switch (p.type) {
+    case 'led':      return [LED_NAMES[p.value as string] ?? 'LED', 'Queda 2V · máx 28mA'];
+    case 'resistor': return [`Resistor ${p.value}Ω`,                'Corrente máx 50mA'];
+    case 'source':   return [`Fonte ${p.value}V`,                   'Curto-circuito 1A'];
+    case 'wire3':    return ['Fio Condutor',                        'Conduz energia'];
+    case 'block':    return ['Bloco',                               'Isolante (não conduz)'];
+    default:         return ['', ''];
+  }
+}
+
 export function drawNext(): void {
   nctx.fillStyle = '#06091a';
   nctx.fillRect(0, 0, nextCanvas.width, nextCanvas.height);
 
   const specsDiv = document.getElementById('nextPieceSpecs');
-  if (specsDiv) specsDiv.textContent = '';
+  if (specsDiv) specsDiv.innerHTML = '';
   if (!state.nextPiece) return;
 
   const p  = state.nextPiece;
@@ -28,11 +47,8 @@ export function drawNext(): void {
     });
   }
 
-  if (specsDiv) {
-    if      (p.type === 'led')      specsDiv.textContent = `LED ${p.value} — Vf:2V Imax:28mA`;
-    else if (p.type === 'resistor') specsDiv.textContent = `Resistor ${p.value}Ω — Imax:50mA`;
-    else if (p.type === 'source')   specsDiv.textContent = `Fonte ${p.value}V — Icc:1A`;
-    else if (p.type === 'wire3')    specsDiv.textContent = 'Fio condutor';
-    else if (p.type === 'block')    specsDiv.textContent = 'Bloco isolante';
-  }
+  if (!specsDiv) return;
+  const [name, detail] = describePiece();
+  specsDiv.innerHTML =
+    `<span class="np-name">${name}</span><span class="np-detail">${detail}</span>`;
 }

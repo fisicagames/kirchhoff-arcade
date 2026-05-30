@@ -1,7 +1,7 @@
 import type { DirectionDef } from '../model/types';
 
 export const COLS = 10;
-export const ROWS = 18;
+export const ROWS = 15;
 export const CELL = 30;
 
 export const DIRECTIONS: DirectionDef[] = [

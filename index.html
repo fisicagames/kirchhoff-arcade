@@ -8,23 +8,34 @@
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
       :root {
-        --bg:        #08091b;
-        --surface:   #0f1228;
-        --card:      #141836;
-        --border:    #252e6b;
-        --border-hi: #4455bb;
-        --accent:    #5b7fff;
-        --accent-hi: #7a9fff;
-        --txt:       #d8ddf2;
-        --txt-muted: #6272a0;
-        --danger:    #c43060;
-        --success:   #30b060;
-        --font-ui:   system-ui, -apple-system, 'Segoe UI', sans-serif;
-        --font-mono: 'SF Mono', 'Fira Code', 'Consolas', 'Courier New', monospace;
+        /*
+         * Canvas 300×450 (ROWS=15, CELL=30, aspect 2:3).
+         * Vertical budget:
+         *   pad(12) + header(120) + gap(5) + canvas(g×1.5) + gap(5) + controls(105) + slack(0)
+         *   = g×1.5 + 247
+         * → g = 66.67svh − 164.7
+         */
+        --game-w: min(300px, 96svw, calc(66.6svh - 165px));
+
+        --bg:       #08091b;
+        --card:     #141a3a;
+        --card-hi:  #1c2350;
+        --border:   #2a3470;
+        --border-hi:#4a5ac0;
+        --acc:      #6b8cff;
+        --acc-hi:   #9ab0ff;
+        --txt:      #e2e7fb;
+        --muted:    #8290bf;
+        --danger:   #d84070;
+        --success:  #35c070;
+        --font-ui:  system-ui, -apple-system, 'Segoe UI', sans-serif;
+        --font-mono:'SF Mono', 'Fira Code', 'Consolas', 'Courier New', monospace;
       }
 
+      html, body { overscroll-behavior: none; }
+
       body {
-        background: radial-gradient(ellipse at 50% 30%, #14195a, var(--bg));
+        background: radial-gradient(ellipse at 50% 18%, #1a2065, var(--bg));
         color: var(--txt);
         font-family: var(--font-ui);
         min-height: 100svh;
@@ -39,385 +50,482 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 6px;
-        padding: 6px 6px 8px;
+        gap: 5px;
+        padding: 5px 5px 7px;
       }
 
-      /* ── header ── */
+      /* ══════════════ HEADER ══════════════ */
       #header {
-        width: min(300px, 96svw, calc(55.5svh - 118px));
+        width: var(--game-w);
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 5px;
       }
 
-      #statsBar {
+      /* ── Stats ── */
+      #statsRow {
+        height: 40px;
         display: flex;
-        align-items: stretch;
-        gap: 4px;
-        height: 38px;
+        gap: 5px;
       }
-
       .stat-item {
         flex: 1;
         background: var(--card);
         border: 1px solid var(--border);
-        border-radius: 6px;
+        border-radius: 7px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 2px 4px;
+        padding: 2px 3px;
         min-width: 0;
+        overflow: hidden;
       }
+      .stat-narrow { flex: 0.62; }
       .stat-label {
-        font-size: 8px;
+        font-size: 9px;
         font-weight: 600;
-        letter-spacing: 1px;
-        color: var(--txt-muted);
+        letter-spacing: 0.5px;
+        color: var(--muted);
         text-transform: uppercase;
-        line-height: 1;
+        line-height: 1.1;
+        white-space: nowrap;
       }
       .stat-value {
         font-family: var(--font-mono);
-        font-size: 18px;
+        font-size: clamp(13px, calc(var(--game-w) / 20), 19px);
         font-weight: 700;
         color: #fff;
         line-height: 1.1;
         letter-spacing: -0.5px;
+        white-space: nowrap;
       }
-      .stat-rec {
-        font-size: 8px;
-        color: var(--txt-muted);
-        line-height: 1;
-        font-family: var(--font-mono);
-      }
+      .stat-rec { color: #a9b8ff; }
 
-      #actionBtns {
+      /* ── Next piece (full-width horizontal) ── */
+      #nextRow {
+        height: 42px;
         display: flex;
-        gap: 3px;
         align-items: center;
-      }
-
-      .icon-btn {
-        width: 34px;
-        height: 34px;
+        gap: 9px;
         background: var(--card);
         border: 1px solid var(--border);
         border-radius: 7px;
-        color: var(--accent-hi);
-        font-size: 15px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background 0.12s, border-color 0.12s;
-        flex-shrink: 0;
-        line-height: 1;
-        font-family: var(--font-ui);
-      }
-      .icon-btn:active { background: var(--border-hi); border-color: var(--accent-hi); }
-      .icon-btn-danger { color: var(--danger); border-color: #4a1530; }
-      .icon-btn-danger:active { background: #3a1025; }
-
-      /* next piece bar */
-      #nextBar {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        padding: 3px 8px;
-        height: 36px;
+        padding: 0 10px;
         overflow: hidden;
       }
       .next-label {
-        font-size: 8px;
-        font-weight: 600;
+        font-size: 9px;
+        font-weight: 700;
         letter-spacing: 1px;
-        color: var(--txt-muted);
+        color: var(--muted);
         text-transform: uppercase;
         flex-shrink: 0;
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        line-height: 1;
+        max-height: 38px;
       }
       #nextCanvas {
         display: block;
-        background: transparent;
-        flex-shrink: 0;
         image-rendering: pixelated;
+        width:  calc(var(--game-w) * 0.3);
+        height: calc(var(--game-w) * 0.1);
+        flex-shrink: 0;
       }
       #nextPieceSpecs {
-        font-size: 10px;
-        color: var(--txt-muted);
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 1px;
+        overflow: hidden;
+      }
+      .np-name {
+        font-size: clamp(11px, calc(var(--game-w) / 24), 14px);
+        font-weight: 700;
+        color: var(--txt);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .np-detail {
+        font-size: clamp(9px, calc(var(--game-w) / 30), 11px);
+        color: var(--muted);
         font-family: var(--font-mono);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
 
-      /* ── canvas wrapper ── */
+      /* ── Action buttons ── */
+      #actionRow {
+        height: 28px;
+        display: flex;
+        gap: 4px;
+      }
+      .act-btn {
+        flex: 1;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--acc-hi);
+        font-size: clamp(8.5px, calc(var(--game-w) / 34), 10.5px);
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        text-transform: uppercase;
+        font-family: var(--font-ui);
+        cursor: pointer;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 0 2px;
+        transition: background 0.1s, border-color 0.1s;
+        min-width: 0;
+        line-height: 1;
+      }
+      .act-btn:active { background: var(--card-hi); border-color: var(--border-hi); }
+      .act-danger { color: #ff7095; border-color: #5a2540; }
+      .act-danger:active { background: #3a1525; }
+      .act-muted  { color: var(--muted); }
+
+      /* ══════════════ CANVAS ══════════════ */
       #canvasWrapper {
         position: relative;
-        width: min(300px, 96svw, calc(55.5svh - 118px));
-        aspect-ratio: 300 / 540;
+        width: var(--game-w);
+        aspect-ratio: 300 / 450;
         flex-shrink: 0;
       }
-
       canvas#game {
         display: block;
         width: 100%;
         height: 100%;
         background: #060921;
         border: 2px solid var(--border-hi);
-        border-radius: 6px;
-        box-shadow: 0 0 32px rgba(80,120,255,0.3), inset 0 0 16px rgba(0,0,0,0.6);
+        border-radius: 7px;
+        box-shadow: 0 0 28px rgba(80,120,255,0.28), inset 0 0 14px rgba(0,0,0,0.6);
+        /* gestures handled in JS — disable browser scroll/pull-to-refresh/zoom here */
+        touch-action: none;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
       }
 
-      /* ── overlays ── */
+      /* ══════════════ OVERLAYS ══════════════ */
       .overlay {
         position: absolute;
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
         background: rgba(8, 9, 27, 0.97);
-        border: 1.5px solid var(--accent-hi);
+        border: 1.5px solid var(--acc-hi);
         border-radius: 10px;
         text-align: center;
         display: none;
-        box-shadow: 0 8px 40px rgba(91,127,255,0.25);
+        box-shadow: 0 8px 40px rgba(91,127,255,0.22);
         z-index: 10;
         width: 92%;
-        max-width: 295px;
+        max-width: 290px;
         font-family: var(--font-ui);
       }
       .overlay.show { display: block; }
-      .overlay h2, .overlay h3 {
-        color: var(--accent-hi);
-        text-shadow: 0 0 12px rgba(122,159,255,0.5);
-      }
+      .overlay h2, .overlay h3 { color: var(--acc-hi); text-shadow: 0 0 10px rgba(122,159,255,0.4); }
       .overlay p { color: #9aa5d6; font-size: 13px; }
 
       #tutorialScreen {
-        top: 6px;
-        transform: translateX(-50%);
-        padding: 14px 16px 12px;
-        max-height: calc(100% - 12px);
+        inset: 0; left: 0; top: 0;
+        width: 100%; height: 100%;
+        max-width: none; max-height: none;
+        transform: none;
+        border-radius: 7px;
+        padding: 0;
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      #tutorialScreen.show { display: flex; }
+      #tutorialScrollContent {
+        flex: 1;
         overflow-y: auto;
+        padding: 12px 14px 6px;
         scrollbar-width: thin;
         scrollbar-color: var(--border) transparent;
       }
-
-      #message {
-        padding: 22px 24px;
-        border-color: var(--danger);
-        box-shadow: 0 8px 40px rgba(196,48,96,0.35);
+      #tutorialFooter {
+        flex-shrink: 0;
+        padding: 7px 12px 11px;
+        border-top: 1px solid rgba(91,127,255,0.15);
+        background: rgba(6, 7, 22, 0.98);
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
       }
-      #message h2 { color: var(--danger); text-shadow: 0 0 16px var(--danger); margin-bottom: 8px; }
+      .tut-nav { display: flex; justify-content: space-between; align-items: center; }
+      .tut-nav-btn {
+        background: #2a3470;
+        border: none;
+        color: #fff;
+        padding: 6px 13px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 700;
+        font-family: var(--font-ui);
+      }
+      .tut-nav-btn:active { background: var(--border-hi); }
+      #btnIniciar {
+        width: 100%;
+        padding: 12px;
+        background: #123a1c;
+        border: 1.5px solid var(--success);
+        border-radius: 9px;
+        color: #5fee92;
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        cursor: pointer;
+        font-family: var(--font-ui);
+        text-align: center;
+        transition: background 0.12s;
+      }
+      #btnIniciar:active { background: #1c5028; }
+
+      #message { padding: 20px 22px; border-color: var(--danger); box-shadow: 0 8px 40px rgba(216,64,112,0.35); }
+      #message h2 { color: var(--danger); text-shadow: 0 0 14px var(--danger); margin-bottom: 8px; }
       #message .final-score { font-size: 17px; color: #ffcc00; margin: 10px 0; font-family: var(--font-mono); }
 
       #statusOverlay {
-        top: 6px;
+        top: 5px; left: 50%;
         transform: translateX(-50%);
         padding: 12px 14px;
         backdrop-filter: blur(6px);
       }
       #statusOverlay h2 { font-size: 18px; white-space: nowrap; margin-bottom: 6px; }
+      .legend { font-size: 11px; line-height: 1.7; color: #9aa5d6; }
 
-      /* tutorial internals */
-      .controls, .legend { font-size: 11px; line-height: 1.7; color: #9aa5d6; }
-      .controls b { color: var(--accent-hi); display: inline-block; min-width: 55px; }
-      .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 2px; }
-
-      /* ── touch controls ── */
+      /* ══════════════ TOUCH CONTROLS ══════════════ */
       #touchControls {
-        width: min(300px, 96svw, calc(55.5svh - 118px));
+        width: var(--game-w);
         display: flex;
         flex-direction: column;
         gap: 5px;
       }
       .touch-row { display: flex; gap: 5px; }
-
       .touch-btn {
         flex: 1;
-        min-height: 52px;
+        min-height: 50px;
         background: var(--card);
         border: 1.5px solid var(--border);
-        border-radius: 9px;
-        color: var(--accent-hi);
+        border-radius: 10px;
+        color: var(--acc-hi);
         font-family: var(--font-ui);
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 2px;
+        gap: 3px;
         cursor: pointer;
         user-select: none;
         -webkit-user-select: none;
         touch-action: manipulation;
-        transition: background 0.08s, border-color 0.08s, transform 0.06s;
+        transition: background 0.07s, border-color 0.07s, transform 0.06s;
         padding: 4px 2px;
         -webkit-tap-highlight-color: transparent;
       }
       .touch-btn:active, .touch-btn.pressed {
-        background: #1c2660;
-        border-color: var(--accent-hi);
+        background: var(--card-hi);
+        border-color: var(--acc-hi);
         transform: scale(0.95);
       }
-      .touch-btn .btn-icon { font-size: 19px; line-height: 1; color: #b0bfff; }
-      .touch-btn .btn-label {
-        font-size: 8px;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        color: var(--txt-muted);
-        font-weight: 600;
-      }
+      .btn-icon  { font-size: 19px; line-height: 1; color: #c0ccff; }
+      .btn-label { font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); font-weight: 700; }
 
+      /* DROP — primary action, neutral (not green) with keyboard hint */
       .touch-btn-drop {
         flex: 2;
-        background: #0d200d;
-        border-color: #2a5a2a;
+        background: var(--card-hi);
+        border-color: var(--border-hi);
       }
       .touch-btn-drop:active, .touch-btn-drop.pressed {
-        background: #163016;
-        border-color: var(--success);
+        background: #29347a;
+        border-color: var(--acc-hi);
         transform: scale(0.95);
       }
-      .touch-btn-drop .btn-icon { font-size: 20px; color: #66dd88; }
-      .touch-btn-drop .btn-label { color: #44aa66; }
-
-      @keyframes blink {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.4; }
+      .touch-btn-drop .drop-main {
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        color: var(--acc-hi);
+        line-height: 1;
       }
+      .touch-btn-drop .drop-key {
+        font-size: 9.5px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        color: var(--muted);
+        text-transform: uppercase;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .key-cap {
+        border: 1px solid var(--muted);
+        border-radius: 3px;
+        padding: 1px 6px;
+        font-family: var(--font-mono);
+        font-size: 9px;
+        color: var(--acc-hi);
+      }
+
+      @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.35} }
     </style>
   </head>
   <body>
     <div id="container">
 
-      <!-- Header -->
+      <!-- ═══════════ HEADER ═══════════ -->
       <div id="header">
-        <div id="statsBar">
+
+        <!-- Stats -->
+        <div id="statsRow">
           <div class="stat-item">
             <span class="stat-label">Pontos</span>
             <span class="stat-value" id="score">0</span>
-            <span class="stat-rec">Rec: <span id="highScoreDisplay">0</span></span>
           </div>
-          <div class="stat-item">
+          <div class="stat-item stat-narrow">
             <span class="stat-label">Nível</span>
             <span class="stat-value" id="level">1</span>
           </div>
-          <div class="stat-item">
-            <span class="stat-label">Circuitos</span>
+          <div class="stat-item stat-narrow">
+            <span class="stat-label">Circ.</span>
             <span class="stat-value" id="lines">0</span>
           </div>
-          <div id="actionBtns">
-            <button id="btnPause"   class="icon-btn" title="Pausar">⏸</button>
-            <button id="btnLimpar"  class="icon-btn icon-btn-danger" title="Limpar tabuleiro (1×)">✕</button>
-            <button id="btnHelp"    class="icon-btn" title="Tutorial" style="font-weight:700;font-size:17px;">?</button>
-            <button id="btnRestart" class="icon-btn" title="Reiniciar" style="font-size:18px;">↺</button>
+          <div class="stat-item">
+            <span class="stat-label">Recorde</span>
+            <span class="stat-value stat-rec" id="highScoreDisplay">0</span>
           </div>
         </div>
-        <div id="nextBar">
+
+        <!-- Next piece — full width, readable description -->
+        <div id="nextRow">
           <span class="next-label">Próxima</span>
           <canvas id="nextCanvas" width="90" height="30"></canvas>
-          <span id="nextPieceSpecs"></span>
+          <div id="nextPieceSpecs"></div>
         </div>
-      </div>
 
-      <!-- Game Canvas + Overlays -->
+        <!-- Action buttons -->
+        <div id="actionRow">
+          <button id="btnPause"   class="act-btn">PAUSA</button>
+          <button id="btnLimpar"  class="act-btn act-danger">LIMPAR</button>
+          <button id="btnHelp"    class="act-btn">AJUDA</button>
+          <button id="btnRestart" class="act-btn">REINICIAR</button>
+          <button id="btnSound"   class="act-btn act-muted">SOM</button>
+        </div>
+
+      </div><!-- /header -->
+
+      <!-- ═══════════ CANVAS ═══════════ -->
       <div id="canvasWrapper">
-        <canvas id="game" width="300" height="540"></canvas>
+        <canvas id="game" width="300" height="450"></canvas>
 
-        <!-- Tutorial overlay -->
+        <!-- Menu inicial / Tutorial -->
         <div id="tutorialScreen" class="overlay show">
-          <button id="btnCloseTutorial" style="position:absolute;right:10px;top:10px;background:none;border:none;color:var(--accent-hi);font-size:22px;cursor:pointer;line-height:1;padding:0;">&times;</button>
+          <div id="tutorialScrollContent">
 
-          <div id="tutorialPage1">
-            <h2 style="font-size:15px;letter-spacing:2px;margin-bottom:10px;color:#aabbff;">⚡ KIRCHHOFF ARCADE ⚡</h2>
-            <h3 style="margin-bottom:8px;font-size:13px;">Objetivo do Jogo</h3>
-            <p style="font-size:12px;text-align:left;line-height:1.5;margin-bottom:10px;">
-              Conecte os componentes que caem para formar <b style="color:#fff">circuitos elétricos fechados!</b>
-              Para que um LED acenda sem queimar, você precisa de polaridade correta e de um <b style="color:#fff">Resistor</b>.
-            </p>
-            <div style="background:#06091a;padding:8px;border:1px solid rgba(91,127,255,0.3);border-radius:6px;">
-              <p style="font-size:11px;color:#fff;margin-bottom:4px;">Exemplo de ligação correta:</p>
-              <canvas id="tutorialCanvas" width="200" height="110" style="display:block;margin:0 auto;"></canvas>
+            <div id="tutorialPage1">
+              <h2 style="font-size:16px;letter-spacing:2px;margin-bottom:10px;color:#aabbff;text-shadow:0 0 18px rgba(140,170,255,0.5);">
+                ⚡ KIRCHHOFF ARCADE ⚡
+              </h2>
+              <h3 style="margin-bottom:8px;font-size:13px;">Objetivo do Jogo</h3>
+              <p style="font-size:12px;text-align:left;line-height:1.55;margin-bottom:10px;color:#b0bbdd;">
+                Conecte os componentes que caem para formar
+                <b style="color:#e0e8ff">circuitos elétricos fechados!</b>
+                Para acender um LED sem queimá-lo, use polaridade correta e um
+                <b style="color:#e0e8ff">Resistor</b> limitando a corrente.
+              </p>
+              <div style="background:#06091a;padding:8px;border:1px solid rgba(91,127,255,0.3);border-radius:6px;">
+                <p style="font-size:11px;color:#aabbff;margin-bottom:5px;font-weight:600;">Exemplo de ligação correta:</p>
+                <canvas id="tutorialCanvas" width="200" height="110" style="display:block;margin:0 auto;"></canvas>
+              </div>
             </div>
-          </div>
 
-          <div id="tutorialPage2" style="display:none;">
-            <h3 style="margin-bottom:10px;font-size:13px;">Fontes e Fios</h3>
-            <div style="display:flex;justify-content:space-around;margin-bottom:10px;background:#06091a;padding:8px;border-radius:5px;border:1px solid rgba(91,127,255,0.2);" class="legend">
-              <div style="text-align:center"><canvas id="lg_s3" width="90" height="30"></canvas><br/><span style="font-size:10px">3 V</span></div>
-              <div style="text-align:center"><canvas id="lg_s5" width="90" height="30"></canvas><br/><span style="font-size:10px">5 V</span></div>
-              <div style="text-align:center"><canvas id="lg_s9" width="90" height="30"></canvas><br/><span style="font-size:10px">9 V</span></div>
+            <div id="tutorialPage2" style="display:none;">
+              <h3 style="margin-bottom:10px;font-size:13px;">Fontes de Tensão e Fios</h3>
+              <div style="display:flex;justify-content:space-around;margin-bottom:10px;background:#06091a;padding:8px;border-radius:5px;border:1px solid rgba(91,127,255,0.2);" class="legend">
+                <div style="text-align:center"><canvas id="lg_s3" width="90" height="30"></canvas><br/><span style="font-size:10px;color:#44ccff">3 V</span></div>
+                <div style="text-align:center"><canvas id="lg_s5" width="90" height="30"></canvas><br/><span style="font-size:10px;color:#ffcc00">5 V</span></div>
+                <div style="text-align:center"><canvas id="lg_s9" width="90" height="30"></canvas><br/><span style="font-size:10px;color:#bb33ff">9 V</span></div>
+              </div>
+              <p style="font-size:12px;text-align:left;line-height:1.5;margin-bottom:10px;color:#b0bbdd;">
+                <b style="color:#fff">Fontes</b> fornecem energia. Ligar (+) e (−) diretamente sem resistência causa <span style="color:#ff5577;font-weight:700">curto-circuito!</span>
+              </p>
+              <div style="display:flex;justify-content:space-around;background:#06091a;padding:8px;border-radius:5px;border:1px solid rgba(91,127,255,0.2);" class="legend">
+                <div style="text-align:center"><canvas id="lg_w" width="90" height="30"></canvas><br/><span style="font-size:10px">Fio condutor</span></div>
+                <div style="text-align:center"><canvas id="lg_b" width="30" height="30"></canvas><br/><span style="font-size:10px">Bloco isolante</span></div>
+              </div>
             </div>
-            <p style="font-size:12px;text-align:left;line-height:1.5;margin-bottom:10px;">
-              <b style="color:#fff">Fontes</b> fornecem energia. Ligar (+) e (−) sem resistência causa <span style="color:#ff5577">curto-circuito!</span>
-            </p>
-            <div style="display:flex;justify-content:space-around;background:#06091a;padding:8px;border-radius:5px;border:1px solid rgba(91,127,255,0.2);" class="legend">
-              <div style="text-align:center"><canvas id="lg_w" width="90" height="30"></canvas><br/><span style="font-size:10px">Fio</span></div>
-              <div style="text-align:center"><canvas id="lg_b" width="30" height="30"></canvas><br/><span style="font-size:10px">Bloco</span></div>
-            </div>
-          </div>
 
-          <div id="tutorialPage3" style="display:none;">
-            <h3 style="margin-bottom:10px;font-size:13px;">LEDs e Resistores</h3>
-            <div style="display:flex;justify-content:space-around;margin-bottom:10px;background:#06091a;padding:8px;border-radius:5px;border:1px solid rgba(91,127,255,0.2);" class="legend">
-              <div style="text-align:center"><canvas id="lg_lr" width="90" height="30"></canvas><br/><span style="font-size:10px;color:#ff4466">Vermelho</span></div>
-              <div style="text-align:center"><canvas id="lg_lg" width="90" height="30"></canvas><br/><span style="font-size:10px;color:#44ff88">Verde</span></div>
-              <div style="text-align:center"><canvas id="lg_ly" width="90" height="30"></canvas><br/><span style="font-size:10px;color:#ffee44">Amarelo</span></div>
+            <div id="tutorialPage3" style="display:none;">
+              <h3 style="margin-bottom:10px;font-size:13px;">LEDs e Resistores</h3>
+              <div style="display:flex;justify-content:space-around;margin-bottom:8px;background:#06091a;padding:8px;border-radius:5px;border:1px solid rgba(91,127,255,0.2);" class="legend">
+                <div style="text-align:center"><canvas id="lg_lr" width="90" height="30"></canvas><br/><span style="font-size:10px;color:#ff4466">Vermelho</span></div>
+                <div style="text-align:center"><canvas id="lg_lg" width="90" height="30"></canvas><br/><span style="font-size:10px;color:#44ff88">Verde</span></div>
+                <div style="text-align:center"><canvas id="lg_ly" width="90" height="30"></canvas><br/><span style="font-size:10px;color:#ffee44">Amarelo</span></div>
+              </div>
+              <p style="font-size:12px;text-align:left;line-height:1.5;margin-bottom:10px;color:#b0bbdd;"><b style="color:#fff">LEDs:</b> precisam de 1–28 mA. Acima disso <b style="color:#ff5555">queimam</b> e viram lixo no tabuleiro!</p>
+              <div style="display:flex;justify-content:space-around;margin-bottom:8px;background:#06091a;padding:8px;border-radius:5px;border:1px solid rgba(91,127,255,0.2);" class="legend">
+                <div style="text-align:center"><canvas id="lg_r1" width="90" height="30"></canvas><br/><span style="font-size:10px">100 Ω</span></div>
+                <div style="text-align:center"><canvas id="lg_r2" width="90" height="30"></canvas><br/><span style="font-size:10px">220 Ω</span></div>
+                <div style="text-align:center"><canvas id="lg_r4" width="90" height="30"></canvas><br/><span style="font-size:10px">470 Ω</span></div>
+              </div>
+              <p style="font-size:12px;text-align:left;line-height:1.5;color:#b0bbdd;"><b style="color:#fff">Resistores:</b> limitam a corrente. Suportam até 50 mA.</p>
             </div>
-            <p style="font-size:12px;text-align:left;line-height:1.5;margin-bottom:10px;"><b style="color:#fff">LEDs:</b> 1–28 mA. Acima disso queimam e viram lixo!</p>
-            <div style="display:flex;justify-content:space-around;margin-bottom:10px;background:#06091a;padding:8px;border-radius:5px;border:1px solid rgba(91,127,255,0.2);" class="legend">
-              <div style="text-align:center"><canvas id="lg_r1" width="90" height="30"></canvas><br/><span style="font-size:10px">100 Ω</span></div>
-              <div style="text-align:center"><canvas id="lg_r2" width="90" height="30"></canvas><br/><span style="font-size:10px">220 Ω</span></div>
-              <div style="text-align:center"><canvas id="lg_r4" width="90" height="30"></canvas><br/><span style="font-size:10px">470 Ω</span></div>
-            </div>
-            <p style="font-size:12px;text-align:left;line-height:1.5;"><b style="color:#fff">Resistores:</b> limitam corrente. Máx 50 mA.</p>
-          </div>
 
-          <div id="tutorialPage4" style="display:none;">
-            <h3 style="margin-bottom:10px;font-size:13px;">Ligações Seguras</h3>
-            <p style="font-size:12px;text-align:left;line-height:1.5;margin-bottom:10px;">Lei de Ohm: <b style="color:#fff">I = V ÷ R</b></p>
-            <div style="background:#06091a;padding:12px;border-radius:6px;border:1px solid rgba(91,127,255,0.3);text-align:left;font-size:13px;line-height:2;">
-              <span style="color:#55ee88">✓ 3V + 100Ω = LED seguro</span><br/>
-              <span style="color:#55ee88">✓ 5V + 220Ω = LED seguro</span><br/>
-              <span style="color:#55ee88">✓ 9V + 470Ω = LED seguro</span><br/>
-              <span style="color:#ff4455">✗ 9V + 100Ω = Resistor queima!</span><br/>
-              <span style="color:#ff4455">✗ LED direto no 5V = LED queima!</span>
+            <div id="tutorialPage4" style="display:none;">
+              <h3 style="margin-bottom:10px;font-size:13px;">Combinações Seguras</h3>
+              <p style="font-size:12px;text-align:left;line-height:1.5;margin-bottom:10px;color:#b0bbdd;">Lei de Ohm: <b style="color:#fff;font-family:var(--font-mono)">I = V ÷ R</b></p>
+              <div style="background:#06091a;padding:12px;border-radius:6px;border:1px solid rgba(91,127,255,0.3);text-align:left;font-size:13px;line-height:2.1;font-family:var(--font-mono);">
+                <div style="color:#55ee88">✓  3V + 100Ω → LED acende</div>
+                <div style="color:#55ee88">✓  5V + 220Ω → LED acende</div>
+                <div style="color:#55ee88">✓  9V + 470Ω → LED acende</div>
+                <div style="color:#ff4455;margin-top:4px;">✗  9V + 100Ω → Resistor queima!</div>
+                <div style="color:#ff4455;">✗  LED direto no 5V → LED queima!</div>
+              </div>
             </div>
-          </div>
 
-          <div id="tutorialPage5" style="display:none;">
-            <h3 style="margin-bottom:12px;font-size:13px;">Controles</h3>
-            <div style="background:#06091a;padding:14px;border-radius:6px;border:1px solid rgba(91,127,255,0.3);display:flex;flex-direction:column;gap:10px;font-size:12px;color:#9aa5d6;text-align:left;">
-              <div><b style="color:#ffcc00;font-size:15px;margin-right:10px;">← →</b> Mover</div>
-              <div><b style="color:#ffcc00;font-size:15px;margin-right:10px;">↑</b> Girar</div>
-              <div><b style="color:#ffcc00;font-size:15px;margin-right:10px;">↓</b> Acelerar queda</div>
-              <div><b style="color:#ffcc00;font-size:13px;margin-right:10px;">Espaço</b> Hard drop</div>
-              <div><b style="color:#ffcc00;font-size:13px;margin-right:10px;">R</b> Reiniciar</div>
+            <div id="tutorialPage5" style="display:none;">
+              <h3 style="margin-bottom:12px;font-size:13px;">Controles</h3>
+              <div style="background:#06091a;padding:14px;border-radius:6px;border:1px solid rgba(91,127,255,0.3);display:flex;flex-direction:column;gap:11px;font-size:12px;color:#b0bbdd;text-align:left;">
+                <div style="display:flex;align-items:center;gap:10px;"><span style="color:#ffcc00;font-size:18px;width:32px;text-align:center;">← →</span><span>Mover a peça</span></div>
+                <div style="display:flex;align-items:center;gap:10px;"><span style="color:#ffcc00;font-size:18px;width:32px;text-align:center;">↑</span><span>Girar a peça</span></div>
+                <div style="display:flex;align-items:center;gap:10px;"><span style="color:#ffcc00;font-size:18px;width:32px;text-align:center;">↓</span><span>Acelerar queda</span></div>
+                <div style="display:flex;align-items:center;gap:10px;"><span style="color:#ffcc00;font-size:13px;font-weight:700;width:32px;text-align:center;">SPC</span><span>Hard drop (queda imediata)</span></div>
+                <div style="display:flex;align-items:center;gap:10px;"><span style="color:#ffcc00;font-size:13px;font-weight:700;width:32px;text-align:center;">R</span><span>Reiniciar a partida</span></div>
+              </div>
+              <p style="margin-top:14px;font-size:13px;font-weight:700;color:#55ee88;text-align:center;">Boa Sorte! ⚡</p>
             </div>
-            <p style="margin-top:14px;font-size:13px;font-weight:600;color:#55ee88;">Boa Sorte! ⚡</p>
-          </div>
 
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;">
-            <button id="btnPrevTutorial" style="background:#2a3580;border:none;color:#fff;padding:5px 10px;border-radius:5px;cursor:pointer;visibility:hidden;font-size:12px;font-weight:600;">◄</button>
-            <span id="tutorialPageIndicator" style="color:var(--accent-hi);font-size:12px;font-weight:600;">1/5</span>
-            <button id="btnNextTutorial" style="background:#2a3580;border:none;color:#fff;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:12px;font-weight:600;">►</button>
+          </div><!-- /tutorialScrollContent -->
+
+          <div id="tutorialFooter">
+            <div class="tut-nav">
+              <button id="btnPrevTutorial" class="tut-nav-btn" style="visibility:hidden;">◄ Anterior</button>
+              <span id="tutorialPageIndicator" style="color:var(--acc-hi);font-size:12px;font-weight:700;">1/5</span>
+              <button id="btnNextTutorial" class="tut-nav-btn">Próxima ►</button>
+            </div>
+            <button id="btnIniciar">▶  INICIAR</button>
           </div>
-          <p id="tutorialStartMsg" style="color:#aabbff;animation:blink 1.5s infinite;margin-top:10px;font-size:11px;font-weight:600;letter-spacing:0.5px;">
-            Toque em DROP ou pressione ESPAÇO para iniciar
-          </p>
-        </div>
+        </div><!-- /tutorialScreen -->
 
         <!-- Game Over -->
         <div id="message" class="overlay">
           <h2 style="font-size:18px;">CURTO-CIRCUITO!</h2>
           <p style="margin-bottom:4px;">O tabuleiro encheu de componentes.</p>
           <div class="final-score">Pontuação: <span id="finalScore">0</span></div>
-          <div style="font-size:13px;color:var(--accent-hi);margin-bottom:14px;font-family:var(--font-mono);">Recorde: <span id="finalHighScore">0</span></div>
-          <p><b style="color:var(--accent-hi)">R</b> ou <b style="color:var(--accent-hi)">↺</b> para jogar novamente</p>
+          <div style="font-size:13px;color:var(--acc-hi);margin-bottom:14px;font-family:var(--font-mono);">Recorde: <span id="finalHighScore">0</span></div>
+          <p><b style="color:var(--acc-hi)">R</b> ou <b style="color:var(--acc-hi)">REINICIAR</b> para jogar novamente</p>
         </div>
 
         <!-- Circuit Result -->
@@ -428,38 +536,37 @@
             ESPAÇO ou DROP para continuar
           </p>
         </div>
-      </div>
+      </div><!-- /canvasWrapper -->
 
-      <!-- Touch Controls -->
+      <!-- ═══════════ TOUCH CONTROLS ═══════════ -->
       <div id="touchControls">
         <div class="touch-row">
           <button id="btnTouchLeft" class="touch-btn">
             <span class="btn-icon">◄</span>
-            <span class="btn-label">Esq</span>
+            <span class="btn-label">Esquerda</span>
           </button>
           <button id="btnTouchRotate" class="touch-btn">
-            <span class="btn-icon">↑</span>
+            <span class="btn-icon">↻</span>
             <span class="btn-label">Girar</span>
           </button>
           <button id="btnTouchRight" class="touch-btn">
             <span class="btn-icon">►</span>
-            <span class="btn-label">Dir</span>
+            <span class="btn-label">Direita</span>
           </button>
         </div>
         <div class="touch-row">
           <button id="btnTouchDown" class="touch-btn">
             <span class="btn-icon">▼</span>
-            <span class="btn-label">Baixo</span>
+            <span class="btn-label">Descer</span>
           </button>
           <button id="btnTouchDrop" class="touch-btn touch-btn-drop">
-            <span class="btn-icon">⬛</span>
-            <span class="btn-label">Drop</span>
+            <span class="drop-main">DROP</span>
+            <span class="drop-key"><span class="key-cap">ESPAÇO</span></span>
           </button>
         </div>
       </div>
 
     </div><!-- /container -->
-
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

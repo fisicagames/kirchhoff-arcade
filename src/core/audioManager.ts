@@ -14,6 +14,7 @@ audio.dropSfx.volume   = 0.8;
 audio.sparkSfx.volume  = 0.8;
 
 let isWindowActive = true;
+let muted = false;
 
 export function updateMusicPlayback(): void {
   const isBurn = state.analyzingMode && state.pendingActions.some(a => a.type === 'burn');
@@ -23,11 +24,24 @@ export function updateMusicPlayback(): void {
     state.isPaused     ||
     document.hidden    ||
     !isWindowActive    ||
-    isBurn;
+    isBurn             ||
+    muted;
 
   if (shouldPause) audio.bgMusic.pause();
   else             audio.bgMusic.play().catch(() => {});
 }
+
+export function toggleMute(): void {
+  muted = !muted;
+  audio.bgMusic.muted   = muted;
+  audio.rotateSfx.muted = muted;
+  audio.dropSfx.muted   = muted;
+  audio.sparkSfx.muted  = muted;
+  if (!muted) updateMusicPlayback();
+  else        audio.bgMusic.pause();
+}
+
+export function isMuted(): boolean { return muted; }
 
 document.addEventListener('visibilitychange', updateMusicPlayback);
 window.addEventListener('blur',  () => { isWindowActive = false; updateMusicPlayback(); });

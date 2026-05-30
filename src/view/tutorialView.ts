@@ -1,5 +1,5 @@
 import { state } from '../model/gameState';
-import { updateMusicPlayback } from '../core/audioManager';
+import { updateMusicPlayback, toggleMute, isMuted } from '../core/audioManager';
 
 let currentPage = 1;
 const TOTAL_PAGES = 5;
@@ -9,18 +9,19 @@ function updatePage(): void {
     const el = document.getElementById('tutorialPage' + i);
     if (el) el.style.display = i === currentPage ? 'block' : 'none';
   }
+
   const indicator = document.getElementById('tutorialPageIndicator');
   if (indicator) indicator.textContent = `${currentPage}/${TOTAL_PAGES}`;
 
   const prev = document.getElementById('btnPrevTutorial') as HTMLButtonElement | null;
   const next = document.getElementById('btnNextTutorial') as HTMLButtonElement | null;
-  if (prev) prev.style.visibility = currentPage > 1             ? 'visible' : 'hidden';
-  if (next) next.style.visibility = currentPage < TOTAL_PAGES   ? 'visible' : 'hidden';
+  if (prev) prev.style.visibility = currentPage > 1           ? 'visible' : 'hidden';
+  if (next) next.style.visibility = currentPage < TOTAL_PAGES ? 'visible' : 'hidden';
 }
 
 export function showTutorial(): void {
-  const msg = document.getElementById('tutorialStartMsg');
-  if (msg && state.gameStarted) msg.style.display = 'none';
+  const btn = document.getElementById('btnIniciar');
+  if (btn) btn.textContent = state.gameStarted ? '▶  CONTINUAR' : '▶  INICIAR';
   document.getElementById('tutorialScreen')?.classList.add('show');
 }
 
@@ -28,7 +29,7 @@ export function hideTutorial(): void {
   document.getElementById('tutorialScreen')?.classList.remove('show');
 }
 
-export function setupTutorialNav(onStart: () => void): void {
+export function setupTutorialNav(onInit: () => void): void {
   document.getElementById('btnNextTutorial')?.addEventListener('click', () => {
     if (currentPage < TOTAL_PAGES) { currentPage++; updatePage(); }
   });
@@ -37,16 +38,22 @@ export function setupTutorialNav(onStart: () => void): void {
     if (currentPage > 1) { currentPage--; updatePage(); }
   });
 
-  document.getElementById('btnCloseTutorial')?.addEventListener('click', () => {
+  // "Iniciar / Continuar" — main CTA button
+  document.getElementById('btnIniciar')?.addEventListener('click', () => {
+    if (!state.gameStarted) {
+      state.gameStarted = true;
+      updateMusicPlayback();
+    }
     hideTutorial();
-    if (!state.gameStarted) { state.gameStarted = true; updateMusicPlayback(); }
   });
 
+  // Tutorial button (opens panel mid-game)
   document.getElementById('btnHelp')?.addEventListener('click', () => showTutorial());
 
+  // Reiniciar
   document.getElementById('btnRestart')?.addEventListener('click', () => {
     if (!state.gameStarted) state.gameStarted = true;
-    onStart();
+    onInit();
   });
 }
 
@@ -61,14 +68,14 @@ export function setupPauseButton(): void {
     const btn = document.getElementById('btnPause');
     if (!btn) return;
     if (state.isPaused) {
-      btn.textContent  = '▶';
-      btn.style.color  = '#55ee88';
+      btn.textContent = 'RETOMAR';
+      btn.style.color = '#55ee88';
     } else {
       state.hasUsedPause = true;
-      btn.textContent    = '⏸';
+      btn.textContent    = 'PAUSA';
       btn.style.color    = '';
       btn.style.cursor   = 'not-allowed';
-      btn.style.opacity  = '0.4';
+      btn.style.opacity  = '0.38';
     }
   });
 }
@@ -78,7 +85,22 @@ export function setupLimparButton(onClear: () => void): void {
     if (!state.gameStarted || state.gameOver || state.analyzingMode || state.isPaused || state.hasUsedLimpar) return;
     state.hasUsedLimpar = true;
     const btn = document.getElementById('btnLimpar');
-    if (btn) { btn.style.cursor = 'not-allowed'; btn.style.opacity = '0.4'; }
+    if (btn) { btn.style.cursor = 'not-allowed'; btn.style.opacity = '0.38'; }
     onClear();
+  });
+}
+
+export function setupSoundButton(): void {
+  const btn = document.getElementById('btnSound');
+  if (!btn) return;
+
+  const update = (): void => {
+    btn.textContent  = isMuted() ? 'SOM OFF' : 'SOM';
+    btn.style.color  = isMuted() ? '#cc4466' : '';
+  };
+
+  btn.addEventListener('click', () => {
+    toggleMute();
+    update();
   });
 }

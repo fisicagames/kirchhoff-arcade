@@ -15,10 +15,10 @@ export function init(): void {
   updateMusicPlayback();
 
   const btnPause = document.getElementById('btnPause');
-  if (btnPause) { btnPause.style.cssText = ''; btnPause.textContent = '⏸'; }
+  if (btnPause) { btnPause.style.cssText = ''; btnPause.textContent = 'PAUSA'; }
 
   const btnLimpar = document.getElementById('btnLimpar');
-  if (btnLimpar) { btnLimpar.style.cssText = ''; btnLimpar.classList.add('icon-btn-danger'); btnLimpar.textContent = '✕'; }
+  if (btnLimpar) { btnLimpar.style.cssText = ''; btnLimpar.textContent = 'LIMPAR'; }
 
   state.nextPiece = rndPiece();
   spawn();
