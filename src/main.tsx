@@ -1,10 +1,16 @@
-import {StrictMode} from 'react';
-import {createRoot} from 'react-dom/client';
-import App from './App.tsx';
 import './index.css';
+import { init, loop, clearBoard } from './controller/gameController';
+import { setupKeyboard, setupTouch } from './controller/inputController';
+import { setupTutorialNav, setupPauseButton, setupLimparButton } from './view/tutorialView';
+import { drawTutorial, drawLegendPieces } from './view/legendView';
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-);
+setupTutorialNav(init);
+setupPauseButton();
+setupLimparButton(clearBoard);
+setupKeyboard();
+setupTouch();
+
+init();
+drawTutorial();
+drawLegendPieces();
+requestAnimationFrame(loop);

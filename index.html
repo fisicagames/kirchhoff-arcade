@@ -5,14 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>Kirchhoff Arcade</title>
     <style>
-      *, *::before, *::after { box-sizing: border-box; }
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg:        #08091b;
+        --surface:   #0f1228;
+        --card:      #141836;
+        --border:    #252e6b;
+        --border-hi: #4455bb;
+        --accent:    #5b7fff;
+        --accent-hi: #7a9fff;
+        --txt:       #d8ddf2;
+        --txt-muted: #6272a0;
+        --danger:    #c43060;
+        --success:   #30b060;
+        --font-ui:   system-ui, -apple-system, 'Segoe UI', sans-serif;
+        --font-mono: 'SF Mono', 'Fira Code', 'Consolas', 'Courier New', monospace;
+      }
 
       body {
-        margin: 0;
-        background: radial-gradient(circle at center, #1a1f4a, #0a0e27);
-        color: #e0e0e0;
-        font-family: "Courier New", monospace;
-        min-height: 100dvh;
+        background: radial-gradient(ellipse at 50% 30%, #14195a, var(--bg));
+        color: var(--txt);
+        font-family: var(--font-ui);
+        min-height: 100svh;
         display: flex;
         justify-content: center;
         align-items: flex-start;
@@ -21,71 +36,141 @@
 
       #container {
         width: 100%;
-        max-width: 420px;
-        padding: 8px;
         display: flex;
         flex-direction: column;
-        gap: 8px;
-      }
-
-      h1 {
-        color: #7a9fff;
-        margin: 0;
-        font-size: 16px;
-        letter-spacing: 2px;
-        text-align: center;
-        text-shadow: 0 0 15px rgba(122, 159, 255, 0.6);
-        padding: 4px 0;
-      }
-
-      /* ── stats row ── */
-      #statsRow {
-        display: flex;
+        align-items: center;
         gap: 6px;
+        padding: 6px 6px 8px;
       }
-      .stat-panel {
+
+      /* ── header ── */
+      #header {
+        width: min(300px, 96svw, calc(55.5svh - 118px));
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      #statsBar {
+        display: flex;
+        align-items: stretch;
+        gap: 4px;
+        height: 38px;
+      }
+
+      .stat-item {
         flex: 1;
-        background: linear-gradient(135deg, #151b4a, #0f1540);
-        border: 2px solid #3a4aa0;
+        background: var(--card);
+        border: 1px solid var(--border);
         border-radius: 6px;
-        padding: 6px 8px;
-        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2px 4px;
+        min-width: 0;
       }
-      .stat-panel .stat-label {
-        color: #7a9fff;
-        font-size: 9px;
-        text-transform: uppercase;
+      .stat-label {
+        font-size: 8px;
+        font-weight: 600;
         letter-spacing: 1px;
-        margin-bottom: 2px;
-      }
-      .stat-value {
-        font-size: 22px;
-        color: #fff;
-        font-weight: bold;
-        text-shadow: 0 0 10px rgba(122, 159, 255, 0.8);
+        color: var(--txt-muted);
+        text-transform: uppercase;
         line-height: 1;
       }
-      .stat-sub {
-        font-size: 9px;
-        color: #9aa5d6;
-        margin-top: 2px;
+      .stat-value {
+        font-family: var(--font-mono);
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1.1;
+        letter-spacing: -0.5px;
+      }
+      .stat-rec {
+        font-size: 8px;
+        color: var(--txt-muted);
+        line-height: 1;
+        font-family: var(--font-mono);
+      }
+
+      #actionBtns {
+        display: flex;
+        gap: 3px;
+        align-items: center;
+      }
+
+      .icon-btn {
+        width: 34px;
+        height: 34px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 7px;
+        color: var(--accent-hi);
+        font-size: 15px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.12s, border-color 0.12s;
+        flex-shrink: 0;
+        line-height: 1;
+        font-family: var(--font-ui);
+      }
+      .icon-btn:active { background: var(--border-hi); border-color: var(--accent-hi); }
+      .icon-btn-danger { color: var(--danger); border-color: #4a1530; }
+      .icon-btn-danger:active { background: #3a1025; }
+
+      /* next piece bar */
+      #nextBar {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 3px 8px;
+        height: 36px;
+        overflow: hidden;
+      }
+      .next-label {
+        font-size: 8px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        color: var(--txt-muted);
+        text-transform: uppercase;
+        flex-shrink: 0;
+      }
+      #nextCanvas {
+        display: block;
+        background: transparent;
+        flex-shrink: 0;
+        image-rendering: pixelated;
+      }
+      #nextPieceSpecs {
+        font-size: 10px;
+        color: var(--txt-muted);
+        font-family: var(--font-mono);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       /* ── canvas wrapper ── */
       #canvasWrapper {
         position: relative;
-        width: fit-content;
-        margin: 0 auto;
+        width: min(300px, 96svw, calc(55.5svh - 118px));
+        aspect-ratio: 300 / 540;
+        flex-shrink: 0;
       }
 
       canvas#game {
-        background: #0a1035;
-        border: 3px solid #3a4aa0;
-        border-radius: 6px;
-        box-shadow:
-          0 0 40px rgba(80, 120, 255, 0.4),
-          inset 0 0 20px rgba(0, 0, 0, 0.5);
         display: block;
+        width: 100%;
+        height: 100%;
+        background: #060921;
+        border: 2px solid var(--border-hi);
+        border-radius: 6px;
+        box-shadow: 0 0 32px rgba(80,120,255,0.3), inset 0 0 16px rgba(0,0,0,0.6);
       }
 
       /* ── overlays ── */
@@ -94,208 +179,148 @@
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        background: rgba(10, 14, 39, 0.97);
-        border: 2px solid #7a9fff;
-        border-radius: 8px;
+        background: rgba(8, 9, 27, 0.97);
+        border: 1.5px solid var(--accent-hi);
+        border-radius: 10px;
         text-align: center;
         display: none;
-        box-shadow: 0 0 40px rgba(122, 159, 255, 0.3);
+        box-shadow: 0 8px 40px rgba(91,127,255,0.25);
         z-index: 10;
-        width: 90%;
-        max-width: 310px;
+        width: 92%;
+        max-width: 295px;
+        font-family: var(--font-ui);
       }
       .overlay.show { display: block; }
       .overlay h2, .overlay h3 {
-        margin: 0 0 8px;
-        color: #7a9fff;
-        text-shadow: 0 0 10px #7a9fff;
+        color: var(--accent-hi);
+        text-shadow: 0 0 12px rgba(122,159,255,0.5);
       }
-      .overlay p { margin: 4px 0; color: #9aa5d6; font-size: 13px; }
+      .overlay p { color: #9aa5d6; font-size: 13px; }
 
       #tutorialScreen {
-        top: 8px;
+        top: 6px;
         transform: translateX(-50%);
-        padding: 12px 16px;
-        max-height: 90dvh;
+        padding: 14px 16px 12px;
+        max-height: calc(100% - 12px);
         overflow-y: auto;
         scrollbar-width: thin;
+        scrollbar-color: var(--border) transparent;
       }
 
       #message {
-        padding: 22px 28px;
-        border-color: #ff4466;
-        box-shadow: 0 0 40px rgba(255, 68, 102, 0.5);
+        padding: 22px 24px;
+        border-color: var(--danger);
+        box-shadow: 0 8px 40px rgba(196,48,96,0.35);
       }
-      #message h2 { color: #ff4466; text-shadow: 0 0 20px #ff4466; }
-      #message .final-score { font-size: 18px; color: #ffcc00; margin: 12px 0; }
+      #message h2 { color: var(--danger); text-shadow: 0 0 16px var(--danger); margin-bottom: 8px; }
+      #message .final-score { font-size: 17px; color: #ffcc00; margin: 10px 0; font-family: var(--font-mono); }
 
       #statusOverlay {
-        top: 8px;
+        top: 6px;
         transform: translateX(-50%);
         padding: 12px 14px;
-        background: rgba(10, 14, 39, 0.95);
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
-        backdrop-filter: blur(5px);
+        backdrop-filter: blur(6px);
       }
+      #statusOverlay h2 { font-size: 18px; white-space: nowrap; margin-bottom: 6px; }
 
-      /* ── info row ── */
-      #infoRow {
-        display: flex;
-        gap: 6px;
-        align-items: stretch;
-      }
-      #nextPanel {
-        background: linear-gradient(135deg, #151b4a, #0f1540);
-        border: 2px solid #3a4aa0;
-        border-radius: 6px;
-        padding: 6px;
-        text-align: center;
-        flex: 0 0 auto;
-      }
-      #nextPanel .panel-label {
-        color: #7a9fff;
-        font-size: 9px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 4px;
-      }
-      #nextCanvas {
-        background: #0a1035;
-        border: 1px solid #2a3580;
-        display: block;
-        border-radius: 3px;
-      }
-      #nextPieceSpecs {
-        font-size: 9px;
-        color: #9aa5d6;
-        margin-top: 3px;
-        min-height: 18px;
-        line-height: 1.3;
-      }
-
-      #actionButtons {
-        flex: 1;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 5px;
-      }
-      .action-btn {
-        background: #445599;
-        color: #fff;
-        border: 1px solid #7a9fff;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: bold;
-        font-size: 11px;
-        font-family: "Courier New", monospace;
-        padding: 4px 2px;
-        transition: background 0.15s;
-        min-height: 36px;
-      }
-      .action-btn:active { background: #5566aa; }
-      #btnLimpar { background: #994444; border-color: #ff7a7a; }
-      #btnLimpar:active { background: #aa5555; }
-
-      /* ── legend / controls (inside tutorial) ── */
+      /* tutorial internals */
       .controls, .legend { font-size: 11px; line-height: 1.7; color: #9aa5d6; }
-      .controls b { color: #7a9fff; display: inline-block; min-width: 55px; }
+      .controls b { color: var(--accent-hi); display: inline-block; min-width: 55px; }
       .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 2px; }
-      .legend-dot {
-        width: 14px; height: 14px; border-radius: 2px;
-        border: 1px solid rgba(255,255,255,0.2); flex-shrink: 0;
-      }
-      .info {
-        font-size: 10px; color: #7a9fff; margin-top: 8px; line-height: 1.5;
-        padding: 5px; background: rgba(122,159,255,0.08); border-radius: 3px;
-      }
 
       /* ── touch controls ── */
       #touchControls {
+        width: min(300px, 96svw, calc(55.5svh - 118px));
         display: flex;
         flex-direction: column;
-        gap: 6px;
-        padding-bottom: 4px;
+        gap: 5px;
       }
-      .touch-row {
-        display: flex;
-        gap: 6px;
-      }
+      .touch-row { display: flex; gap: 5px; }
+
       .touch-btn {
         flex: 1;
-        background: linear-gradient(135deg, #1c2660, #151b4a);
-        color: #7a9fff;
-        border: 2px solid #3a4aa0;
-        border-radius: 8px;
-        cursor: pointer;
-        font-family: "Courier New", monospace;
+        min-height: 52px;
+        background: var(--card);
+        border: 1.5px solid var(--border);
+        border-radius: 9px;
+        color: var(--accent-hi);
+        font-family: var(--font-ui);
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: 58px;
-        gap: 3px;
+        gap: 2px;
+        cursor: pointer;
         user-select: none;
         -webkit-user-select: none;
         touch-action: manipulation;
-        transition: background 0.08s, border-color 0.08s, transform 0.08s;
-        padding: 6px 4px;
+        transition: background 0.08s, border-color 0.08s, transform 0.06s;
+        padding: 4px 2px;
+        -webkit-tap-highlight-color: transparent;
       }
-      .touch-btn:active,
-      .touch-btn.pressed {
-        background: linear-gradient(135deg, #2a3a80, #1c2660);
-        border-color: #7a9fff;
-        transform: scale(0.96);
+      .touch-btn:active, .touch-btn.pressed {
+        background: #1c2660;
+        border-color: var(--accent-hi);
+        transform: scale(0.95);
       }
-      .touch-btn .btn-icon {
-        font-size: 20px;
-        line-height: 1;
-        color: #aabbff;
-      }
+      .touch-btn .btn-icon { font-size: 19px; line-height: 1; color: #b0bfff; }
       .touch-btn .btn-label {
-        font-size: 9px;
+        font-size: 8px;
         letter-spacing: 1px;
         text-transform: uppercase;
-        color: #7a9fff;
+        color: var(--txt-muted);
+        font-weight: 600;
       }
+
       .touch-btn-drop {
         flex: 2;
-        background: linear-gradient(135deg, #1a3a18, #102810);
-        border-color: #4a8a40;
+        background: #0d200d;
+        border-color: #2a5a2a;
       }
-      .touch-btn-drop:active,
-      .touch-btn-drop.pressed {
-        background: linear-gradient(135deg, #2a5020, #1a3a18);
-        border-color: #88ff66;
-        transform: scale(0.96);
+      .touch-btn-drop:active, .touch-btn-drop.pressed {
+        background: #163016;
+        border-color: var(--success);
+        transform: scale(0.95);
       }
-      .touch-btn-drop .btn-icon { color: #88ff66; font-size: 22px; }
-      .touch-btn-drop .btn-label { color: #88ff66; }
+      .touch-btn-drop .btn-icon { font-size: 20px; color: #66dd88; }
+      .touch-btn-drop .btn-label { color: #44aa66; }
 
       @keyframes blink {
         0%, 100% { opacity: 1; }
-        50% { opacity: 0.5; }
+        50% { opacity: 0.4; }
       }
     </style>
   </head>
   <body>
     <div id="container">
 
-      <h1>⚡ KIRCHHOFF ARCADE ⚡</h1>
-
-      <!-- Stats -->
-      <div id="statsRow">
-        <div class="stat-panel">
-          <div class="stat-label">Pontuação</div>
-          <div class="stat-value" id="score">0</div>
-          <div class="stat-sub">Rec: <span id="highScoreDisplay">0</span></div>
+      <!-- Header -->
+      <div id="header">
+        <div id="statsBar">
+          <div class="stat-item">
+            <span class="stat-label">Pontos</span>
+            <span class="stat-value" id="score">0</span>
+            <span class="stat-rec">Rec: <span id="highScoreDisplay">0</span></span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Nível</span>
+            <span class="stat-value" id="level">1</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Circuitos</span>
+            <span class="stat-value" id="lines">0</span>
+          </div>
+          <div id="actionBtns">
+            <button id="btnPause"   class="icon-btn" title="Pausar">⏸</button>
+            <button id="btnLimpar"  class="icon-btn icon-btn-danger" title="Limpar tabuleiro (1×)">✕</button>
+            <button id="btnHelp"    class="icon-btn" title="Tutorial" style="font-weight:700;font-size:17px;">?</button>
+            <button id="btnRestart" class="icon-btn" title="Reiniciar" style="font-size:18px;">↺</button>
+          </div>
         </div>
-        <div class="stat-panel">
-          <div class="stat-label">Nível</div>
-          <div class="stat-value" id="level">1</div>
-        </div>
-        <div class="stat-panel">
-          <div class="stat-label">Circuitos</div>
-          <div class="stat-value" id="lines">0</div>
+        <div id="nextBar">
+          <span class="next-label">Próxima</span>
+          <canvas id="nextCanvas" width="90" height="30"></canvas>
+          <span id="nextPieceSpecs"></span>
         </div>
       </div>
 
@@ -303,217 +328,105 @@
       <div id="canvasWrapper">
         <canvas id="game" width="300" height="540"></canvas>
 
-        <!-- Tutorial -->
+        <!-- Tutorial overlay -->
         <div id="tutorialScreen" class="overlay show">
-          <button
-            id="btnCloseTutorial"
-            style="
-              position: absolute;
-              right: 10px;
-              top: 10px;
-              background: none;
-              border: none;
-              color: #7a9fff;
-              font-size: 22px;
-              cursor: pointer;
-              line-height: 1;
-              padding: 0;
-            "
-          >&times;</button>
+          <button id="btnCloseTutorial" style="position:absolute;right:10px;top:10px;background:none;border:none;color:var(--accent-hi);font-size:22px;cursor:pointer;line-height:1;padding:0;">&times;</button>
 
-          <div id="tutorialPage1" class="tutorial-page">
-            <h3 style="text-align: center; margin-bottom: 10px; color: #fff">
-              Objetivo do Jogo
-            </h3>
-            <div style="font-size: 13px; text-align: left; margin-bottom: 15px; color: #9aa5d6; line-height: 1.4;">
-              Conecte os componentes que caem para formar
-              <b>circuitos elétricos fechados!</b> Para que um LED acenda sem
-              queimar, você precisa da polaridade correta e de um
-              <b>Resistor</b> limitando a corrente.<br /><br />
-            </div>
-            <div style="background: #0a0e27; padding: 10px; border: 1px solid rgba(122, 159, 255, 0.4); border-radius: 5px; margin-bottom: 10px;">
-              <p style="text-align: center; margin: 0 0 5px 0; font-size: 12px; color: #fff;">
-                Exemplo de Ligação Correta:
-              </p>
-              <canvas id="tutorialCanvas" width="200" height="110" style="display: block; margin: 0 auto"></canvas>
+          <div id="tutorialPage1">
+            <h2 style="font-size:15px;letter-spacing:2px;margin-bottom:10px;color:#aabbff;">⚡ KIRCHHOFF ARCADE ⚡</h2>
+            <h3 style="margin-bottom:8px;font-size:13px;">Objetivo do Jogo</h3>
+            <p style="font-size:12px;text-align:left;line-height:1.5;margin-bottom:10px;">
+              Conecte os componentes que caem para formar <b style="color:#fff">circuitos elétricos fechados!</b>
+              Para que um LED acenda sem queimar, você precisa de polaridade correta e de um <b style="color:#fff">Resistor</b>.
+            </p>
+            <div style="background:#06091a;padding:8px;border:1px solid rgba(91,127,255,0.3);border-radius:6px;">
+              <p style="font-size:11px;color:#fff;margin-bottom:4px;">Exemplo de ligação correta:</p>
+              <canvas id="tutorialCanvas" width="200" height="110" style="display:block;margin:0 auto;"></canvas>
             </div>
           </div>
 
-          <div id="tutorialPage2" class="tutorial-page" style="display: none; font-size: 13px; text-align: left; color: #9aa5d6; line-height: 1.4;">
-            <h3 style="text-align: center; margin-bottom: 10px; color: #fff">
-              Fontes e Fios
-            </h3>
-            <div class="legend" style="display: flex; justify-content: space-around; margin-bottom: 12px; background: #0a0e27; padding: 10px; border-radius: 4px; border: 1px solid rgba(122, 159, 255, 0.2);">
-              <div class="legend-item" style="text-align: center">
-                <canvas id="lg_s3" width="90" height="30"></canvas><br /><span style="font-size: 11px">3 Volts</span>
-              </div>
-              <div class="legend-item" style="text-align: center">
-                <canvas id="lg_s5" width="90" height="30"></canvas><br /><span style="font-size: 11px">5 Volts</span>
-              </div>
-              <div class="legend-item" style="text-align: center">
-                <canvas id="lg_s9" width="90" height="30"></canvas><br /><span style="font-size: 11px">9 Volts</span>
-              </div>
+          <div id="tutorialPage2" style="display:none;">
+            <h3 style="margin-bottom:10px;font-size:13px;">Fontes e Fios</h3>
+            <div style="display:flex;justify-content:space-around;margin-bottom:10px;background:#06091a;padding:8px;border-radius:5px;border:1px solid rgba(91,127,255,0.2);" class="legend">
+              <div style="text-align:center"><canvas id="lg_s3" width="90" height="30"></canvas><br/><span style="font-size:10px">3 V</span></div>
+              <div style="text-align:center"><canvas id="lg_s5" width="90" height="30"></canvas><br/><span style="font-size:10px">5 V</span></div>
+              <div style="text-align:center"><canvas id="lg_s9" width="90" height="30"></canvas><br/><span style="font-size:10px">9 V</span></div>
             </div>
-            <p style="margin-bottom: 10px">
-              <b>Fontes (Baterias)</b>: Fornecem energia.
-              <span style="color: #ff4444">Atenção:</span> Ligar os polos (+) e
-              (-) diretamente sem resistência gera um curto-circuito!
+            <p style="font-size:12px;text-align:left;line-height:1.5;margin-bottom:10px;">
+              <b style="color:#fff">Fontes</b> fornecem energia. Ligar (+) e (−) sem resistência causa <span style="color:#ff5577">curto-circuito!</span>
             </p>
-            <div class="legend" style="display: flex; justify-content: space-around; background: #0a0e27; padding: 10px; border-radius: 4px; border: 1px solid rgba(122, 159, 255, 0.2);">
-              <div class="legend-item" style="text-align: center">
-                <canvas id="lg_w" width="90" height="30"></canvas><br /><span style="font-size: 11px">Fio Condutor</span>
-              </div>
-              <div class="legend-item" style="text-align: center">
-                <canvas id="lg_b" width="30" height="30"></canvas><br /><span style="font-size: 11px">Bloco (Isolante)</span>
-              </div>
-            </div>
-            <p style="margin-top: 10px">
-              <b>Fios</b> transmitem energia livremente. <b>Blocos</b> são
-              quebra-cabeças vazios (não conduzem).
-            </p>
-          </div>
-
-          <div id="tutorialPage3" class="tutorial-page" style="display: none; font-size: 13px; text-align: left; color: #9aa5d6; line-height: 1.4;">
-            <h3 style="text-align: center; margin-bottom: 10px; color: #fff">
-              LEDs e Resistores
-            </h3>
-            <div class="legend" style="display: flex; justify-content: space-around; margin-bottom: 12px; background: #0a0e27; padding: 10px; border-radius: 4px; border: 1px solid rgba(122, 159, 255, 0.2);">
-              <div class="legend-item" style="text-align: center">
-                <canvas id="lg_lr" width="90" height="30"></canvas>
-              </div>
-              <div class="legend-item" style="text-align: center">
-                <canvas id="lg_lg" width="90" height="30"></canvas>
-              </div>
-              <div class="legend-item" style="text-align: center">
-                <canvas id="lg_ly" width="90" height="30"></canvas>
-              </div>
-            </div>
-            <p style="margin-bottom: 10px">
-              <b>LEDs</b>: Requerem no mínimo 1.0 mA. Máximo de 28 mA. Acima
-              disso, eles queimam e você ganha "lixo" no tabuleiro!
-            </p>
-            <div class="legend" style="display: flex; justify-content: space-around; margin-bottom: 12px; background: #0a0e27; padding: 10px; border-radius: 4px; border: 1px solid rgba(122, 159, 255, 0.2);">
-              <div class="legend-item" style="text-align: center">
-                <canvas id="lg_r1" width="90" height="30"></canvas><br /><span style="font-size: 11px">100 Ω</span>
-              </div>
-              <div class="legend-item" style="text-align: center">
-                <canvas id="lg_r2" width="90" height="30"></canvas><br /><span style="font-size: 11px">220 Ω</span>
-              </div>
-              <div class="legend-item" style="text-align: center">
-                <canvas id="lg_r4" width="90" height="30"></canvas><br /><span style="font-size: 11px">470 Ω</span>
-              </div>
-            </div>
-            <p style="margin-bottom: 8px">
-              <b>Resistores</b>: Previnem que o circuito queime. Valores altos
-              limitam mais a corrente. Limitado a 50 mA.
-            </p>
-          </div>
-
-          <div id="tutorialPage4" class="tutorial-page" style="display: none; font-size: 13px; text-align: left; color: #9aa5d6; line-height: 1.4;">
-            <h3 style="text-align: center; margin-bottom: 15px; color: #fff">
-              Ligações Seguras
-            </h3>
-            <p style="margin-bottom: 15px">
-              O jogo usa a Lei de Ohm <b>(I = V / R)</b>. Fique atento a estas
-              combinações clássicas e seguras para os LEDs:
-            </p>
-            <div class="legend" style="background: #0a0e27; padding: 15px; border-radius: 4px; border: 1px solid rgba(122, 159, 255, 0.4);">
-              <p style="font-size: 14px; margin: 0; line-height: 1.8">
-                <span style="color: #88ff88"><b>✓ 3V + 100Ω</b> = LED acende luz média</span><br />
-                <span style="color: #88ff88"><b>✓ 5V + 220Ω</b> = LED acende luz forte</span><br />
-                <span style="color: #88ff88"><b>✓ 9V + 470Ω</b> = LED acende luz média</span><br />
-                <br />
-                <span style="color: #ff4444"><b>✗ 9V + 100Ω</b> = RESISTOR QUEIMA!</span><br />
-                <span style="color: #ff4444"><b>✗ LED direto no 5V</b> = LED QUEIMA!</span>
-              </p>
+            <div style="display:flex;justify-content:space-around;background:#06091a;padding:8px;border-radius:5px;border:1px solid rgba(91,127,255,0.2);" class="legend">
+              <div style="text-align:center"><canvas id="lg_w" width="90" height="30"></canvas><br/><span style="font-size:10px">Fio</span></div>
+              <div style="text-align:center"><canvas id="lg_b" width="30" height="30"></canvas><br/><span style="font-size:10px">Bloco</span></div>
             </div>
           </div>
 
-          <div id="tutorialPage5" class="tutorial-page" style="display: none; font-size: 13px; text-align: left; color: #9aa5d6; line-height: 1.4;">
-            <h3 style="text-align: center; margin-bottom: 15px; color: #fff">
-              Controles
-            </h3>
-            <div style="background: #0a0e27; padding: 15px; border-radius: 4px; border: 1px solid rgba(122, 159, 255, 0.4); display: flex; flex-direction: column; gap: 10px;" class="controls">
-              <div style="display: flex; align-items: center">
-                <b style="width: 80px; display: inline-block; color: #ffcc00; font-size: 16px;">← / →</b>
-                <span>Mover lateralmente</span>
-              </div>
-              <div style="display: flex; align-items: center">
-                <b style="width: 80px; display: inline-block; color: #ffcc00; font-size: 16px;">↓</b>
-                <span>Acelerar queda</span>
-              </div>
-              <div style="display: flex; align-items: center">
-                <b style="width: 80px; display: inline-block; color: #ffcc00; font-size: 16px;">↑</b>
-                <span>Girar a peça</span>
-              </div>
-              <div style="display: flex; align-items: center">
-                <b style="width: 80px; display: inline-block; color: #ffcc00; font-size: 14px;">Espaço</b>
-                <span>Queda imediata (Hard drop)</span>
-              </div>
-              <div style="display: flex; align-items: center">
-                <b style="width: 80px; display: inline-block; color: #ffcc00; font-size: 14px;">R</b>
-                <span>Reiniciar partida atual</span>
-              </div>
+          <div id="tutorialPage3" style="display:none;">
+            <h3 style="margin-bottom:10px;font-size:13px;">LEDs e Resistores</h3>
+            <div style="display:flex;justify-content:space-around;margin-bottom:10px;background:#06091a;padding:8px;border-radius:5px;border:1px solid rgba(91,127,255,0.2);" class="legend">
+              <div style="text-align:center"><canvas id="lg_lr" width="90" height="30"></canvas><br/><span style="font-size:10px;color:#ff4466">Vermelho</span></div>
+              <div style="text-align:center"><canvas id="lg_lg" width="90" height="30"></canvas><br/><span style="font-size:10px;color:#44ff88">Verde</span></div>
+              <div style="text-align:center"><canvas id="lg_ly" width="90" height="30"></canvas><br/><span style="font-size:10px;color:#ffee44">Amarelo</span></div>
             </div>
-            <p style="text-align: center; margin-top: 18px; font-size: 14px; font-weight: bold; color: #88ff88;">
-              Boa Sorte!
-            </p>
+            <p style="font-size:12px;text-align:left;line-height:1.5;margin-bottom:10px;"><b style="color:#fff">LEDs:</b> 1–28 mA. Acima disso queimam e viram lixo!</p>
+            <div style="display:flex;justify-content:space-around;margin-bottom:10px;background:#06091a;padding:8px;border-radius:5px;border:1px solid rgba(91,127,255,0.2);" class="legend">
+              <div style="text-align:center"><canvas id="lg_r1" width="90" height="30"></canvas><br/><span style="font-size:10px">100 Ω</span></div>
+              <div style="text-align:center"><canvas id="lg_r2" width="90" height="30"></canvas><br/><span style="font-size:10px">220 Ω</span></div>
+              <div style="text-align:center"><canvas id="lg_r4" width="90" height="30"></canvas><br/><span style="font-size:10px">470 Ω</span></div>
+            </div>
+            <p style="font-size:12px;text-align:left;line-height:1.5;"><b style="color:#fff">Resistores:</b> limitam corrente. Máx 50 mA.</p>
           </div>
 
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
-            <button id="btnPrevTutorial" style="background: #445599; border: none; color: #fff; padding: 6px 12px; border-radius: 4px; cursor: pointer; visibility: hidden; font-weight: bold;">
-              ◄ Anterior
-            </button>
-            <span id="tutorialPageIndicator" style="color: #7a9fff; font-size: 14px; font-weight: bold;">1/5</span>
-            <button id="btnNextTutorial" style="background: #445599; border: none; color: #fff; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold;">
-              Próxima ►
-            </button>
+          <div id="tutorialPage4" style="display:none;">
+            <h3 style="margin-bottom:10px;font-size:13px;">Ligações Seguras</h3>
+            <p style="font-size:12px;text-align:left;line-height:1.5;margin-bottom:10px;">Lei de Ohm: <b style="color:#fff">I = V ÷ R</b></p>
+            <div style="background:#06091a;padding:12px;border-radius:6px;border:1px solid rgba(91,127,255,0.3);text-align:left;font-size:13px;line-height:2;">
+              <span style="color:#55ee88">✓ 3V + 100Ω = LED seguro</span><br/>
+              <span style="color:#55ee88">✓ 5V + 220Ω = LED seguro</span><br/>
+              <span style="color:#55ee88">✓ 9V + 470Ω = LED seguro</span><br/>
+              <span style="color:#ff4455">✗ 9V + 100Ω = Resistor queima!</span><br/>
+              <span style="color:#ff4455">✗ LED direto no 5V = LED queima!</span>
+            </div>
           </div>
 
-          <p id="tutorialStartMsg" style="color: #fff; animation: blink 1.5s infinite; margin-top: 15px; font-size: 12px; height: 14px;">
-            Toque em <b>DROP</b> ou pressione <b>ESPAÇO</b> para Iniciar
+          <div id="tutorialPage5" style="display:none;">
+            <h3 style="margin-bottom:12px;font-size:13px;">Controles</h3>
+            <div style="background:#06091a;padding:14px;border-radius:6px;border:1px solid rgba(91,127,255,0.3);display:flex;flex-direction:column;gap:10px;font-size:12px;color:#9aa5d6;text-align:left;">
+              <div><b style="color:#ffcc00;font-size:15px;margin-right:10px;">← →</b> Mover</div>
+              <div><b style="color:#ffcc00;font-size:15px;margin-right:10px;">↑</b> Girar</div>
+              <div><b style="color:#ffcc00;font-size:15px;margin-right:10px;">↓</b> Acelerar queda</div>
+              <div><b style="color:#ffcc00;font-size:13px;margin-right:10px;">Espaço</b> Hard drop</div>
+              <div><b style="color:#ffcc00;font-size:13px;margin-right:10px;">R</b> Reiniciar</div>
+            </div>
+            <p style="margin-top:14px;font-size:13px;font-weight:600;color:#55ee88;">Boa Sorte! ⚡</p>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;">
+            <button id="btnPrevTutorial" style="background:#2a3580;border:none;color:#fff;padding:5px 10px;border-radius:5px;cursor:pointer;visibility:hidden;font-size:12px;font-weight:600;">◄</button>
+            <span id="tutorialPageIndicator" style="color:var(--accent-hi);font-size:12px;font-weight:600;">1/5</span>
+            <button id="btnNextTutorial" style="background:#2a3580;border:none;color:#fff;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:12px;font-weight:600;">►</button>
+          </div>
+          <p id="tutorialStartMsg" style="color:#aabbff;animation:blink 1.5s infinite;margin-top:10px;font-size:11px;font-weight:600;letter-spacing:0.5px;">
+            Toque em DROP ou pressione ESPAÇO para iniciar
           </p>
         </div>
 
         <!-- Game Over -->
         <div id="message" class="overlay">
-          <h2>CURTO-CIRCUITO!</h2>
-          <p>O tabuleiro encheu de componentes</p>
-          <div class="final-score">
-            Pontuação Final: <span id="finalScore">0</span>
-          </div>
-          <div style="font-size: 16px; color: #7a9fff; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;">
-            Recorde: <span id="finalHighScore">0</span>
-          </div>
-          <p>Pressione <b style="color: #7a9fff">R</b> para jogar novamente</p>
-          <p style="font-size: 11px; color: #9aa5d6; margin-top: 5px;">ou toque em REINICIAR</p>
+          <h2 style="font-size:18px;">CURTO-CIRCUITO!</h2>
+          <p style="margin-bottom:4px;">O tabuleiro encheu de componentes.</p>
+          <div class="final-score">Pontuação: <span id="finalScore">0</span></div>
+          <div style="font-size:13px;color:var(--accent-hi);margin-bottom:14px;font-family:var(--font-mono);">Recorde: <span id="finalHighScore">0</span></div>
+          <p><b style="color:var(--accent-hi)">R</b> ou <b style="color:var(--accent-hi)">↺</b> para jogar novamente</p>
         </div>
 
         <!-- Circuit Result -->
         <div id="statusOverlay" class="overlay">
-          <h2 id="statusTitle" style="font-size: 20px; margin-bottom: 6px; white-space: nowrap;"></h2>
-          <div
-            id="statusReasons"
-            style="text-align: left; font-size: 13px; margin: 0; color: #ddd; line-height: 1.4; display: flex; flex-direction: column; gap: 2px;"
-          ></div>
-          <p style="color: #9aa5d6; animation: blink 1.5s infinite; font-size: 12px; margin-top: 10px; text-transform: uppercase; letter-spacing: 0.5px;">
-            Pressione <b>ESPAÇO</b> ou toque em <b>DROP</b>
+          <h2 id="statusTitle"></h2>
+          <div id="statusReasons" style="font-size:12px;color:#ddd;line-height:1.5;display:flex;flex-direction:column;gap:2px;text-align:center;"></div>
+          <p style="color:#8898c4;animation:blink 1.5s infinite;font-size:11px;margin-top:8px;font-weight:600;letter-spacing:0.5px;">
+            ESPAÇO ou DROP para continuar
           </p>
-        </div>
-      </div>
-
-      <!-- Info row: next piece + action buttons -->
-      <div id="infoRow">
-        <div id="nextPanel">
-          <div class="panel-label">Próxima</div>
-          <canvas id="nextCanvas" width="120" height="100"></canvas>
-          <div id="nextPieceSpecs"></div>
-        </div>
-        <div id="actionButtons">
-          <button id="btnPause" class="action-btn">PAUSE (1x)</button>
-          <button id="btnLimpar" class="action-btn">LIMPAR (1x)</button>
-          <button id="btnHelp" class="action-btn">TUTORIAL</button>
-          <button id="btnRestart" class="action-btn">REINICIAR</button>
         </div>
       </div>
 
@@ -522,7 +435,7 @@
         <div class="touch-row">
           <button id="btnTouchLeft" class="touch-btn">
             <span class="btn-icon">◄</span>
-            <span class="btn-label">Esquerda</span>
+            <span class="btn-label">Esq</span>
           </button>
           <button id="btnTouchRotate" class="touch-btn">
             <span class="btn-icon">↑</span>
@@ -530,7 +443,7 @@
           </button>
           <button id="btnTouchRight" class="touch-btn">
             <span class="btn-icon">►</span>
-            <span class="btn-label">Direita</span>
+            <span class="btn-label">Dir</span>
           </button>
         </div>
         <div class="touch-row">
@@ -545,1829 +458,8 @@
         </div>
       </div>
 
-    </div>
+    </div><!-- /container -->
 
-    <script>
-      const COLS = 10,
-        ROWS = 18,
-        CELL = 30;
-      const canvas = document.getElementById("game");
-      const ctx = canvas.getContext("2d");
-      const nextCanvas = document.getElementById("nextCanvas");
-      const nctx = nextCanvas.getContext("2d");
-
-      let grid,
-        currentPiece,
-        nextPiece,
-        score,
-        highScore = localStorage.getItem("circuitHighScore") || 0,
-        lines,
-        level,
-        gameOver,
-        gameStarted;
-      let dropCounter, dropInterval, lastTime;
-      let animatingCells, waitingToSpawn, spawnTimer;
-      let pieceIdCounter = 0;
-      let piecesSpawnedCount = 0;
-      let lastPieceType = null;
-      let analyzingMode = false;
-      let pendingActions = [];
-      let isPaused = false;
-      let hasUsedPause = false;
-      let hasUsedLimpar = false;
-
-      const bgMusic = new Audio("./src/assets/melodyayresgriffiths.mp3?v=2");
-      bgMusic.loop = true;
-      bgMusic.volume = 0.15;
-
-      const rotateSfx = new Audio("./src/assets/rotate.mp3?v=2");
-      rotateSfx.volume = 0.8;
-
-      const dropSfx = new Audio("./src/assets/drop.mp3?v=3");
-      dropSfx.volume = 0.8;
-
-      const sparkSfx = new Audio("./src/assets/spark.mp3?v=2");
-      sparkSfx.volume = 0.8;
-
-      let isWindowActive = true;
-
-      function updateMusicPlayback() {
-        let isBurnState =
-          analyzingMode && pendingActions.some((a) => a.type === "burn");
-        if (
-          !gameStarted ||
-          gameOver ||
-          isPaused ||
-          document.hidden ||
-          !isWindowActive ||
-          isBurnState
-        ) {
-          bgMusic.pause();
-        } else {
-          bgMusic
-            .play()
-            .catch((err) => console.log("Audio play blocked by browser:", err));
-        }
-      }
-
-      document.addEventListener("visibilitychange", updateMusicPlayback);
-      window.addEventListener("blur", () => {
-        isWindowActive = false;
-        updateMusicPlayback();
-      });
-      window.addEventListener("focus", () => {
-        isWindowActive = true;
-        updateMusicPlayback();
-      });
-
-      function drawTutorial() {
-        const tCanvas = document.getElementById("tutorialCanvas");
-        const tctx = tCanvas.getContext("2d");
-        tctx.clearRect(0, 0, tCanvas.width, tCanvas.height);
-
-        const s = CELL; // 30
-        const oy = 10;
-        const ox = 55;
-
-        // Fonte no topo
-        drawCell(tctx, ox, oy, {
-          type: "source",
-          value: 9,
-          t: "+",
-          ports: { S: 1 },
-        });
-        drawCell(tctx, ox + s, oy, {
-          type: "source",
-          value: 9,
-          idx: 1,
-          ports: {},
-        });
-        drawCell(tctx, ox + s * 2, oy, {
-          type: "source",
-          value: 9,
-          t: "-",
-          idx: 2,
-          ports: { S: 1 },
-        });
-
-        tctx.fillStyle = "#aaaaaa";
-        tctx.fillRect(ox + s / 2 - 2, oy + s / 2, 4, s * 2);
-        tctx.fillRect(ox + s * 2 + s / 2 - 2, oy + s / 2, 4, s * 2);
-
-        drawCell(
-          tctx,
-          ox,
-          oy + s * 2,
-          { type: "led", value: "green", t: "+", ports: { N: 1 } },
-          { lit: true },
-        );
-        drawCell(
-          tctx,
-          ox + s,
-          oy + s * 2,
-          { type: "led", value: "green", idx: 1, ports: {} },
-          { lit: true },
-        );
-        drawCell(
-          tctx,
-          ox + s * 2,
-          oy + s * 2,
-          { type: "led", value: "green", t: "-", idx: 2, ports: { N: 1 } },
-          { lit: true },
-        );
-
-        tctx.fillStyle = "#0a1035";
-        tctx.fillRect(ox - 5, oy + s * 0.8, s + 10, s * 1.4);
-        drawCell(tctx, ox, oy + s, {
-          type: "resistor",
-          value: 220,
-          idx: 1,
-          vertical: true,
-          ports: { N: 1, S: 1 },
-        });
-      }
-
-      const DIRECTIONS = [
-        { dx: 0, dy: -1, f: "N", t: "S" },
-        { dx: 1, dy: 0, f: "E", t: "W" },
-        { dx: 0, dy: 1, f: "S", t: "N" },
-        { dx: -1, dy: 0, f: "W", t: "E" },
-      ];
-
-      const TEMPLATES = [
-        {
-          type: "source",
-          value: 3,
-          w: 8,
-          cells: [
-            { x: 0, y: 0, ports: { N: 1, E: 0, W: 1, S: 1 }, t: "+", idx: 0 },
-            { x: 1, y: 0, ports: { N: 0, E: 0, W: 0, S: 0 }, idx: 1 },
-            { x: 2, y: 0, ports: { N: 1, E: 1, W: 0, S: 1 }, t: "-", idx: 2 },
-          ],
-        },
-        {
-          type: "source",
-          value: 5,
-          w: 4,
-          cells: [
-            { x: 0, y: 0, ports: { N: 1, E: 0, W: 1, S: 1 }, t: "+", idx: 0 },
-            { x: 1, y: 0, ports: { N: 0, E: 0, W: 0, S: 0 }, idx: 1 },
-            { x: 2, y: 0, ports: { N: 1, E: 1, W: 0, S: 1 }, t: "-", idx: 2 },
-          ],
-        },
-        {
-          type: "source",
-          value: 9,
-          w: 3,
-          cells: [
-            { x: 0, y: 0, ports: { N: 1, E: 0, W: 1, S: 1 }, t: "+", idx: 0 },
-            { x: 1, y: 0, ports: { N: 0, E: 0, W: 0, S: 0 }, idx: 1 },
-            { x: 2, y: 0, ports: { N: 1, E: 1, W: 0, S: 1 }, t: "-", idx: 2 },
-          ],
-        },
-        {
-          type: "resistor",
-          value: 100,
-          w: 3,
-          cells: [
-            { x: 0, y: 0, ports: { N: 1, E: 0, W: 1, S: 1 }, idx: 0 },
-            { x: 1, y: 0, ports: { N: 0, E: 0, W: 0, S: 0 }, idx: 1 },
-            { x: 2, y: 0, ports: { N: 1, E: 1, W: 0, S: 1 }, idx: 2 },
-          ],
-        },
-        {
-          type: "resistor",
-          value: 220,
-          w: 6,
-          cells: [
-            { x: 0, y: 0, ports: { N: 1, E: 0, W: 1, S: 1 }, idx: 0 },
-            { x: 1, y: 0, ports: { N: 0, E: 0, W: 0, S: 0 }, idx: 1 },
-            { x: 2, y: 0, ports: { N: 1, E: 1, W: 0, S: 1 }, idx: 2 },
-          ],
-        },
-        {
-          type: "resistor",
-          value: 470,
-          w: 6,
-          cells: [
-            { x: 0, y: 0, ports: { N: 1, E: 0, W: 1, S: 1 }, idx: 0 },
-            { x: 1, y: 0, ports: { N: 0, E: 0, W: 0, S: 0 }, idx: 1 },
-            { x: 2, y: 0, ports: { N: 1, E: 1, W: 0, S: 1 }, idx: 2 },
-          ],
-        },
-        {
-          type: "led",
-          value: "red",
-          w: 5,
-          cells: [
-            { x: 0, y: 0, ports: { N: 1, E: 0, W: 1, S: 1 }, t: "+", idx: 0 },
-            { x: 1, y: 0, ports: { N: 0, E: 0, W: 0, S: 0 }, idx: 1 },
-            { x: 2, y: 0, ports: { N: 1, E: 1, W: 0, S: 1 }, t: "-", idx: 2 },
-          ],
-        },
-        {
-          type: "led",
-          value: "green",
-          w: 5,
-          cells: [
-            { x: 0, y: 0, ports: { N: 1, E: 0, W: 1, S: 1 }, t: "+", idx: 0 },
-            { x: 1, y: 0, ports: { N: 0, E: 0, W: 0, S: 0 }, idx: 1 },
-            { x: 2, y: 0, ports: { N: 1, E: 1, W: 0, S: 1 }, t: "-", idx: 2 },
-          ],
-        },
-        {
-          type: "led",
-          value: "yellow",
-          w: 4,
-          cells: [
-            { x: 0, y: 0, ports: { N: 1, E: 0, W: 1, S: 1 }, t: "+", idx: 0 },
-            { x: 1, y: 0, ports: { N: 0, E: 0, W: 0, S: 0 }, idx: 1 },
-            { x: 2, y: 0, ports: { N: 1, E: 1, W: 0, S: 1 }, t: "-", idx: 2 },
-          ],
-        },
-        {
-          type: "wire3",
-          value: "wire",
-          w: 4,
-          cells: [
-            { x: 0, y: 0, ports: { N: 1, E: 0, W: 1, S: 1 }, idx: 0 },
-            { x: 1, y: 0, ports: { N: 0, E: 0, W: 0, S: 0 }, idx: 1 },
-            { x: 2, y: 0, ports: { N: 1, E: 1, W: 0, S: 1 }, idx: 2 },
-          ],
-        },
-      ];
-
-      const BLOCK_TEMPLATES = [
-        {
-          type: "block",
-          value: "1",
-          color: "#999999",
-          cells: [{ x: 0, y: 0 }],
-        },
-      ];
-
-      const POOL = [];
-      for (const t of TEMPLATES) {
-        if (t.w) {
-          for (let i = 0; i < t.w; i++) POOL.push(t);
-        }
-      }
-
-      let currentBag = [];
-
-      function refillBag() {
-        currentBag = POOL.filter((t) => level >= 5 || t.type !== "led");
-        for (let i = currentBag.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [currentBag[i], currentBag[j]] = [currentBag[j], currentBag[i]];
-        }
-      }
-
-      function rndPiece() {
-        if (currentBag.length === 0) {
-          refillBag();
-        }
-
-        let idx = currentBag.length - 1;
-        let attempts = 0;
-        while (
-          currentBag[idx].type === lastPieceType &&
-          attempts < 5 &&
-          idx > 0
-        ) {
-          let j = Math.floor(Math.random() * idx);
-          [currentBag[idx], currentBag[j]] = [currentBag[j], currentBag[idx]];
-          attempts++;
-        }
-
-        let t = currentBag.pop();
-        lastPieceType = t.type;
-
-        return {
-          type: t.type,
-          value: t.value,
-          color: t.color,
-          id: pieceIdCounter++,
-          cells: t.cells.map((c) => ({
-            x: c.x,
-            y: c.y,
-            ports: c.ports ? { ...c.ports } : {},
-            t: c.t,
-            idx: c.idx,
-            type: c.type,
-            color: c.color,
-          })),
-          x: 0,
-          y: 0,
-        };
-      }
-
-      function init() {
-        currentBag = [];
-        grid = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
-        score = 0;
-        lines = 0;
-        level = 1;
-        gameOver = false;
-        dropCounter = 0;
-        dropInterval = 1600;
-        lastTime = 0;
-        animatingCells = [];
-        waitingToSpawn = false;
-        spawnTimer = 0;
-        pieceIdCounter = 0;
-        piecesSpawnedCount = 0;
-        lastPieceType = null;
-        analyzingMode = false;
-        pendingActions = [];
-        isPaused = false;
-        hasUsedPause = false;
-        hasUsedLimpar = false;
-        updateMusicPlayback();
-        const btnPause = document.getElementById("btnPause");
-        btnPause.style.background = "#445599";
-        btnPause.style.cursor = "pointer";
-        btnPause.style.opacity = "1";
-        btnPause.innerText = "PAUSE (1x)";
-        const btnLimpar = document.getElementById("btnLimpar");
-        btnLimpar.style.background = "#994444";
-        btnLimpar.style.cursor = "pointer";
-        btnLimpar.style.opacity = "1";
-        btnLimpar.innerText = "LIMPAR (1x)";
-        nextPiece = rndPiece();
-        spawn();
-        updateUI();
-        document.getElementById("message").classList.remove("show");
-      }
-
-      function spawn() {
-        currentPiece = nextPiece;
-        const oldLevel = level;
-        piecesSpawnedCount++;
-
-        level = Math.floor(piecesSpawnedCount / 10) + 1;
-        dropInterval = Math.max(200, 1600 - (level - 1) * 100);
-
-        if (level === 5 && oldLevel < 5) {
-          currentBag = [];
-        }
-
-        if (piecesSpawnedCount % 3 === 2) {
-          const t = BLOCK_TEMPLATES[0];
-          lastPieceType = t.type;
-          nextPiece = {
-            type: t.type,
-            value: t.value,
-            color: t.color,
-            id: pieceIdCounter++,
-            cells: t.cells.map((c) => ({
-              x: c.x,
-              y: c.y,
-              ports: c.ports ? { ...c.ports } : {},
-              t: c.t,
-              idx: c.idx,
-              type: c.type,
-              color: c.color,
-            })),
-            x: 0,
-            y: 0,
-          };
-        } else {
-          nextPiece = rndPiece();
-        }
-
-        const w = Math.max(...currentPiece.cells.map((c) => c.x)) + 1;
-        currentPiece.x = Math.floor((COLS - w) / 2);
-        currentPiece.y = 0;
-        if (collides(currentPiece, currentPiece.x, currentPiece.y)) endGame();
-        drawNext();
-      }
-
-      function collides(piece, px, py) {
-        for (const c of piece.cells) {
-          const x = c.x + px,
-            y = c.y + py;
-          if (x < 0 || x >= COLS || y >= ROWS) return true;
-          if (y >= 0 && grid[y][x]) return true;
-        }
-        return false;
-      }
-
-      function rotatePiece(piece) {
-        const cells = piece.cells.map((c) => ({
-          x: -c.y,
-          y: c.x,
-          ports: c.ports
-            ? {
-                N: c.ports.W || 0,
-                E: c.ports.N || 0,
-                S: c.ports.E || 0,
-                W: c.ports.S || 0,
-              }
-            : {},
-          t: c.t,
-          idx: c.idx,
-          type: c.type,
-          color: c.color,
-        }));
-        const minX = Math.min(...cells.map((c) => c.x));
-        const minY = Math.min(...cells.map((c) => c.y));
-        for (const c of cells) {
-          c.x -= minX;
-          c.y -= minY;
-        }
-        return {
-          type: piece.type,
-          value: piece.value,
-          color: piece.color,
-          id: piece.id,
-          cells,
-          x: piece.x,
-          y: piece.y,
-        };
-      }
-
-      function move(dx, dy) {
-        if (!currentPiece) return false;
-        if (!collides(currentPiece, currentPiece.x + dx, currentPiece.y + dy)) {
-          currentPiece.x += dx;
-          currentPiece.y += dy;
-          return true;
-        }
-        return false;
-      }
-
-      function rotate() {
-        if (!currentPiece) return;
-        const r = rotatePiece(currentPiece);
-        if (!collides(r, r.x, r.y)) {
-          currentPiece.cells = r.cells;
-          rotateSfx.currentTime = 0;
-          rotateSfx.play().catch((e) => console.log(e));
-          return;
-        }
-        for (const k of [-1, 1, -2, 2]) {
-          if (!collides(r, r.x + k, r.y)) {
-            currentPiece.cells = r.cells;
-            currentPiece.x += k;
-            return;
-          }
-        }
-      }
-
-      function hardDrop() {
-        dropSfx.currentTime = 0;
-        dropSfx.play().catch((e) => console.log(e));
-        while (move(0, 1)) {}
-        lockPiece();
-      }
-
-      function fillInnerCorners() {
-        let changed = false;
-        do {
-          changed = false;
-          for (let y = 0; y < ROWS - 1; y++) {
-            for (let x = 0; x < COLS - 1; x++) {
-              const cells = [
-                { cx: x, cy: y, c: grid[y][x] },
-                { cx: x + 1, cy: y, c: grid[y][x + 1] },
-                { cx: x, cy: y + 1, c: grid[y + 1][x] },
-                { cx: x + 1, cy: y + 1, c: grid[y + 1][x + 1] },
-              ];
-
-              const filled = cells.filter((cell) => cell.c !== null);
-              const empty = cells.filter((cell) => cell.c === null);
-
-              if (filled.length === 3 && empty.length === 1) {
-                const compCells = filled.filter(
-                  (f) =>
-                    f.c.type !== "burned" &&
-                    ["source", "resistor", "led"].includes(
-                      f.c.pieceType || f.c.type,
-                    ),
-                );
-
-                if (compCells.length === 3) {
-                  const pieceIds = new Set(compCells.map((f) => f.c.pieceId));
-                  if (pieceIds.size >= 2) {
-                    const e = empty[0];
-                    grid[e.cy][e.cx] = {
-                      type: "block",
-                      color: "#666",
-                      pieceId: pieceIdCounter++,
-                      pieceType: "block",
-                    };
-                    changed = true;
-                  }
-                }
-              }
-            }
-          }
-        } while (changed);
-      }
-
-      function lockPiece() {
-        if (!currentPiece) return;
-
-        let vertical = false;
-        if (
-          ["resistor", "source", "led", "wire3"].includes(currentPiece.type)
-        ) {
-          const ys = currentPiece.cells.map((c) => c.y);
-          const xs = currentPiece.cells.map((c) => c.x);
-          const uniqueY = new Set(ys).size;
-          const uniqueX = new Set(xs).size;
-          vertical = uniqueY > uniqueX;
-        }
-
-        for (const c of currentPiece.cells) {
-          const x = c.x + currentPiece.x,
-            y = c.y + currentPiece.y;
-          if (y < 0) {
-            endGame();
-            return;
-          }
-          grid[y][x] = {
-            type: c.type || currentPiece.type,
-            value: currentPiece.value,
-            color: c.color || currentPiece.color,
-            ports: { ...c.ports },
-            t: c.t,
-            idx: c.idx,
-            pieceId: currentPiece.id,
-            pieceType: currentPiece.type,
-            vertical: vertical,
-          };
-        }
-
-        fillInnerCorners();
-
-        const actions = processCircuits();
-        currentPiece = null;
-        if (actions.length > 0) {
-          analyzingMode = true;
-          pendingActions = actions;
-          showStatusOverlay(actions);
-        } else {
-          waitingToSpawn = true;
-          spawnTimer = 400;
-        }
-      }
-
-      function showStatusOverlay(actions) {
-        updateMusicPlayback();
-        let isBurnState = false;
-        let isLitState = false;
-        let reasonsToDisplay = [];
-
-        for (const action of actions) {
-          if (action.type === "burn") {
-            isBurnState = true;
-            if (action.reasons) reasonsToDisplay = action.reasons;
-          } else if (action.type === "light") {
-            isLitState = true;
-            if (action.reasons) reasonsToDisplay = action.reasons;
-          }
-        }
-
-        const titleEl = document.getElementById("statusTitle");
-        titleEl.textContent = isBurnState
-          ? "Circuito Queimou!"
-          : "Circuito Fechado!";
-
-        if (isBurnState) {
-          sparkSfx.currentTime = 0;
-          sparkSfx.play().catch((e) => console.log(e));
-        }
-
-        titleEl.style.color = isBurnState ? "#ff4444" : "#88ff88";
-
-        const overlayEl = document.getElementById("statusOverlay");
-        if (isBurnState) {
-          overlayEl.style.borderColor = "#ff4444";
-          overlayEl.style.boxShadow = "0 10px 40px rgba(255, 68, 68, 0.4)";
-        } else {
-          overlayEl.style.borderColor = "#88ff88";
-          overlayEl.style.boxShadow = "0 10px 40px rgba(136, 255, 136, 0.4)";
-        }
-
-        const reasonsContainer = document.getElementById("statusReasons");
-        reasonsContainer.innerHTML = "";
-
-        if (reasonsToDisplay.length > 0) {
-          reasonsContainer.style.display = "flex";
-          for (const reason of reasonsToDisplay) {
-            const el = document.createElement("div");
-            el.textContent = reason;
-            el.style.textAlign = "center";
-            reasonsContainer.appendChild(el);
-          }
-        } else {
-          reasonsContainer.style.display = "none";
-        }
-
-        overlayEl.classList.add("show");
-      }
-
-      function isConnected(cellA, cellB, dirFromAtoB) {
-        const samePiece =
-          cellA.pieceId !== undefined && cellA.pieceId === cellB.pieceId;
-        if (samePiece) return true;
-        if (!cellA.ports || !cellB.ports) return false;
-        return !!(cellA.ports[dirFromAtoB.f] && cellB.ports[dirFromAtoB.t]);
-      }
-
-      // ===== Modified Nodal Analysis (MNA) =====
-
-      function solveLinearSystem(A, Z) {
-        const n = A.length;
-        const M = A.map((row, i) => [...row, Z[i]]);
-
-        for (let i = 0; i < n; i++) {
-          let maxEl = Math.abs(M[i][i]);
-          let maxRow = i;
-          for (let k = i + 1; k < n; k++) {
-            if (Math.abs(M[k][i]) > maxEl) {
-              maxEl = Math.abs(M[k][i]);
-              maxRow = k;
-            }
-          }
-
-          const tmp = M[maxRow];
-          M[maxRow] = M[i];
-          M[i] = tmp;
-
-          if (Math.abs(M[i][i]) < 1e-12) {
-            return null;
-          }
-
-          for (let k = i + 1; k < n; k++) {
-            const c = -M[k][i] / M[i][i];
-            for (let j = i; j <= n; j++) {
-              M[k][j] += c * M[i][j];
-            }
-          }
-        }
-
-        const x = new Array(n).fill(0);
-        for (let i = n - 1; i >= 0; i--) {
-          x[i] = M[i][n] / M[i][i];
-          for (let k = i - 1; k >= 0; k--) {
-            M[k][n] -= M[k][i] * x[i];
-          }
-        }
-        return x;
-      }
-
-      function buildAndSolveMNA(numNodes, resistors, vSources) {
-        const M = vSources.length;
-        const size = numNodes + M;
-        const A = Array.from({ length: size }, () => Array(size).fill(0));
-        const Z = Array(size).fill(0);
-
-        for (let i = 0; i < numNodes; i++) {
-          A[i][i] = 1e-9;
-        }
-
-        for (const r of resistors) {
-          const i = r.nodeA;
-          const j = r.nodeB;
-          const g = 1 / (r.value || 0.001);
-          A[i][i] += g;
-          A[j][j] += g;
-          A[i][j] -= g;
-          A[j][i] -= g;
-        }
-
-        for (let k = 0; k < M; k++) {
-          const vs = vSources[k];
-          const nPlus = vs.nodePlus;
-          const nMinus = vs.nodeMinus;
-          const vIdx = numNodes + k;
-
-          A[nPlus][vIdx] += 1;
-          A[nMinus][vIdx] -= 1;
-
-          A[vIdx][nPlus] += 1;
-          A[vIdx][nMinus] -= 1;
-          A[vIdx][vIdx] -= 0.01;
-
-          Z[vIdx] = vs.value;
-        }
-
-        return solveLinearSystem(A, Z);
-      }
-
-      function analyzeComponent(compCells) {
-        const nodeMap = {};
-        const getKey = (x, y) => `${x},${y}`;
-
-        for (const { x, y } of compCells) {
-          nodeMap[getKey(x, y)] = -1;
-        }
-
-        let numNodes = 0;
-
-        function dfsNode(x, y, nodeId) {
-          nodeMap[getKey(x, y)] = nodeId;
-          const cell = grid[y][x];
-          for (const d of DIRECTIONS) {
-            const nx = x + d.dx,
-              ny = y + d.dy;
-            if (nx < 0 || nx >= COLS || ny < 0 || ny >= ROWS) continue;
-            const nb = grid[ny][nx];
-            if (
-              nb &&
-              nb.type !== "burned" &&
-              nodeMap[getKey(nx, ny)] === -1 &&
-              isConnected(cell, nb, d)
-            ) {
-              if (
-                cell.pieceId === nb.pieceId &&
-                cell.type !== "wire" &&
-                cell.type !== "wire3"
-              )
-                continue;
-              dfsNode(nx, ny, nodeId);
-            }
-          }
-        }
-
-        for (const { x, y, c } of compCells) {
-          if (c.type === "resistor" && c.idx === 1) continue;
-          if (nodeMap[getKey(x, y)] === -1) {
-            dfsNode(x, y, numNodes++);
-          }
-        }
-
-        const realSources = [];
-        const resistors = [];
-        const leds = [];
-
-        const pieces = {};
-        for (const { x, y, c } of compCells) {
-          if (c.type === "wire" || c.type === "wire3") continue;
-          if (!pieces[c.pieceId])
-            pieces[c.pieceId] = { type: c.pieceType || c.type, cells: [] };
-          pieces[c.pieceId].cells.push({ x, y, c });
-        }
-
-        for (const pid in pieces) {
-          const p = pieces[pid];
-          if (p.type === "source") {
-            const cPlus = p.cells.find((cell) => cell.c.t === "+");
-            const cMinus = p.cells.find((cell) => cell.c.t === "-");
-            if (cPlus && cMinus) {
-              realSources.push({
-                nodePlus: nodeMap[getKey(cPlus.x, cPlus.y)],
-                nodeMinus: nodeMap[getKey(cMinus.x, cMinus.y)],
-                value: cPlus.c.value,
-                pieceId: pid,
-              });
-            }
-          } else if (p.type === "resistor") {
-            const c1 = p.cells.find((cell) => cell.c.idx === 0);
-            const c2 = p.cells.find((cell) => cell.c.idx === 2);
-            if (c1 && c2) {
-              resistors.push({
-                nodeA: nodeMap[getKey(c1.x, c1.y)],
-                nodeB: nodeMap[getKey(c2.x, c2.y)],
-                value: c1.c.value,
-                pieceId: pid,
-              });
-            }
-          } else if (p.type === "led") {
-            const cPlus = p.cells.find((cell) => cell.c.idx === 0);
-            const cMinus = p.cells.find((cell) => cell.c.idx === 2);
-            if (cPlus && cMinus) {
-              leds.push({
-                nodePlus: nodeMap[getKey(cPlus.x, cPlus.y)],
-                nodeMinus: nodeMap[getKey(cMinus.x, cMinus.y)],
-                pieceId: pid,
-                isOn: false,
-              });
-            }
-          }
-        }
-
-        if (realSources.length === 0 || numNodes === 0) return [];
-
-        let ledsStateChanged = true;
-        let iters = 0;
-        let finalVoltages = null;
-        let finalCurrents = null;
-        let currentVSources = [];
-
-        while (ledsStateChanged && iters < 10) {
-          ledsStateChanged = false;
-          iters++;
-
-          currentVSources = [...realSources];
-          for (let i = 0; i < leds.length; i++) {
-            if (leds[i].isOn) {
-              currentVSources.push({
-                nodePlus: leds[i].nodePlus,
-                nodeMinus: leds[i].nodeMinus,
-                value: 2.0,
-                isLed: true,
-                ledIdx: i,
-              });
-            }
-          }
-
-          const solution = buildAndSolveMNA(
-            numNodes,
-            resistors,
-            currentVSources,
-          );
-          if (!solution) break;
-
-          finalVoltages = solution.slice(0, numNodes);
-          finalCurrents = solution.slice(numNodes);
-
-          for (let i = 0; i < leds.length; i++) {
-            const led = leds[i];
-            if (led.isOn) {
-              const idx = currentVSources.findIndex(
-                (s) => s.isLed && s.ledIdx === i,
-              );
-              const current = finalCurrents[idx];
-              if (current < -1e-5) {
-                led.isOn = false;
-                ledsStateChanged = true;
-              }
-            } else {
-              const vPlus = finalVoltages[led.nodePlus];
-              const vMinus = finalVoltages[led.nodeMinus];
-              if (vPlus - vMinus > 2.0) {
-                led.isOn = true;
-                ledsStateChanged = true;
-              }
-            }
-          }
-        }
-
-        if (!finalVoltages || !finalCurrents) return [];
-
-        const actions = [];
-        let shouldBurn = false;
-        let litCount = 0;
-        const burnedPieceIds = new Set();
-        const litPieceIds = new Set();
-        const burnReasons = [];
-        const successReasons = [];
-
-        for (let i = 0; i < leds.length; i++) {
-          const led = leds[i];
-          if (led.isOn) {
-            const idx = currentVSources.findIndex(
-              (s) => s.isLed && s.ledIdx === i,
-            );
-            const I_mA = finalCurrents[idx] * 1000;
-            if (I_mA > 28) {
-              shouldBurn = true;
-              burnedPieceIds.add(String(led.pieceId));
-              burnReasons.push(
-                `Corrente no LED (${I_mA.toFixed(1)}mA) excedeu o limite (28mA)`,
-              );
-            } else if (I_mA >= 1) {
-              litCount++;
-              litPieceIds.add(String(led.pieceId));
-              successReasons.push(
-                `LED acendeu com corrente segura de ${I_mA.toFixed(1)}mA`,
-              );
-            }
-          }
-        }
-
-        for (let i = 0; i < realSources.length; i++) {
-          const I_bat = Math.abs(finalCurrents[i]);
-          if (I_bat > 1.0) {
-            shouldBurn = true;
-            burnedPieceIds.add(String(realSources[i].pieceId));
-            burnReasons.push(
-              `Curto-circuito na Fonte! Corrente (${I_bat.toFixed(1)}A) excedeu o limite (1.0A)`,
-            );
-          } else if (I_bat > 0.001) {
-            successReasons.push(
-              `Fonte de ${realSources[i].value}V fornecendo ${(I_bat * 1000).toFixed(1)}mA`,
-            );
-          }
-        }
-
-        for (const r of resistors) {
-          const vA = finalVoltages[r.nodeA];
-          const vB = finalVoltages[r.nodeB];
-          const V = Math.abs(vA - vB);
-          const I_mA = (V / r.value) * 1000;
-          if (I_mA > 50) {
-            shouldBurn = true;
-            burnedPieceIds.add(String(r.pieceId));
-            burnReasons.push(
-              `Corrente no Resistor de ${r.value}Ω (${I_mA.toFixed(1)}mA) excedeu o limite (50mA)`,
-            );
-          } else if (V > 0.01) {
-            successReasons.push(
-              `Resistor ${r.value}Ω ativo com ${V.toFixed(1)}V e ${I_mA.toFixed(1)}mA`,
-            );
-          }
-        }
-
-        if (shouldBurn) {
-          const allInfo = [...burnReasons, ...successReasons];
-          const uniqueReasons = [...new Set(allInfo)];
-          for (const { x, y, c } of compCells) {
-            if (burnedPieceIds.has(String(c.pieceId))) {
-              actions.push({
-                type: "burn",
-                cell: { x, y },
-                reasons: uniqueReasons,
-              });
-            }
-          }
-        } else if (successReasons.length > 0) {
-          const circuitPieceIds = new Set(compCells.map((c) => c.c.pieceId));
-          const adjacentPieceIds = new Set(circuitPieceIds);
-          for (const { x, y } of compCells) {
-            for (let dx = -1; dx <= 1; dx++) {
-              for (let dy = -1; dy <= 1; dy++) {
-                if (dx === 0 && dy === 0) continue;
-                const nx = x + dx,
-                  ny = y + dy;
-                if (
-                  nx >= 0 &&
-                  nx < COLS &&
-                  ny >= 0 &&
-                  ny < ROWS &&
-                  grid[ny][nx]
-                ) {
-                  if (grid[ny][nx].type === "block") {
-                    adjacentPieceIds.add(grid[ny][nx].pieceId);
-                  }
-                }
-              }
-            }
-          }
-          const cellsToRemove = [];
-          for (let y = 0; y < ROWS; y++) {
-            for (let x = 0; x < COLS; x++) {
-              if (grid[y][x] && adjacentPieceIds.has(grid[y][x].pieceId)) {
-                cellsToRemove.push([x, y]);
-              }
-            }
-          }
-          const uniqueSuccessReasons = [...new Set(successReasons)];
-          actions.push({
-            type: "light",
-            cells: cellsToRemove,
-            litCount,
-            litPieceIds: Array.from(litPieceIds),
-            reasons: uniqueSuccessReasons,
-          });
-        }
-
-        return actions;
-      }
-
-      function processCircuits() {
-        const visited = Array.from({ length: ROWS }, () =>
-          Array(COLS).fill(false),
-        );
-        const components = [];
-
-        for (let y = 0; y < ROWS; y++) {
-          for (let x = 0; x < COLS; x++) {
-            if (grid[y][x] && grid[y][x].type !== "burned" && !visited[y][x]) {
-              const comp = [];
-              const q = [{ x, y }];
-              visited[y][x] = true;
-              while (q.length) {
-                const cur = q.shift();
-                comp.push({ x: cur.x, y: cur.y, c: grid[cur.y][cur.x] });
-                const cell = grid[cur.y][cur.x];
-                for (const d of DIRECTIONS) {
-                  const nx = cur.x + d.dx,
-                    ny = cur.y + d.dy;
-                  if (
-                    nx < 0 ||
-                    nx >= COLS ||
-                    ny < 0 ||
-                    ny >= ROWS ||
-                    visited[ny][nx]
-                  )
-                    continue;
-                  const nb = grid[ny][nx];
-                  if (nb && nb.type !== "burned" && isConnected(cell, nb, d)) {
-                    visited[ny][nx] = true;
-                    q.push({ x: nx, y: ny });
-                  }
-                }
-              }
-              components.push(comp);
-            }
-          }
-        }
-
-        const allActions = [];
-        for (const comp of components) {
-          const actions = analyzeComponent(comp);
-          allActions.push(...actions);
-        }
-
-        return allActions;
-      }
-
-      function applyActions(actions) {
-        for (const action of actions) {
-          if (action.type === "burn") {
-            const { x, y } = action.cell;
-            if (!grid[y][x]) continue;
-            grid[y][x] = {
-              type: "burned",
-              value: null,
-              ports: { N: 0, E: 0, W: 0, S: 0 },
-            };
-            animatingCells.push({
-              x,
-              y,
-              cell: null,
-              timer: 300,
-              atype: "burn",
-            });
-          } else if (action.type === "light") {
-            const litPieceIds = new Set(action.litPieceIds);
-            for (const p of action.cells) {
-              const [x, y] = p;
-              if (!grid[y][x]) continue;
-              const cell = grid[y][x];
-              const isActLit =
-                cell.type === "led"
-                  ? litPieceIds.has(String(cell.pieceId))
-                  : true;
-              animatingCells.push({
-                x,
-                y,
-                cell: { ...cell },
-                timer: 500,
-                atype: "lit",
-                isActLit,
-              });
-              grid[y][x] = null;
-            }
-            const points =
-              action.litCount > 0
-                ? 100 * action.litCount + (action.litCount > 1 ? 200 : 0)
-                : 50;
-            score += points;
-            lines++;
-          }
-        }
-
-        updateUI();
-      }
-
-      function endGame() {
-        gameOver = true;
-        updateMusicPlayback();
-        currentPiece = null;
-        document.getElementById("finalScore").textContent = score;
-        document.getElementById("finalHighScore").textContent = highScore;
-        document.getElementById("message").classList.add("show");
-      }
-
-      function updateUI() {
-        if (score > highScore) {
-          highScore = score;
-          localStorage.setItem("circuitHighScore", highScore);
-        }
-        document.getElementById("score").textContent = score;
-        document.getElementById("highScoreDisplay").textContent = highScore;
-        document.getElementById("lines").textContent = lines;
-        document.getElementById("level").textContent = level;
-        drawLegendPieces();
-      }
-
-      // ===== Central input handler (keyboard + touch) =====
-
-      function handleGameInput(action) {
-        if (action === "restart") {
-          init();
-          return;
-        }
-
-        if (analyzingMode) {
-          if (action === "drop") {
-            applyActions(pendingActions);
-            document.getElementById("statusOverlay").classList.remove("show");
-            analyzingMode = false;
-            pendingActions = [];
-            waitingToSpawn = true;
-            spawnTimer = 400;
-            updateMusicPlayback();
-          }
-          return;
-        }
-
-        if (!gameStarted) {
-          if (action === "drop") {
-            gameStarted = true;
-            updateMusicPlayback();
-            document.getElementById("tutorialScreen").classList.remove("show");
-          }
-          return;
-        }
-
-        if (gameOver) return;
-        if (isPaused) return;
-
-        switch (action) {
-          case "left":  move(-1, 0); break;
-          case "right": move(1, 0);  break;
-          case "rotate": rotate();   break;
-          case "down":
-            if (!move(0, 1) && currentPiece) lockPiece();
-            break;
-          case "drop":
-            if (currentPiece) hardDrop();
-            break;
-        }
-      }
-
-      document.addEventListener("keydown", (e) => {
-        if ([" ", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowUp"].includes(e.key)) {
-          e.preventDefault();
-        }
-        switch (e.key) {
-          case "ArrowLeft":  handleGameInput("left");    break;
-          case "ArrowRight": handleGameInput("right");   break;
-          case "ArrowDown":  handleGameInput("down");    break;
-          case "ArrowUp":    handleGameInput("rotate");  break;
-          case " ":          handleGameInput("drop");    break;
-          case "r": case "R": handleGameInput("restart"); break;
-        }
-      });
-
-      function drawCell(cx, px, py, cell, opts = {}) {
-        if (!cell) return;
-
-        if (cell.type === "block") {
-          cx.fillStyle = cell.color || "#555";
-          cx.fillRect(px + 1, py + 1, CELL - 2, CELL - 2);
-          cx.fillStyle = "rgba(255,255,255,0.3)";
-          cx.fillRect(px + 1, py + 1, CELL - 2, 4);
-          cx.fillRect(px + 1, py + 1, 4, CELL - 2);
-          cx.fillStyle = "rgba(0,0,0,0.3)";
-          cx.fillRect(px + 1, py + CELL - 5, CELL - 2, 4);
-          cx.fillRect(px + CELL - 5, py + 1, 4, CELL - 2);
-          return;
-        }
-
-        const mx = px + CELL / 2,
-          my = py + CELL / 2;
-        const hasAnyPort =
-          cell.ports &&
-          (cell.ports.N || cell.ports.S || cell.ports.E || cell.ports.W);
-
-        if (hasAnyPort && cell.type !== "burned") {
-          if (cell.type === "wire") {
-            cx.strokeStyle = opts.lit ? "#ffee88" : "#c89050";
-            cx.lineWidth = 3;
-            cx.lineCap = "round";
-            cx.beginPath();
-            if (cell.ports.N) {
-              cx.moveTo(mx, py + 2);
-              cx.lineTo(mx, my);
-            }
-            if (cell.ports.S) {
-              cx.moveTo(mx, py + CELL - 2);
-              cx.lineTo(mx, my);
-            }
-            if (cell.ports.E) {
-              cx.moveTo(px + CELL - 2, my);
-              cx.lineTo(mx, my);
-            }
-            if (cell.ports.W) {
-              cx.moveTo(px + 2, my);
-              cx.lineTo(mx, my);
-            }
-            cx.stroke();
-            cx.fillStyle = opts.lit ? "#ffee88" : "#c89050";
-            cx.beginPath();
-            cx.arc(mx, my, 2.5, 0, Math.PI * 2);
-            cx.fill();
-          } else {
-            cx.fillStyle = opts.lit ? "#ffcc66" : "#aaaaaa";
-            const r = 2;
-            if (cell.ports.N) cx.fillRect(mx - r, py, r * 2, 5);
-            if (cell.ports.S) cx.fillRect(mx - r, py + CELL - 5, r * 2, 5);
-            if (cell.ports.E) cx.fillRect(px + CELL - 5, my - r, 5, r * 2);
-            if (cell.ports.W) cx.fillRect(px, my - r, 5, r * 2);
-
-            if (cell.idx === 0 || cell.idx === 2) {
-              if (cell.ports.N) cx.fillRect(mx - 1, py, 2, CELL / 2);
-              if (cell.ports.S) cx.fillRect(mx - 1, my, 2, CELL / 2);
-              if (cell.ports.E) cx.fillRect(mx, my - 1, CELL / 2, 2);
-              if (cell.ports.W) cx.fillRect(px, my - 1, CELL / 2, 2);
-            }
-          }
-        }
-
-        if (cell.type === "source") {
-          if (cell.idx === 1) {
-            if (cell.vertical) {
-              cx.fillStyle = opts.lit ? "#55ccff" : "#aaaaaa";
-              cx.fillRect(mx - 2, py, 4, CELL);
-            } else {
-              cx.fillStyle = opts.lit ? "#55ccff" : "#aaaaaa";
-              cx.fillRect(px, my - 2, CELL, 4);
-            }
-            cx.fillStyle = "#1a1a1a";
-            cx.fillRect(px + 3, py + 3, CELL - 6, CELL - 6);
-            const color =
-              cell.value === 3
-                ? "#44ccff"
-                : cell.value === 5
-                  ? "#ffcc00"
-                  : "#bb33ff";
-            cx.strokeStyle = color;
-            cx.lineWidth = 2;
-            cx.strokeRect(px + 3, py + 3, CELL - 6, CELL - 6);
-            cx.fillStyle = color;
-            cx.font = "bold 10px monospace";
-            cx.textAlign = "center";
-            cx.textBaseline = "middle";
-            cx.fillText(cell.value + "V", mx, my);
-          } else {
-            const isPositive = cell.t === "+";
-            cx.fillStyle = isPositive ? "#e63946" : "#457b9d";
-            cx.beginPath();
-            cx.arc(mx, my, 9, 0, Math.PI * 2);
-            cx.fill();
-            cx.fillStyle = "#ffffff";
-            cx.font = "bold 14px monospace";
-            cx.textAlign = "center";
-            cx.textBaseline = "middle";
-            if (cell.t) cx.fillText(cell.t, mx, my + 1);
-          }
-        } else if (cell.type === "resistor") {
-          if (cell.idx === 1) {
-            if (cell.vertical) {
-              cx.fillStyle = opts.lit ? "#ffcc66" : "#aaaaaa";
-              cx.fillRect(mx - 2, py, 4, CELL);
-            } else {
-              cx.fillStyle = opts.lit ? "#ffcc66" : "#aaaaaa";
-              cx.fillRect(px, my - 2, CELL, 4);
-            }
-            const colors = getResistorColors(cell.value);
-            if (cell.vertical) {
-              cx.fillStyle = "#d4b896";
-              cx.fillRect(px + CELL / 2 - 7, py + 3, 14, CELL - 6);
-              cx.strokeStyle = "#8a7050";
-              cx.lineWidth = 1;
-              cx.strokeRect(px + CELL / 2 - 7, py + 3, 14, CELL - 6);
-              for (let i = 0; i < colors.length; i++) {
-                cx.fillStyle = colors[i];
-                cx.fillRect(px + CELL / 2 - 7, py + 6 + i * 6, 14, 2.5);
-              }
-            } else {
-              cx.fillStyle = "#d4b896";
-              cx.fillRect(px + 3, py + CELL / 2 - 7, CELL - 6, 14);
-              cx.strokeStyle = "#8a7050";
-              cx.lineWidth = 1;
-              cx.strokeRect(px + 3, py + CELL / 2 - 7, CELL - 6, 14);
-              for (let i = 0; i < colors.length; i++) {
-                cx.fillStyle = colors[i];
-                cx.fillRect(px + 6 + i * 6, py + CELL / 2 - 7, 2.5, 14);
-              }
-            }
-          } else {
-            cx.fillStyle = opts.lit ? "#ffcc66" : "#aaaaaa";
-            if (cell.vertical) {
-              if (cell.idx === 0) cx.fillRect(mx - 2, my, 4, CELL / 2);
-              if (cell.idx === 2) cx.fillRect(mx - 2, py, 4, CELL / 2);
-            } else {
-              if (cell.idx === 0) cx.fillRect(mx, my - 2, CELL / 2, 4);
-              if (cell.idx === 2) cx.fillRect(px, my - 2, CELL / 2, 4);
-            }
-            cx.fillStyle = "#999";
-            cx.beginPath();
-            cx.arc(mx, my, 3, 0, Math.PI * 2);
-            cx.fill();
-          }
-        } else if (cell.type === "wire3") {
-          if (cell.idx === 1) {
-            if (cell.vertical) {
-              cx.fillStyle = opts.lit ? "#ffcc66" : "#aaaaaa";
-              cx.fillRect(mx - 2, py, 4, CELL);
-            } else {
-              cx.fillStyle = opts.lit ? "#ffcc66" : "#aaaaaa";
-              cx.fillRect(px, my - 2, CELL, 4);
-            }
-          } else {
-            cx.fillStyle = opts.lit ? "#ffcc66" : "#aaaaaa";
-            if (cell.vertical) {
-              if (cell.idx === 0) cx.fillRect(mx - 2, my, 4, CELL / 2);
-              if (cell.idx === 2) cx.fillRect(mx - 2, py, 4, CELL / 2);
-            } else {
-              if (cell.idx === 0) cx.fillRect(mx, my - 2, CELL / 2, 4);
-              if (cell.idx === 2) cx.fillRect(px, my - 2, CELL / 2, 4);
-            }
-            cx.fillStyle = "#999";
-            cx.beginPath();
-            cx.arc(mx, my, 3, 0, Math.PI * 2);
-            cx.fill();
-          }
-        } else if (cell.type === "led") {
-          if (cell.idx === 1) {
-            if (cell.vertical) {
-              cx.fillStyle = opts.lit ? "#ffcc66" : "#aaaaaa";
-              cx.fillRect(mx - 2, py, 4, CELL);
-            } else {
-              cx.fillStyle = opts.lit ? "#ffcc66" : "#aaaaaa";
-              cx.fillRect(px, my - 2, CELL, 4);
-            }
-            const colorMap = {
-              red: "#ff2244",
-              green: "#22ff66",
-              yellow: "#ffee22",
-            };
-            const color = colorMap[cell.value];
-
-            if (opts.lit) {
-              const grad = cx.createRadialGradient(
-                mx, my, 2, mx, my, CELL * 1.5,
-              );
-              grad.addColorStop(0, color);
-              grad.addColorStop(0.4, color + "88");
-              grad.addColorStop(1, "transparent");
-              cx.fillStyle = grad;
-              cx.fillRect(px - CELL, py - CELL, CELL * 3, CELL * 3);
-            }
-            cx.fillStyle = color;
-            cx.beginPath();
-            cx.arc(mx, my, CELL / 3, 0, Math.PI * 2);
-            cx.fill();
-            cx.strokeStyle = opts.lit ? "#fff" : "rgba(255,255,255,0.4)";
-            cx.lineWidth = 1.5;
-            cx.stroke();
-            cx.fillStyle = "rgba(255,255,255,0.5)";
-            cx.beginPath();
-            cx.arc(mx - 3, my - 3, 2.5, 0, Math.PI * 2);
-            cx.fill();
-          } else {
-            const isPositive = cell.t === "+";
-            cx.fillStyle = isPositive ? "#e63946" : "#457b9d";
-            cx.beginPath();
-            cx.arc(mx, my, 9, 0, Math.PI * 2);
-            cx.fill();
-            cx.fillStyle = "#ffffff";
-            cx.font = "bold 14px monospace";
-            cx.textAlign = "center";
-            cx.textBaseline = "middle";
-            if (cell.t) cx.fillText(cell.t, mx, my + 1);
-          }
-        } else if (cell.type === "burned") {
-          cx.fillStyle = "#1a0505";
-          cx.fillRect(px + 3, py + 3, CELL - 6, CELL - 6);
-          cx.strokeStyle = "#aa2222";
-          cx.lineWidth = 2;
-          cx.strokeRect(px + 3, py + 3, CELL - 6, CELL - 6);
-          cx.fillStyle = "#ff3344";
-          cx.font = "bold 16px monospace";
-          cx.textAlign = "center";
-          cx.textBaseline = "middle";
-          cx.fillText("✕", mx, my);
-        }
-      }
-
-      function getResistorColors(v) {
-        if (v === 100) return ["#8b4513", "#000", "#8b4513"];
-        if (v === 220) return ["#ff2222", "#ff2222", "#8b4513"];
-        if (v === 470) return ["#ffff00", "#8b00ff", "#8b4513"];
-        return ["#888"];
-      }
-
-      function draw() {
-        ctx.fillStyle = "#0a1035";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        ctx.strokeStyle = "rgba(42, 53, 128, 0.25)";
-        ctx.lineWidth = 1;
-        for (let x = 1; x < COLS; x++) {
-          ctx.beginPath();
-          ctx.moveTo(x * CELL, 0);
-          ctx.lineTo(x * CELL, ROWS * CELL);
-          ctx.stroke();
-        }
-        for (let y = 1; y < ROWS; y++) {
-          ctx.beginPath();
-          ctx.moveTo(0, y * CELL);
-          ctx.lineTo(COLS * CELL, y * CELL);
-          ctx.stroke();
-        }
-
-        for (let y = 0; y < ROWS; y++) {
-          for (let x = 0; x < COLS; x++) {
-            if (grid[y][x]) drawCell(ctx, x * CELL, y * CELL, grid[y][x]);
-          }
-        }
-
-        for (const a of animatingCells) {
-          const total = a.atype === "lit" ? 500 : 300;
-          const intensity = Math.max(0, a.timer / total);
-          if (a.atype === "lit") {
-            ctx.save();
-            ctx.globalAlpha = intensity;
-            drawCell(ctx, a.x * CELL, a.y * CELL, a.cell, { lit: a.isActLit });
-            ctx.restore();
-            if (a.isActLit !== false) {
-              ctx.fillStyle = `rgba(255,255,255,${Math.max(0, 0.5 * intensity)})`;
-              ctx.fillRect(a.x * CELL, a.y * CELL, CELL, CELL);
-            }
-          } else if (a.atype === "burn") {
-            ctx.fillStyle = `rgba(255, 50, 50, ${Math.max(0, 0.6 * intensity)})`;
-            ctx.fillRect(a.x * CELL, a.y * CELL, CELL, CELL);
-          }
-        }
-
-        if (currentPiece && !gameOver) {
-          const isVerticalResistor =
-            ["resistor", "source", "led", "wire3"].includes(
-              currentPiece.type,
-            ) &&
-            new Set(currentPiece.cells.map((c) => c.y)).size >
-              new Set(currentPiece.cells.map((c) => c.x)).size;
-
-          let gy = currentPiece.y;
-          while (!collides(currentPiece, currentPiece.x, gy + 1)) gy++;
-          if (gy !== currentPiece.y) {
-            ctx.save();
-            ctx.globalAlpha = 0.25;
-            for (const c of currentPiece.cells) {
-              drawCell(ctx, (c.x + currentPiece.x) * CELL, (c.y + gy) * CELL, {
-                type: c.type || currentPiece.type,
-                value: currentPiece.value,
-                color: c.color || currentPiece.color,
-                ports: c.ports,
-                t: c.t,
-                idx: c.idx,
-                vertical: isVerticalResistor,
-              });
-            }
-            ctx.restore();
-          }
-          for (const c of currentPiece.cells) {
-            drawCell(
-              ctx,
-              (c.x + currentPiece.x) * CELL,
-              (c.y + currentPiece.y) * CELL,
-              {
-                type: c.type || currentPiece.type,
-                value: currentPiece.value,
-                color: c.color || currentPiece.color,
-                ports: c.ports,
-                t: c.t,
-                idx: c.idx,
-                vertical: isVerticalResistor,
-              },
-            );
-          }
-        }
-
-        if (analyzingMode) {
-          ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-          for (const action of pendingActions) {
-            if (action.type === "burn") {
-              const { x, y } = action.cell;
-              drawCell(ctx, x * CELL, y * CELL, grid[y][x]);
-              ctx.fillStyle = "rgba(255, 50, 50, 0.5)";
-              ctx.fillRect(x * CELL, y * CELL, CELL, CELL);
-            } else if (action.type === "light") {
-              const litPieceIds = new Set(action.litPieceIds);
-              for (const [x, y] of action.cells) {
-                const cell = grid[y][x];
-                const isActLit =
-                  cell.type === "led"
-                    ? litPieceIds.has(String(cell.pieceId))
-                    : true;
-                drawCell(ctx, x * CELL, y * CELL, cell, { lit: isActLit });
-              }
-            }
-          }
-        }
-
-        if (isPaused) {
-          ctx.fillStyle = "#fff";
-          ctx.strokeStyle = "#000";
-          ctx.lineWidth = 4;
-          ctx.font = "bold 30px 'Space Grotesk', sans-serif";
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          ctx.strokeText("PAUSADO", canvas.width / 2, canvas.height / 2);
-          ctx.fillText("PAUSADO", canvas.width / 2, canvas.height / 2);
-        }
-      }
-
-      function drawNext() {
-        nctx.fillStyle = "#0a1035";
-        nctx.fillRect(0, 0, nextCanvas.width, nextCanvas.height);
-        const specsDiv = document.getElementById("nextPieceSpecs");
-        if (specsDiv) specsDiv.innerHTML = "";
-
-        if (!nextPiece) return;
-        const w = (Math.max(...nextPiece.cells.map((c) => c.x)) + 1) * CELL;
-        const h = (Math.max(...nextPiece.cells.map((c) => c.y)) + 1) * CELL;
-        const isResistor =
-          nextPiece.type === "resistor" || nextPiece.type === "wire3";
-        const ox = (nextCanvas.width - w) / 2;
-        const oy = (nextCanvas.height - h) / 2 - (isResistor ? 10 : 0);
-        for (const c of nextPiece.cells) {
-          drawCell(nctx, ox + c.x * CELL, oy + c.y * CELL, {
-            type: c.type || nextPiece.type,
-            value: nextPiece.value,
-            color: c.color || nextPiece.color,
-            ports: c.ports,
-            t: c.t,
-            idx: c.idx,
-          });
-        }
-        if (isResistor) {
-          nctx.fillStyle = "#aaa";
-          nctx.font = "12px Inter";
-          nctx.textAlign = "center";
-          nctx.fillText(
-            nextPiece.value + " Ω",
-            nextCanvas.width / 2,
-            oy + h + 20,
-          );
-        }
-
-        if (specsDiv) {
-          if (nextPiece.type === "led") {
-            specsDiv.innerHTML = "Queda de tensão: 2V<br>Corrente Máx: 28mA";
-          } else if (nextPiece.type === "resistor") {
-            specsDiv.innerHTML = "Corrente Máx: 50mA";
-          } else if (nextPiece.type === "source") {
-            specsDiv.innerHTML = "Fonte de Tensão<br>Curto Máx: 1.0A";
-          } else if (nextPiece.type === "wire" || nextPiece.type === "wire3") {
-            specsDiv.innerHTML = "Fio Condutor";
-          } else if (nextPiece.type === "block") {
-            specsDiv.innerHTML = "Bloco Estrutural<br>Bloqueia a passagem";
-          }
-        }
-      }
-
-      function loop(time = 0) {
-        const dt = time - lastTime;
-        lastTime = time;
-        if (gameStarted && !gameOver && !waitingToSpawn && !isPaused) {
-          dropCounter += dt;
-          if (dropCounter > dropInterval) {
-            if (currentPiece) {
-              if (!move(0, 1)) lockPiece();
-            }
-            dropCounter = 0;
-          }
-        }
-        if (gameStarted && waitingToSpawn && !isPaused) {
-          spawnTimer -= dt;
-          if (spawnTimer <= 0) {
-            waitingToSpawn = false;
-            dropCounter = 0;
-            spawn();
-          }
-        }
-        for (let i = animatingCells.length - 1; i >= 0; i--) {
-          animatingCells[i].timer -= dt;
-          if (animatingCells[i].timer <= 0) animatingCells.splice(i, 1);
-        }
-        draw();
-        requestAnimationFrame(loop);
-      }
-
-      let currentTutorialPage = 1;
-      const totalTutorialPages = 5;
-
-      function updateTutorialPage() {
-        for (let i = 1; i <= totalTutorialPages; i++) {
-          document.getElementById("tutorialPage" + i).style.display =
-            i === currentTutorialPage ? "block" : "none";
-        }
-        document.getElementById("tutorialPageIndicator").textContent =
-          currentTutorialPage + "/" + totalTutorialPages;
-        document.getElementById("btnPrevTutorial").style.visibility =
-          currentTutorialPage > 1 ? "visible" : "hidden";
-        document.getElementById("btnNextTutorial").style.visibility =
-          currentTutorialPage < totalTutorialPages ? "visible" : "hidden";
-      }
-
-      document.getElementById("btnNextTutorial").addEventListener("click", () => {
-        if (currentTutorialPage < totalTutorialPages) {
-          currentTutorialPage++;
-          updateTutorialPage();
-        }
-      });
-
-      document.getElementById("btnPrevTutorial").addEventListener("click", () => {
-        if (currentTutorialPage > 1) {
-          currentTutorialPage--;
-          updateTutorialPage();
-        }
-      });
-
-      document.getElementById("btnCloseTutorial").addEventListener("click", () => {
-        document.getElementById("tutorialScreen").classList.remove("show");
-        if (!gameStarted) {
-          gameStarted = true;
-          updateMusicPlayback();
-        }
-      });
-
-      document.getElementById("btnHelp").addEventListener("click", () => {
-        if (gameStarted) {
-          document.getElementById("tutorialStartMsg").style.display = "none";
-        }
-        document.getElementById("tutorialScreen").classList.add("show");
-      });
-
-      document.getElementById("btnRestart").addEventListener("click", () => {
-        if (!gameStarted) gameStarted = true;
-        init();
-      });
-
-      document.getElementById("btnPause").addEventListener("click", () => {
-        if (!gameStarted || gameOver || analyzingMode) return;
-        if (!isPaused && hasUsedPause) return;
-
-        isPaused = !isPaused;
-        updateMusicPlayback();
-        const btn = document.getElementById("btnPause");
-        if (isPaused) {
-          btn.innerText = "RETOMAR";
-          btn.style.background = "#559944";
-        } else {
-          hasUsedPause = true;
-          btn.innerText = "PAUSE (1x)";
-          btn.style.background = "#555";
-          btn.style.cursor = "not-allowed";
-          btn.style.opacity = "0.5";
-        }
-      });
-
-      document.getElementById("btnLimpar").addEventListener("click", () => {
-        if (!gameStarted || gameOver || analyzingMode || isPaused) return;
-        if (hasUsedLimpar) return;
-
-        hasUsedLimpar = true;
-        const btn = document.getElementById("btnLimpar");
-        btn.innerText = "LIMPAR (1x)";
-        btn.style.background = "#555";
-        btn.style.cursor = "not-allowed";
-        btn.style.opacity = "0.5";
-
-        grid = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
-        dropCounter = 0;
-        animatingCells = [];
-        waitingToSpawn = false;
-        spawnTimer = 0;
-        draw();
-      });
-
-      function drawLegendPieces() {
-        const legends = [
-          { id: "lg_s3", type: "source", value: 3 },
-          { id: "lg_s5", type: "source", value: 5 },
-          { id: "lg_s9", type: "source", value: 9 },
-          { id: "lg_lr", type: "led", value: "red" },
-          { id: "lg_lg", type: "led", value: "green" },
-          { id: "lg_ly", type: "led", value: "yellow" },
-          { id: "lg_r1", type: "resistor", value: 100 },
-          { id: "lg_r2", type: "resistor", value: 220 },
-          { id: "lg_r4", type: "resistor", value: 470 },
-          { id: "lg_w", type: "wire3", value: "wire" },
-          { id: "lg_b", type: "block", value: "1" },
-        ];
-
-        for (const leg of legends) {
-          const c = document.getElementById(leg.id);
-          if (!c) continue;
-          const ctx = c.getContext("2d");
-          ctx.clearRect(0, 0, c.width, c.height);
-
-          let template;
-          if (leg.type === "block") {
-            template = BLOCK_TEMPLATES.find((t) => t.type === "block");
-          } else {
-            template = TEMPLATES.find(
-              (t) => t.type === leg.type && t.value === leg.value,
-            );
-          }
-
-          if (!template) continue;
-
-          for (const cell of template.cells) {
-            drawCell(ctx, cell.x * CELL, 0, {
-              type: cell.type || template.type,
-              value: leg.value,
-              color: cell.color || template.color,
-              ports: cell.ports,
-              t: cell.t,
-              idx: cell.idx,
-            });
-          }
-
-          if (leg.type === "led" && level < 5) {
-            ctx.fillStyle = "rgba(10, 16, 53, 0.75)";
-            ctx.fillRect(0, 0, c.width, c.height);
-            ctx.fillStyle = "#ff5555";
-            ctx.font = "bold 10px Inter, sans-serif";
-            ctx.textAlign = "center";
-            ctx.fillText("Nível 5", c.width / 2, c.height / 2 + 4);
-          }
-        }
-      }
-
-      // ===== Touch controls =====
-
-      const repeatTimers = {};
-
-      function startRepeat(id, action, initialDelay, repeatDelay) {
-        stopRepeat(id);
-        handleGameInput(action);
-        repeatTimers[id] = {
-          timeout: setTimeout(() => {
-            repeatTimers[id].interval = setInterval(
-              () => handleGameInput(action),
-              repeatDelay,
-            );
-          }, initialDelay),
-        };
-      }
-
-      function stopRepeat(id) {
-        if (repeatTimers[id]) {
-          clearTimeout(repeatTimers[id].timeout);
-          clearInterval(repeatTimers[id].interval);
-          delete repeatTimers[id];
-        }
-      }
-
-      const touchBindings = [
-        { id: "btnTouchLeft",   action: "left",   repeat: true,  delay: 220, interval: 80  },
-        { id: "btnTouchRight",  action: "right",  repeat: true,  delay: 220, interval: 80  },
-        { id: "btnTouchDown",   action: "down",   repeat: true,  delay: 180, interval: 90  },
-        { id: "btnTouchRotate", action: "rotate", repeat: false },
-        { id: "btnTouchDrop",   action: "drop",   repeat: false },
-      ];
-
-      for (const { id, action, repeat, delay, interval } of touchBindings) {
-        const btn = document.getElementById(id);
-        if (!btn) continue;
-
-        if (repeat) {
-          btn.addEventListener("pointerdown", (e) => {
-            e.preventDefault();
-            btn.classList.add("pressed");
-            startRepeat(id, action, delay, interval);
-          });
-          const stop = () => { btn.classList.remove("pressed"); stopRepeat(id); };
-          btn.addEventListener("pointerup", stop);
-          btn.addEventListener("pointerleave", stop);
-          btn.addEventListener("pointercancel", stop);
-        } else {
-          btn.addEventListener("pointerdown", (e) => {
-            e.preventDefault();
-            btn.classList.add("pressed");
-            handleGameInput(action);
-          });
-          const stop = () => btn.classList.remove("pressed");
-          btn.addEventListener("pointerup", stop);
-          btn.addEventListener("pointerleave", stop);
-          btn.addEventListener("pointercancel", stop);
-        }
-      }
-
-      // ===== Responsive canvas =====
-
-      function resizeCanvas() {
-        const container = document.getElementById("container");
-        const maxW = Math.min(300, container.clientWidth - 16);
-        canvas.style.width = maxW + "px";
-        canvas.style.height = Math.round(maxW * 540 / 300) + "px";
-      }
-
-      window.addEventListener("resize", resizeCanvas);
-      resizeCanvas();
-
-      // ===== Boot =====
-
-      gameStarted = false;
-      init();
-      drawTutorial();
-      drawLegendPieces();
-      requestAnimationFrame(loop);
-    </script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
