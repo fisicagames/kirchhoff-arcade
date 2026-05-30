@@ -243,6 +243,26 @@
         overflow: hidden;
       }
       #tutorialScreen.show { display: flex; }
+
+      /* When the menu/tutorial is open, the canvas area expands to full screen,
+         covering #header and #touchControls so it doubles as the initial menu. */
+      #container:has(#tutorialScreen.show) #canvasWrapper {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: var(--game-w);   /* only the game column width */
+        height: 100svh;         /* full height, over header + controls */
+        aspect-ratio: auto;
+        z-index: 100;
+        border-radius: 0;
+        background: var(--bg);
+      }
+      /* Hide the stretched game board behind the full-screen menu. */
+      #container:has(#tutorialScreen.show) #game { visibility: hidden; }
+      /* Square off the panel's own rounding when it fills the screen. */
+      #container:has(#tutorialScreen.show) #tutorialScreen { border-radius: 0; }
       #tutorialScrollContent {
         flex: 1;
         overflow-y: auto;
@@ -436,7 +456,7 @@
 
             <div id="tutorialPage1">
               <h2 style="font-size:16px;letter-spacing:2px;margin-bottom:10px;color:#aabbff;text-shadow:0 0 18px rgba(140,170,255,0.5);">
-                ⚡ KIRCHHOFF ARCADE ⚡
+                KIRCHHOFF ARCADE
               </h2>
               <h3 style="margin-bottom:8px;font-size:13px;">Objetivo do Jogo</h3>
               <p style="font-size:12px;text-align:left;line-height:1.55;margin-bottom:10px;color:#b0bbdd;">
@@ -504,7 +524,7 @@
                 <div style="display:flex;align-items:center;gap:10px;"><span style="color:#ffcc00;font-size:13px;font-weight:700;width:32px;text-align:center;">SPC</span><span>Hard drop (queda imediata)</span></div>
                 <div style="display:flex;align-items:center;gap:10px;"><span style="color:#ffcc00;font-size:13px;font-weight:700;width:32px;text-align:center;">R</span><span>Reiniciar a partida</span></div>
               </div>
-              <p style="margin-top:14px;font-size:13px;font-weight:700;color:#55ee88;text-align:center;">Boa Sorte! ⚡</p>
+              <p style="margin-top:14px;font-size:13px;font-weight:700;color:#55ee88;text-align:center;">Boa Sorte!</p>
             </div>
 
           </div><!-- /tutorialScrollContent -->
