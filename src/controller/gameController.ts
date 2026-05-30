@@ -86,9 +86,9 @@ export function hardDrop(): void {
 export function lockPiece(): void {
   if (!state.currentPiece) return;
 
-  const p      = state.currentPiece;
-  const ys     = p.cells.map(c => c.y);
-  const xs     = p.cells.map(c => c.x);
+  const p        = state.currentPiece;
+  const ys       = p.cells.map(c => c.y);
+  const xs       = p.cells.map(c => c.x);
   const vertical = ['resistor', 'source', 'led', 'wire3'].includes(p.type)
     && new Set(ys).size > new Set(xs).size;
 
@@ -151,7 +151,7 @@ export function applyActions(): void {
 }
 
 export function endGame(): void {
-  state.gameOver    = true;
+  state.gameOver     = true;
   state.currentPiece = null;
   updateMusicPlayback();
   showGameOverOverlay();

@@ -1,31 +1,31 @@
 import { COLS, ROWS } from '../core/constants';
-import type { Piece, GridCell, AnimatingCell, GameAction } from './types';
+import type { Piece, GridCell, AnimatingCell, GameAction, PieceTemplate } from './types';
 
 export interface GameState {
-  grid:             (GridCell | null)[][];
-  currentPiece:     Piece | null;
-  nextPiece:        Piece | null;
-  score:            number;
-  highScore:        number;
-  lines:            number;
-  level:            number;
-  gameOver:         boolean;
-  gameStarted:      boolean;
-  dropCounter:      number;
-  dropInterval:     number;
-  lastTime:         number;
-  animatingCells:   AnimatingCell[];
-  waitingToSpawn:   boolean;
-  spawnTimer:       number;
-  pieceIdCounter:   number;
+  grid:               (GridCell | null)[][];
+  currentPiece:       Piece | null;
+  nextPiece:          Piece | null;
+  score:              number;
+  highScore:          number;
+  lines:              number;
+  level:              number;
+  gameOver:           boolean;
+  gameStarted:        boolean;
+  dropCounter:        number;
+  dropInterval:       number;
+  lastTime:           number;
+  animatingCells:     AnimatingCell[];
+  waitingToSpawn:     boolean;
+  spawnTimer:         number;
+  pieceIdCounter:     number;
   piecesSpawnedCount: number;
-  lastPieceType:    string | null;
-  analyzingMode:    boolean;
-  pendingActions:   GameAction[];
-  isPaused:         boolean;
-  hasUsedPause:     boolean;
-  hasUsedLimpar:    boolean;
-  currentBag:       import('./types').PieceTemplate[];
+  lastPieceType:      string | null;
+  analyzingMode:      boolean;
+  pendingActions:     GameAction[];
+  isPaused:           boolean;
+  hasUsedPause:       boolean;
+  hasUsedLimpar:      boolean;
+  currentBag:         PieceTemplate[];
 }
 
 function makeGrid(): (GridCell | null)[][] {

@@ -21,7 +21,7 @@ function updatePage(): void {
 
 export function showTutorial(): void {
   const btn = document.getElementById('btnIniciar');
-  if (btn) btn.textContent = state.gameStarted ? '▶  CONTINUAR' : '▶  INICIAR';
+  if (btn) btn.textContent = state.gameStarted ? 'Continuar' : 'Iniciar';
   document.getElementById('tutorialScreen')?.classList.add('show');
 }
 
@@ -38,7 +38,7 @@ export function setupTutorialNav(onInit: () => void): void {
     if (currentPage > 1) { currentPage--; updatePage(); }
   });
 
-  // "Iniciar / Continuar" — main CTA button
+  // "Iniciar / Continuar" — main CTA
   document.getElementById('btnIniciar')?.addEventListener('click', () => {
     if (!state.gameStarted) {
       state.gameStarted = true;
@@ -54,6 +54,19 @@ export function setupTutorialNav(onInit: () => void): void {
   document.getElementById('btnRestart')?.addEventListener('click', () => {
     if (!state.gameStarted) state.gameStarted = true;
     onInit();
+  });
+
+  // ── Menu top bar (série) ──
+  const musicaBtn  = document.getElementById('btnMusica');
+  const musicaIcon = document.getElementById('musicaIcon');
+  musicaBtn?.addEventListener('click', () => {
+    toggleMute();
+    if (musicaIcon) musicaIcon.textContent = isMuted() ? '🔇' : '🔊';
+  });
+
+  // ENGLISH — i18n fica para uma etapa futura
+  document.getElementById('btnEnglish')?.addEventListener('click', () => {
+    /* placeholder */
   });
 }
 
@@ -95,12 +108,15 @@ export function setupSoundButton(): void {
   if (!btn) return;
 
   const update = (): void => {
-    btn.textContent  = isMuted() ? 'SOM OFF' : 'SOM';
-    btn.style.color  = isMuted() ? '#cc4466' : '';
+    btn.textContent = isMuted() ? 'SOM OFF' : 'SOM';
+    btn.style.color = isMuted() ? '#cc4466' : '';
   };
 
   btn.addEventListener('click', () => {
     toggleMute();
     update();
+    // keep the menu speaker icon in sync
+    const musicaIcon = document.getElementById('musicaIcon');
+    if (musicaIcon) musicaIcon.textContent = isMuted() ? '🔇' : '🔊';
   });
 }

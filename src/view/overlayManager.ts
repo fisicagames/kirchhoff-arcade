@@ -20,8 +20,8 @@ export function showStatusOverlay(actions: GameAction[]): void {
   const reasonsEl = document.getElementById('statusReasons');
 
   if (titleEl) {
-    titleEl.textContent  = isBurn ? 'Circuito Queimou!' : 'Circuito Fechado!';
-    titleEl.style.color  = isBurn ? '#ff4444' : '#55ee88';
+    titleEl.textContent = isBurn ? 'Circuito Queimou!' : 'Circuito Fechado!';
+    titleEl.style.color = isBurn ? '#ff4444' : '#55ee88';
   }
   if (overlayEl) {
     overlayEl.style.borderColor = isBurn ? '#ff4444' : '#55ee88';

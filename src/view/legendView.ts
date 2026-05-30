@@ -2,6 +2,7 @@ import { CELL } from '../core/constants';
 import { state } from '../model/gameState';
 import { TEMPLATES, BLOCK_TEMPLATES } from '../model/templates';
 import { drawCell } from './drawUtils';
+import type { PieceType } from '../model/types';
 
 const LEGEND_ITEMS = [
   { id: 'lg_s3', type: 'source',   value: 3        },
@@ -34,7 +35,7 @@ export function drawLegendPieces(): void {
 
     for (const cell of template.cells) {
       drawCell(lctx, cell.x * CELL, 0, {
-        type:  (cell.type ?? template.type) as import('../model/types').PieceType,
+        type:  (cell.type ?? template.type) as PieceType,
         value: leg.value as string | number,
         color: cell.color ?? template.color,
         ports: cell.ports,

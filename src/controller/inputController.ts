@@ -20,7 +20,7 @@ export function setupKeyboard(): void {
   });
 }
 
-// ── Touch controls ──
+// ── Touch buttons (D-pad) ──
 
 interface RepeatTimer { timeout: ReturnType<typeof setTimeout>; interval?: ReturnType<typeof setInterval> }
 const repeatTimers: Record<string, RepeatTimer> = {};
@@ -45,10 +45,10 @@ function stopRepeat(id: string): void {
 }
 
 interface TouchBinding {
-  id:       string;
-  action:   string;
-  repeat:   boolean;
-  delay?:   number;
+  id:        string;
+  action:    string;
+  repeat:    boolean;
+  delay?:    number;
   interval?: number;
 }
 
@@ -103,8 +103,8 @@ export function setupCanvasGestures(): void {
   let movedHoriz = false;
   let dropped    = false;
 
-  const TAP_TIME    = 260;  // ms — max duration of a tap
-  const DROP_RATIO  = 1.25; // vertical must dominate horizontal for a drop
+  const TAP_TIME   = 260;  // ms — max duration of a tap
+  const DROP_RATIO = 1.25; // vertical must dominate horizontal for a drop
 
   gameCanvas.addEventListener('pointerdown', (e: PointerEvent) => {
     active     = true;
@@ -115,7 +115,7 @@ export function setupCanvasGestures(): void {
     movedHoriz = false;
     dropped    = false;
 
-    // Scale thresholds to the on-screen cell size so it feels the same on any device.
+    // Scale thresholds to the on-screen cell size so it feels the same anywhere.
     const cellPx = gameCanvas.getBoundingClientRect().width / COLS;
     stepPx  = cellPx * 0.82;
     tapDist = cellPx * 0.55;
@@ -132,7 +132,7 @@ export function setupCanvasGestures(): void {
     const dx = e.clientX - startX;
     const dy = e.clientY - startY;
 
-    // Fast downward flick → hard drop (only if we haven't started moving sideways).
+    // Fast downward flick → hard drop (only if not already moving sideways).
     if (!dropped && !movedHoriz && dy > dropDy && dy > Math.abs(dx) * DROP_RATIO) {
       handleGameInput('drop');
       dropped = true;

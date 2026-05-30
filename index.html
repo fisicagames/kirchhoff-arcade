@@ -295,19 +295,95 @@
       #btnIniciar {
         width: 100%;
         padding: 12px;
-        background: #123a1c;
-        border: 1.5px solid var(--success);
+        background: linear-gradient(180deg, #3d63e0, #2848b8);
+        border: none;
         border-radius: 9px;
-        color: #5fee92;
-        font-size: 15px;
+        color: #fff;
+        font-size: 17px;
         font-weight: 700;
-        letter-spacing: 2.5px;
+        letter-spacing: 1px;
         cursor: pointer;
         font-family: var(--font-ui);
         text-align: center;
-        transition: background 0.12s;
+        transition: filter 0.12s, transform 0.08s;
+        box-shadow: 0 3px 0 #1c2f80, 0 4px 14px rgba(40,72,184,0.5);
       }
-      #btnIniciar:active { background: #1c5028; }
+      #btnIniciar:active { filter: brightness(1.15); transform: translateY(2px); box-shadow: 0 1px 0 #1c2f80; }
+
+      /* ══════════ MENU INICIAL (padrão série fisicagames) ══════════ */
+      #menuTopBar {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 9px 12px 2px;
+      }
+      .menu-top-btn {
+        background: none;
+        border: none;
+        color: var(--muted);
+        font-family: var(--font-ui);
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 4px 4px;
+      }
+      #musicaIcon { font-size: 15px; }
+      .menu-english {
+        background: #2a3470;
+        color: #cdd6ff;
+        border-radius: 6px;
+        letter-spacing: 1px;
+        font-weight: 700;
+        font-size: 11px;
+        padding: 5px 11px;
+      }
+      .menu-english:active { background: var(--border-hi); }
+
+      .menu-title {
+        text-align: center;
+        font-weight: 800;
+        font-size: clamp(30px, calc(var(--game-w) / 6.4), 48px);
+        line-height: 1.0;
+        letter-spacing: 1px;
+        margin: 14px 0 18px;
+        color: #d4e2ff;
+        text-shadow:
+          0 0 6px rgba(120,170,255,0.9),
+          0 0 18px rgba(80,130,255,0.7),
+          0 0 40px rgba(60,110,255,0.5);
+      }
+      .menu-objetivo {
+        text-align: center;
+        font-size: 13px;
+        line-height: 1.55;
+        color: #b8c2e6;
+        margin: 0 2px 20px;
+      }
+      .menu-objetivo b   { color: #e6ecff; }
+      .menu-objetivo .hl { color: #8fb0ff; }
+
+      .menu-best { text-align: center; margin: 4px 0 20px; }
+      .menu-best-label { font-size: 13px; color: #b8c2e6; margin-bottom: 5px; }
+      .menu-best-value {
+        font-family: var(--font-mono);
+        font-size: 27px;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1.1;
+      }
+      .menu-best-rank { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+      .menu-credits {
+        text-align: center;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.75;
+        margin-top: 4px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(91,127,255,0.12);
+      }
+      .menu-credits .menu-site { color: #7e9aff; }
 
       #message { padding: 20px 22px; border-color: var(--danger); box-shadow: 0 8px 40px rgba(216,64,112,0.35); }
       #message h2 { color: var(--danger); text-shadow: 0 0 14px var(--danger); margin-bottom: 8px; }
@@ -452,26 +528,45 @@
 
         <!-- Menu inicial / Tutorial -->
         <div id="tutorialScreen" class="overlay show">
+
+          <!-- Top bar (padrão série: Música + ENGLISH) -->
+          <div id="menuTopBar">
+            <button id="btnMusica" class="menu-top-btn" type="button">Música: <span id="musicaIcon">🔊</span></button>
+            <button id="btnEnglish" class="menu-top-btn menu-english" type="button">ENGLISH</button>
+          </div>
+
           <div id="tutorialScrollContent">
 
+            <!-- ░░ Página 1 — Menu inicial (padrão fisicagames) ░░ -->
             <div id="tutorialPage1">
-              <h2 style="font-size:16px;letter-spacing:2px;margin-bottom:10px;color:#aabbff;text-shadow:0 0 18px rgba(140,170,255,0.5);">
-                KIRCHHOFF ARCADE
-              </h2>
-              <h3 style="margin-bottom:8px;font-size:13px;">Objetivo do Jogo</h3>
-              <p style="font-size:12px;text-align:left;line-height:1.55;margin-bottom:10px;color:#b0bbdd;">
-                Conecte os componentes que caem para formar
-                <b style="color:#e0e8ff">circuitos elétricos fechados!</b>
-                Para acender um LED sem queimá-lo, use polaridade correta e um
-                <b style="color:#e0e8ff">Resistor</b> limitando a corrente.
+              <h1 class="menu-title">KIRCHHOFF<br/>ARCADE</h1>
+
+              <p class="menu-objetivo">
+                <b>Objetivo:</b> conecte os componentes que caem para formar
+                <b class="hl">circuitos elétricos fechados!</b> Para acender um
+                LED sem queimá-lo, use a polaridade correta e um
+                <b class="hl">resistor</b> limitando a corrente.
               </p>
-              <div style="background:#06091a;padding:8px;border:1px solid rgba(91,127,255,0.3);border-radius:6px;">
-                <p style="font-size:11px;color:#aabbff;margin-bottom:5px;font-weight:600;">Exemplo de ligação correta:</p>
-                <canvas id="tutorialCanvas" width="200" height="110" style="display:block;margin:0 auto;"></canvas>
+
+              <div class="menu-best">
+                <div class="menu-best-label">Melhor resultado:</div>
+                <div class="menu-best-value"><span id="menuHighScore">0</span> pts</div>
+                <div class="menu-best-rank" id="menuRank">Iniciante ⚡</div>
+              </div>
+
+              <div class="menu-credits">
+                <div>2026 © Rafael João Ribeiro</div>
+                <div>Instituto Federal do Paraná (IFPR)</div>
+                <div class="menu-site">www.fisicagames.com.br</div>
               </div>
             </div>
 
             <div id="tutorialPage2" style="display:none;">
+              <h3 style="margin-bottom:8px;font-size:13px;">Exemplo de Ligação</h3>
+              <div style="background:#06091a;padding:8px;border:1px solid rgba(91,127,255,0.3);border-radius:6px;margin-bottom:14px;">
+                <p style="font-size:11px;color:#aabbff;margin-bottom:5px;font-weight:600;">Circuito fechado correto:</p>
+                <canvas id="tutorialCanvas" width="200" height="110" style="display:block;margin:0 auto;"></canvas>
+              </div>
               <h3 style="margin-bottom:10px;font-size:13px;">Fontes de Tensão e Fios</h3>
               <div style="display:flex;justify-content:space-around;margin-bottom:10px;background:#06091a;padding:8px;border-radius:5px;border:1px solid rgba(91,127,255,0.2);" class="legend">
                 <div style="text-align:center"><canvas id="lg_s3" width="90" height="30"></canvas><br/><span style="font-size:10px;color:#44ccff">3 V</span></div>
@@ -535,7 +630,7 @@
               <span id="tutorialPageIndicator" style="color:var(--acc-hi);font-size:12px;font-weight:700;">1/5</span>
               <button id="btnNextTutorial" class="tut-nav-btn">Próxima ►</button>
             </div>
-            <button id="btnIniciar">▶  INICIAR</button>
+            <button id="btnIniciar">Iniciar</button>
           </div>
         </div><!-- /tutorialScreen -->
 
