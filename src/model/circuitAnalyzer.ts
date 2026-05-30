@@ -63,7 +63,7 @@ function analyzeComponent(compCells: CompCell[]): GameAction[] {
 
   if (!realSources.length || !numNodes) return [];
 
-  // Iterative LED non-linearity solver (up to 10 passes, 2V forward voltage)
+  // Iterative LED non-linearity solver (up to 10 passes, 2 V forward voltage)
   let ledsChanged = true;
   let iters = 0;
   let finalV: number[] | null = null;
@@ -109,10 +109,10 @@ function analyzeComponent(compCells: CompCell[]): GameAction[] {
     const I_mA = finalI[idx] * 1000;
     if (I_mA > 28) {
       shouldBurn = true; burnedIds.add(led.pieceId);
-      burnR.push(`Corrente no LED (${I_mA.toFixed(1)}mA) excedeu 28mA`);
+      burnR.push(`Corrente no LED (${I_mA.toFixed(1)} mA) excedeu 28 mA`);
     } else if (I_mA >= 1) {
       litCount++; litIds.add(led.pieceId);
-      succR.push(`LED acendeu com ${I_mA.toFixed(1)}mA`);
+      succR.push(`LED acendeu com ${I_mA.toFixed(1)} mA`);
     }
   }
 
@@ -120,9 +120,9 @@ function analyzeComponent(compCells: CompCell[]): GameAction[] {
     const I = Math.abs(finalI[i]);
     if (I > 1.0) {
       shouldBurn = true; burnedIds.add(realSources[i].pieceId!);
-      burnR.push(`Curto! Fonte com ${I.toFixed(1)}A`);
+      burnR.push(`Curto! Fonte com ${I.toFixed(1)} A`);
     } else if (I > 0.001) {
-      succR.push(`Fonte ${realSources[i].value}V — ${(I * 1000).toFixed(1)}mA`);
+      succR.push(`Fonte ${realSources[i].value} V — ${(I * 1000).toFixed(1)} mA`);
     }
   }
 
@@ -131,9 +131,9 @@ function analyzeComponent(compCells: CompCell[]): GameAction[] {
     const I_mA = (V / r.value) * 1000;
     if (I_mA > 50) {
       shouldBurn = true; burnedIds.add(r.pieceId);
-      burnR.push(`Resistor ${r.value}Ω com ${I_mA.toFixed(1)}mA`);
+      burnR.push(`Resistor ${r.value} Ω com ${I_mA.toFixed(1)} mA`);
     } else if (V > 0.01) {
-      succR.push(`Resistor ${r.value}Ω — ${V.toFixed(1)}V / ${I_mA.toFixed(1)}mA`);
+      succR.push(`Resistor ${r.value} Ω — ${V.toFixed(1)} V e ${I_mA.toFixed(1)} mA`);
     }
   }
 

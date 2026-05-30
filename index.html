@@ -11,11 +11,11 @@
         /*
          * Canvas 300×450 (ROWS=15, CELL=30, aspect 2:3).
          * Vertical budget:
-         *   pad(12) + header(120) + gap(5) + canvas(g×1.5) + gap(5) + controls(105) + slack(0)
-         *   = g×1.5 + 247
-         * → g = 66.67svh − 164.7
+         *   pad(12) + header(124) + gap(5) + canvas(g×1.5) + gap(5) + controls(105)
+         *   = g×1.5 + 251
+         * → g = 66.67svh − 167.3
          */
-        --game-w: min(300px, 96svw, calc(66.6svh - 165px));
+        --game-w: min(300px, 96svw, calc(66.6svh - 167px));
 
         --bg:       #08091b;
         --card:     #141a3a;
@@ -64,7 +64,7 @@
 
       /* ── Stats ── */
       #statsRow {
-        height: 40px;
+        height: 38px;
         display: flex;
         gap: 5px;
       }
@@ -104,34 +104,38 @@
 
       /* ── Next piece (full-width horizontal) ── */
       #nextRow {
-        height: 42px;
+        height: 50px;
         display: flex;
         align-items: center;
-        gap: 9px;
+        gap: 11px;
         background: var(--card);
         border: 1px solid var(--border);
         border-radius: 7px;
-        padding: 0 10px;
+        padding: 0 11px;
         overflow: hidden;
       }
+      /* Left column: label stacked above the piece preview */
+      #nextPreview {
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+      }
       .next-label {
-        font-size: 9px;
+        font-size: 8.5px;
         font-weight: 700;
-        letter-spacing: 1px;
+        letter-spacing: 1.2px;
         color: var(--muted);
         text-transform: uppercase;
-        flex-shrink: 0;
-        writing-mode: vertical-rl;
-        transform: rotate(180deg);
         line-height: 1;
-        max-height: 38px;
       }
       #nextCanvas {
         display: block;
         image-rendering: pixelated;
         width:  calc(var(--game-w) * 0.3);
         height: calc(var(--game-w) * 0.1);
-        flex-shrink: 0;
       }
       #nextPieceSpecs {
         flex: 1;
@@ -139,29 +143,23 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        gap: 1px;
+        gap: 2px;
         overflow: hidden;
       }
-      .np-name {
+      /* Both lines share the same readable style */
+      .np-name, .np-detail {
         font-size: clamp(11px, calc(var(--game-w) / 24), 14px);
         font-weight: 700;
         color: var(--txt);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-      }
-      .np-detail {
-        font-size: clamp(9px, calc(var(--game-w) / 30), 11px);
-        color: var(--muted);
-        font-family: var(--font-mono);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        line-height: 1.2;
       }
 
       /* ── Action buttons ── */
       #actionRow {
-        height: 28px;
+        height: 26px;
         display: flex;
         gap: 4px;
       }
@@ -410,8 +408,10 @@
 
         <!-- Next piece — full width, readable description -->
         <div id="nextRow">
-          <span class="next-label">Próxima</span>
-          <canvas id="nextCanvas" width="90" height="30"></canvas>
+          <div id="nextPreview">
+            <span class="next-label">Próxima</span>
+            <canvas id="nextCanvas" width="90" height="30"></canvas>
+          </div>
           <div id="nextPieceSpecs"></div>
         </div>
 
@@ -487,11 +487,11 @@
               <h3 style="margin-bottom:10px;font-size:13px;">Combinações Seguras</h3>
               <p style="font-size:12px;text-align:left;line-height:1.5;margin-bottom:10px;color:#b0bbdd;">Lei de Ohm: <b style="color:#fff;font-family:var(--font-mono)">I = V ÷ R</b></p>
               <div style="background:#06091a;padding:12px;border-radius:6px;border:1px solid rgba(91,127,255,0.3);text-align:left;font-size:13px;line-height:2.1;font-family:var(--font-mono);">
-                <div style="color:#55ee88">✓  3V + 100Ω → LED acende</div>
-                <div style="color:#55ee88">✓  5V + 220Ω → LED acende</div>
-                <div style="color:#55ee88">✓  9V + 470Ω → LED acende</div>
-                <div style="color:#ff4455;margin-top:4px;">✗  9V + 100Ω → Resistor queima!</div>
-                <div style="color:#ff4455;">✗  LED direto no 5V → LED queima!</div>
+                <div style="color:#55ee88">✓  3 V + 100 Ω → LED acende</div>
+                <div style="color:#55ee88">✓  5 V + 220 Ω → LED acende</div>
+                <div style="color:#55ee88">✓  9 V + 470 Ω → LED acende</div>
+                <div style="color:#ff4455;margin-top:4px;">✗  9 V + 100 Ω → Resistor queima!</div>
+                <div style="color:#ff4455;">✗  LED direto no 5 V → LED queima!</div>
               </div>
             </div>
 

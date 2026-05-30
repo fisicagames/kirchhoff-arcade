@@ -7,7 +7,9 @@
       "Read(//usr/bin/**)",
       "Bash(pkill -f \"vite --port=3000\")",
       "Bash(pnpm lint *)",
-      "Bash(pnpm build *)"
+      "Bash(pnpm build *)",
+      "Bash(grep -E \"mA|A\\\\`|V |Ω|\\\\\\)A\")",
+      "Bash(grep -n \"push\\(\\\\`\" src/model/circuitAnalyzer.ts)"
     ]
   }
 }

@@ -13,9 +13,9 @@ const LED_NAMES: Record<string, string> = {
 function describePiece(): [string, string] {
   const p = state.nextPiece!;
   switch (p.type) {
-    case 'led':      return [LED_NAMES[p.value as string] ?? 'LED', 'Queda 2V · máx 28mA'];
-    case 'resistor': return [`Resistor ${p.value}Ω`,                'Corrente máx 50mA'];
-    case 'source':   return [`Fonte ${p.value}V`,                   'Curto-circuito 1A'];
+    case 'led':      return [LED_NAMES[p.value as string] ?? 'LED', 'Queda 2 V · máx 28 mA'];
+    case 'resistor': return [`Resistor ${p.value} Ω`,               'Corrente máx 50 mA'];
+    case 'source':   return [`Fonte ${p.value} V`,                  'Curto-circuito 1 A'];
     case 'wire3':    return ['Fio Condutor',                        'Conduz energia'];
     case 'block':    return ['Bloco',                               'Isolante (não conduz)'];
     default:         return ['', ''];

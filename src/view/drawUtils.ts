@@ -93,10 +93,15 @@ export function drawCell(
       }
     } else {
       cx.fillStyle = opts.lit ? '#ffcc66' : '#aaaaaa';
+      // Body-facing stub points along the main axis toward the side WITHOUT an
+      // external port (= where the center body sits). Port-based, so it stays
+      // correct across all 4 rotations.
       if (cell.vertical) {
-        cell.idx === 0 ? cx.fillRect(mx - 2, my, 4, CELL / 2) : cx.fillRect(mx - 2, py, 4, CELL / 2);
+        if (!ports['S']) cx.fillRect(mx - 2, my, 4, CELL / 2);  // body below → down
+        else             cx.fillRect(mx - 2, py, 4, CELL / 2);  // body above → up
       } else {
-        cell.idx === 0 ? cx.fillRect(mx, my - 2, CELL / 2, 4) : cx.fillRect(px, my - 2, CELL / 2, 4);
+        if (!ports['E']) cx.fillRect(mx, my - 2, CELL / 2, 4);  // body right → right
+        else             cx.fillRect(px, my - 2, CELL / 2, 4);  // body left  → left
       }
       cx.fillStyle = '#999'; cx.beginPath(); cx.arc(mx, my, 3, 0, Math.PI * 2); cx.fill();
     }
@@ -107,10 +112,15 @@ export function drawCell(
       cell.vertical ? cx.fillRect(mx - 2, py, 4, CELL) : cx.fillRect(px, my - 2, CELL, 4);
     } else {
       cx.fillStyle = opts.lit ? '#ffcc66' : '#aaaaaa';
+      // Body-facing stub points along the main axis toward the side WITHOUT an
+      // external port (= where the center body sits). Port-based, so it stays
+      // correct across all 4 rotations.
       if (cell.vertical) {
-        cell.idx === 0 ? cx.fillRect(mx - 2, my, 4, CELL / 2) : cx.fillRect(mx - 2, py, 4, CELL / 2);
+        if (!ports['S']) cx.fillRect(mx - 2, my, 4, CELL / 2);  // body below → down
+        else             cx.fillRect(mx - 2, py, 4, CELL / 2);  // body above → up
       } else {
-        cell.idx === 0 ? cx.fillRect(mx, my - 2, CELL / 2, 4) : cx.fillRect(px, my - 2, CELL / 2, 4);
+        if (!ports['E']) cx.fillRect(mx, my - 2, CELL / 2, 4);  // body right → right
+        else             cx.fillRect(px, my - 2, CELL / 2, 4);  // body left  → left
       }
       cx.fillStyle = '#999'; cx.beginPath(); cx.arc(mx, my, 3, 0, Math.PI * 2); cx.fill();
     }
