@@ -1,0 +1,218 @@
+<p><!-- ============================================================
+     MULTILINGUAL POST — Kirchhoff Arcade
+     ============================================================ --></p>
+<p><style>
+.fg-lang-toggle { display: flex; gap: 8px; justify-content: flex-end; align-items: center; margin: 0 0 20px 0; padding: 8px 0; border-bottom: 1px solid #e0e0e0; }<br />
+.fg-lang-toggle .fg-lang-label { font-size: 0.85em; color: #666; margin-right: 4px; }<br />
+.fg-lang-toggle button { padding: 4px 10px; font-size: 0.85em; border: 1px solid #ccc; background: #f5f5f5; color: #333; border-radius: 4px; cursor: pointer; font-family: inherit; transition: all 0.15s ease; }<br />
+.fg-lang-toggle button:hover { background: #e0e0e0; border-color: #999; }<br />
+.fg-lang-toggle button.fg-lang-active { background: #0073aa; color: white; border-color: #0073aa; font-weight: 600; }<br />
+.fg-lang-content[hidden] { display: none !important; }<br />
+</style></p>
+<div class="fg-lang-toggle" role="group" aria-label="Language selector"><span class="fg-lang-label">🌐</span> <button class="fg-lang-active" type="button" data-fg-lang="pt" aria-pressed="true">Português</button> <button type="button" data-fg-lang="en" aria-pressed="false">English</button></div>
+<p><!-- PORTUGUESE --></p>
+<div class="fg-lang-content" lang="pt-BR" data-fg-content="pt">
+<p><strong><em>Você gostou deste jogo?</em></strong> Dê sua opinião escolhendo um<em> número de estrelas:</em> [ratings]</p>
+<h3>Descrição</h3>
+<p><strong>Kirchhoff Arcade</strong> é um jogo de quebra-cabeças (<em>puzzle</em>) hipercasual que une o empilhamento no estilo Tetris à simulação real de circuitos elétricos. As peças que caem são componentes eletrônicos — fontes de tensão, resistores, LEDs, fios condutores e blocos isolantes — que o jogador deve encaixar em um tabuleiro. Ao travar uma peça, o jogo executa uma análise completa do circuito para determinar se um circuito fechado válido foi formado. Fechar um circuito de forma segura acende seus LEDs e limpa os componentes do tabuleiro; já as ligações erradas, como curtos-circuitos ou excesso de corrente, queimam os componentes e deixam lixo para trás.</p>
+<h3>Nota para os Entusiastas da Física</h3>
+<p>O jogo é uma representação lúdica das <strong>Leis de Kirchhoff</strong> e da <strong>Lei de Ohm</strong> (I = V / R). Cada peça travada é avaliada por um motor autoral de <strong>Análise Nodal Modificada (MNA)</strong>, que resolve o sistema linear do circuito e calcula as tensões e correntes em tempo real. Os componentes têm limites físicos reais: os LEDs acendem entre 1 e 28 mA e queimam acima disso, os resistores toleram até 50 mA, e as fontes entram em curto-circuito acima de 1 A. O LED é tratado de forma não linear, com queda de tensão de 2 V e condução em um único sentido — por isso a polaridade invertida realmente impede que ele acenda.</p>
+<h3>Objetivo</h3>
+<p>O jogador deve conectar os componentes que caem para formar circuitos elétricos fechados. Para acender um LED com segurança, é preciso usar a polaridade correta e um resistor para limitar a corrente. Quanto mais componentes houver em um circuito, maior a pontuação — incentivando o jogador a montar circuitos mais ricos e complexos.</p>
+<h3>Funcionalidades</h3>
+<ul>
+<li><strong>Solucionador de Circuitos Real:</strong> Cada peça travada é avaliada por um motor de <em>Análise Nodal Modificada (MNA)</em> que resolve o sistema linear por eliminação de Gauss com pivoteamento parcial, reproduzindo fielmente as tensões e correntes do tabuleiro.</li>
+<li><strong>Modelo Não Linear de LED:</strong> Os LEDs são resolvidos iterativamente com queda de tensão direta de 2 V e condução direcional, de modo que a polaridade invertida realmente impede que o LED acenda.</li>
+<li><strong>Consequências Baseadas na Física:</strong> Os componentes têm limites reais — LEDs acendem entre 1 e 28 mA e queimam acima disso, resistores toleram até 50 mA e fontes entram em curto acima de 1 A.</li>
+<li><strong>Pontuação por Componentes:</strong> A pontuação cresce conforme o número de componentes ativos em um circuito fechado, recompensando circuitos mais complexos em vez de triviais.</li>
+<li><strong>Múltiplos Modos de Controle:</strong> Teclado, botões virtuais na tela e gestos de toque diretamente no tabuleiro (toque para girar, arraste para mover, deslize para baixo para soltar).</li>
+<li><strong>Persistência:</strong> O recorde é salvo automaticamente no navegador do jogador via <code>localStorage</code>.</li>
+<li><strong>Responsivo e Multilíngue:</strong> Totalmente otimizado para navegadores de desktop e <em>mobile</em>, com detecção automática de idioma e suporte nativo a Português e Inglês.</li>
+</ul>
+<h3>Pontuações e Níveis de Habilidade</h3>
+<p>A sua classificação no jogo é definida pelo maior recorde obtido:</p>
+<ul>
+<li><strong>&lt; 1000:</strong> Iniciante ⚡</li>
+<li><strong>1000 – 1999:</strong> Estudante ⚡</li>
+<li><strong>2000 – 2999:</strong> Técnico ⚡</li>
+<li><strong>3000 – 3999:</strong> Engenheiro ⚡</li>
+<li><strong>4000+:</strong> Kirchhoff ⚡</li>
+</ul>
+<h3>Como Jogar</h3>
+<ul>
+<li><strong>Objetivo:</strong> Conectar os componentes que caem para formar circuitos elétricos fechados. Para acender um LED com segurança, use a polaridade correta e um resistor para limitar a corrente.</li>
+<li><strong>Desafios:</strong> Nunca ligue o polo (+) de uma fonte diretamente ao (−) — isso causa um curto-circuito. Tensões altas exigem resistores maiores; na dúvida, prefira o de 470 Ω. Fechar um circuito ao lado de lixo queimado ou blocos isolantes também os remove do tabuleiro.</li>
+<li><strong>Controles:</strong></li>
+</ul>
+<p>💻 <strong>No PC:</strong></p>
+<ul>
+<li><strong>[ ← ]</strong> / <strong>[ → ]</strong> : Move a peça para a esquerda ou direita.</li>
+<li><strong>[ ↑ ]</strong> : Gira a peça.</li>
+<li><strong>[ ↓ ]</strong> : Acelera a queda (<em>soft drop</em>).</li>
+<li><strong>[ Espaço ]</strong> / <strong>[ Enter ]</strong> : Queda imediata (<em>hard drop</em>) / confirma o resultado do circuito.</li>
+<li><strong>[ R ]</strong> : Reinicia a partida.</li>
+</ul>
+<p>📱 <strong>No Mobile / Touch:</strong></p>
+<ul>
+<li><strong>Botões na tela:</strong> um direcional (esquerda, girar, direita, descer) e um grande botão <strong>DROP</strong>.</li>
+<li><strong>Gestos no tabuleiro:</strong> toque para girar, arraste para os lados para mover, deslize para baixo para soltar a peça.</li>
+</ul>
+<h3>Alterar Idioma</h3>
+<p>Você pode alternar entre os idiomas Português e Inglês clicando no botão de idioma localizado na tela de menu principal. O idioma do navegador é detectado automaticamente na primeira visita.</p>
+<hr />
+<h3>💻 Nota para os Entusiastas de Tecnologia</h3>
+<p>O <strong>Kirchhoff Arcade</strong> foi inteiramente desenvolvido em um ambiente Linux <em>Open-Source</em> (<strong>Arch Linux</strong>, rodando a interface <strong>KDE Plasma</strong> sobre o <strong>Kernel 7.0.9-arch1-1</strong>), utilizando um <em>hardware</em> modesto. Isso reflete a filosofia do projeto: criar jogos educacionais de alto desempenho e acessíveis para rodar direto no navegador de qualquer dispositivo, sem requerer hardware de ponta.</p>
+<p>Diferentemente das entradas 3D da série, o Kirchhoff Arcade foi construído inteiramente em <strong>TypeScript puro com a API Canvas 2D</strong>, sem qualquer dependência de motor de jogo — mantendo o <em>bundle</em> de produção extremamente leve e permitindo que o jogo seja executado em navegadores <em>mobile</em> de forma nativa e responsiva, sem a necessidade de APIs de <em>fullscreen</em> forçado ou instalação de aplicativos de terceiros.</p>
+<p>A arquitetura de <em>software</em> e o <em>stack</em> tecnológico garantem essa performance:</p>
+<ul>
+<li><strong>Linguagem &amp; Tipagem:</strong> TypeScript (<code>v5.8.2</code>) rodando em ambiente Node.js (<code>v26.1</code>) com pnpm (<code>v10.33</code>) como gerenciador de pacotes.</li>
+<li><strong>Renderização:</strong> Todo o tabuleiro, peças e ilustrações do tutorial são desenhados nativamente pela <strong>API Canvas 2D</strong> do navegador, sem nenhuma biblioteca gráfica externa.</li>
+<li><strong>Build &amp; Bundling:</strong> O Vite.js (<code>v6.2.3</code>) foi configurado para compilar os módulos ES6, realizar <em>tree-shaking</em> e minificar o código fonte, gerando <em>chunks</em> extremamente leves para web.</li>
+</ul>
+<p><strong>Engenharia e Padrões de Projeto:</strong><br />O fluxo de dados entre os módulos é rigidamente organizado pelo padrão <strong>MVC (Model-View-Controller)</strong>, distribuído em quatro pastas sob <code>src/</code>:</p>
+<ul>
+<li><strong>A camada Core</strong> abriga a configuração transversal: referências do canvas, constantes do jogo, o motor de <em>layout</em> responsivo, o gerenciador de áudio e o sistema de tradução (<em>i18n</em>).</li>
+<li><strong>A camada Model</strong> não possui acoplamento visual e abriga o estado do jogo, os moldes das peças e o motor de circuitos. Inclui o <code>mnaSolver</code> (eliminação de Gauss) e o <code>circuitAnalyzer</code>, que executa um <em>flood-fill</em> para encontrar componentes conectados, mapeia as células da grade para nós elétricos e monta o sistema MNA.</li>
+<li><strong>A camada View</strong> cuida apenas da renderização — o desenho do tabuleiro, a prévia da próxima peça, o HUD, as ilustrações do tutorial no canvas e o gerenciador de <em>overlays</em>.</li>
+<li><strong>A camada Controller</strong> processa o <em>game loop</em> e a entrada do usuário, integrando teclado, botões de toque e gestos no tabuleiro em um único despachante de ações.</li>
+</ul>
+<p>O coração do jogo é o solucionador de <strong>Análise Nodal Modificada</strong>. Ao travar uma peça, o analisador isola cada componente conectado por <em>flood-fill</em>, unifica os fios em nós compartilhados por busca em profundidade, monta a matriz de condutâncias e a resolve por eliminação de Gauss com pivoteamento parcial, iterando para resolver o comportamento não linear dos LEDs e avaliando as correntes contra os limites físicos de cada componente.</p>
+<hr />
+<h3>Código-Fonte e Licença</h3>
+<p>O código-fonte completo do <strong>Kirchhoff Arcade</strong> está disponível publicamente no GitHub: <a href="https://github.com/fisicagames/kirchhoff-arcade" target="_blank" rel="noopener noreferrer">github.com/fisicagames/kirchhoff-arcade</a>. O projeto convida educadores e desenvolvedores a explorar, modificar e estender a simulação para seus próprios contextos de ensino.</p>
+<p>O projeto adota um modelo de licenciamento estruturado por tipo de conteúdo:</p>
+<ul>
+<li><strong>Código-fonte:</strong> licenciado sob a <strong>Licença MIT</strong>, permitindo uso, modificação e redistribuição livres, inclusive para fins comerciais, desde que mantida a atribuição ao autor original.</li>
+<li><strong>Assets visuais</strong> criados pelo autor: licenciados sob <strong>Creative Commons Atribuição 4.0 Internacional (CC BY 4.0)</strong>.</li>
+<li><strong>Áudios (música e efeitos sonoros):</strong> obtidos no <a href="https://pixabay.com/" target="_blank" rel="noopener noreferrer">Pixabay</a> sob a <a href="https://pixabay.com/service/license-summary/" target="_blank" rel="noopener noreferrer">Pixabay Content License</a>, que permite uso livre, inclusive comercial.</li>
+</ul>
+<h4>Aviso sobre Bibliotecas de Terceiros</h4>
+<p>Este projeto utiliza as seguintes bibliotecas de terceiros, cujas licenças devem ser respeitadas:</p>
+<ul>
+<li><strong>Vite.js</strong> — Licenciado sob a <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">Licença MIT</a>.</li>
+</ul>
+<p>Copyright © 2026 Rafael João Ribeiro.</p>
+<h3>Autor</h3>
+<p>Este projeto foi desenvolvido por:</p>
+<p><strong>Prof. Dr. Rafael João Ribeiro</strong><br />Instituto Federal do Paraná (IFPR)<br /><a href="https://fisicagames.com.br/" target="_blank" rel="noopener noreferrer">www.fisicagames.com.br</a></p>
+</div>
+<p><!-- ENGLISH --></p>
+<div class="fg-lang-content" lang="en" hidden="" data-fg-content="en">
+<p><strong><em>Did you enjoy this game?</em></strong> Share your feedback by choosing a<em> star rating:</em> [ratings]</p>
+<h3>Description</h3>
+<p><strong>Kirchhoff Arcade</strong> is a hypercasual <em>puzzle</em> game that fuses Tetris-style stacking with real electric-circuit simulation. The falling pieces are electronic components — voltage sources, resistors, LEDs, conductive wires, and insulating blocks — that the player must fit onto a grid. When a piece locks into place, the game runs a full circuit analysis to determine whether a valid closed circuit was formed. Closing a circuit safely lights its LEDs and clears the components from the board; incorrect wiring, such as short circuits or over-current, burns the components and leaves debris behind.</p>
+<h3>A Note for Physics Enthusiasts</h3>
+<p>The game is a playful representation of <strong>Kirchhoff's Laws</strong> and <strong>Ohm's Law</strong> (I = V / R). Each locked piece is evaluated by a custom <strong>Modified Nodal Analysis (MNA)</strong> engine, which solves the circuit's linear system and computes voltages and currents in real time. Components have real physical limits: LEDs light between 1 and 28 mA and burn out above that, resistors tolerate up to 50 mA, and sources short-circuit above 1 A. The LED is treated non-linearly, with a 2 V forward voltage drop and single-direction conduction — which is why reversed polarity genuinely prevents it from lighting.</p>
+<h3>Objective</h3>
+<p>The player must connect the falling components to form closed electric circuits. To light an LED safely, the correct polarity and a resistor to limit the current are required. The more components in a circuit, the higher the score — encouraging the player to build richer, more complex circuits.</p>
+<h3>Features</h3>
+<ul>
+<li><strong>Real Circuit Solver:</strong> Each locked piece is evaluated by a <em>Modified Nodal Analysis (MNA)</em> engine that solves the linear system via Gaussian elimination with partial pivoting, faithfully reproducing the board's voltages and currents.</li>
+<li><strong>Non-Linear LED Model:</strong> LEDs are solved iteratively with a 2 V forward-voltage drop and directional conduction, so reversed polarity genuinely prevents the LED from lighting.</li>
+<li><strong>Physics-Based Outcomes:</strong> Components have real limits — LEDs light between 1 and 28 mA and burn out above it, resistors tolerate up to 50 mA, and sources short-circuit above 1 A.</li>
+<li><strong>Component-Count Scoring:</strong> The score scales with the number of active components in a closed circuit, rewarding more complex circuits over trivial ones.</li>
+<li><strong>Multiple Control Modes:</strong> Keyboard, on-screen virtual buttons, and touch gestures directly on the board (tap to rotate, drag to move, swipe down to drop).</li>
+<li><strong>Persistence:</strong> The high score is automatically saved in the player's browser via <code>localStorage</code>.</li>
+<li><strong>Responsive and Multilingual:</strong> Fully optimized for desktop and <em>mobile</em> browsers, with automatic language detection and native support for Portuguese and English.</li>
+</ul>
+<h3>Scores and Skill Levels</h3>
+<p>Your classification in the game is defined by your all-time high score:</p>
+<ul>
+<li><strong>&lt; 1000:</strong> Beginner ⚡</li>
+<li><strong>1000 – 1999:</strong> Student ⚡</li>
+<li><strong>2000 – 2999:</strong> Technician ⚡</li>
+<li><strong>3000 – 3999:</strong> Engineer ⚡</li>
+<li><strong>4000+:</strong> Kirchhoff ⚡</li>
+</ul>
+<h3>How to Play</h3>
+<ul>
+<li><strong>Objective:</strong> Connect the falling components to form closed electric circuits. To light an LED safely, use the correct polarity and a resistor to limit the current.</li>
+<li><strong>Challenges:</strong> Never wire a source's (+) pole straight to its (−) — this causes a short circuit. Higher voltages need bigger resistors; when unsure, prefer the 470 Ω. Closing a circuit next to burned debris or insulating blocks also clears them from the board.</li>
+<li><strong>Controls:</strong></li>
+</ul>
+<p>💻 <strong>On PC:</strong></p>
+<ul>
+<li><strong>[ ← ]</strong> / <strong>[ → ]</strong> : Move the piece left or right.</li>
+<li><strong>[ ↑ ]</strong> : Rotate the piece.</li>
+<li><strong>[ ↓ ]</strong> : Speed up the fall (<em>soft drop</em>).</li>
+<li><strong>[ Space ]</strong> / <strong>[ Enter ]</strong> : Instant drop (<em>hard drop</em>) / confirm the circuit result.</li>
+<li><strong>[ R ]</strong> : Restart the game.</li>
+</ul>
+<p>📱 <strong>On Mobile / Touch:</strong></p>
+<ul>
+<li><strong>On-screen buttons:</strong> a directional pad (left, rotate, right, down) plus a large <strong>DROP</strong> button.</li>
+<li><strong>Gestures on the board:</strong> tap to rotate, drag sideways to move, swipe down for a hard drop.</li>
+</ul>
+<h3>Change Language</h3>
+<p>You can switch between Portuguese and English by clicking the language button on the main menu screen. The browser language is automatically detected on the first visit.</p>
+<hr />
+<h3>💻 A Note for Tech Enthusiasts</h3>
+<p><strong>Kirchhoff Arcade</strong> was entirely developed in a Linux <em>Open-Source</em> environment (<strong>Arch Linux</strong>, running the <strong>KDE Plasma</strong> interface on <strong>Kernel 7.0.9-arch1-1</strong>), using modest hardware. This reflects the project's philosophy: to create high-performance educational games accessible to run directly in the browser of any device, without requiring high-end hardware.</p>
+<p>Unlike the 3D entries in the series, Kirchhoff Arcade was built entirely in <strong>vanilla TypeScript with the Canvas 2D API</strong>, with no game-engine dependency — keeping the production <em>bundle</em> extremely small and allowing the game to run natively and responsively in <em>mobile</em> browsers, without the need for forced <em>fullscreen</em> APIs or third-party app installations.</p>
+<p>The <em>software</em> architecture and technology <em>stack</em> ensure this performance:</p>
+<ul>
+<li><strong>Language &amp; Typing:</strong> TypeScript (<code>v5.8.2</code>) running in a Node.js (<code>v26.1</code>) environment with pnpm (<code>v10.33</code>) as the package manager.</li>
+<li><strong>Rendering:</strong> The entire board, pieces, and tutorial illustrations are drawn natively by the browser's <strong>Canvas 2D API</strong>, without any external graphics library.</li>
+<li><strong>Build &amp; Bundling:</strong> Vite.js (<code>v6.2.3</code>) was configured to compile ES6 modules, perform <em>tree-shaking</em>, and minify source code, generating extremely lightweight web <em>chunks</em>.</li>
+</ul>
+<p><strong>Engineering and Design Patterns:</strong><br />Data flow between modules is rigidly organized by the <strong>MVC (Model-View-Controller)</strong> pattern, distributed across four folders under <code>src/</code>:</p>
+<ul>
+<li><strong>The Core layer</strong> houses cross-cutting setup: canvas references, game constants, the responsive <em>layout</em> engine, the audio manager, and the translation system (<em>i18n</em>).</li>
+<li><strong>The Model layer</strong> has no visual coupling and houses the game state, piece templates, and the circuit engine. It includes the <code>mnaSolver</code> (Gaussian elimination) and the <code>circuitAnalyzer</code>, which runs a <em>flood-fill</em> to find connected components, maps grid cells to electrical nodes, and assembles the MNA system.</li>
+<li><strong>The View layer</strong> handles rendering only — the board drawing, the next-piece preview, the HUD, the canvas tutorial illustrations, and the <em>overlay</em> manager.</li>
+<li><strong>The Controller layer</strong> processes the <em>game loop</em> and user input, integrating keyboard, touch buttons, and board gestures into a single action dispatcher.</li>
+</ul>
+<p>The heart of the game is the <strong>Modified Nodal Analysis</strong> solver. When a piece locks, the analyzer isolates each connected component via <em>flood-fill</em>, unifies wires into shared nodes through depth-first search, assembles the conductance matrix, and solves it by Gaussian elimination with partial pivoting, iterating to resolve the non-linear behavior of LEDs and evaluating the currents against each component's physical limits.</p>
+<hr />
+<h3>Source Code and License</h3>
+<p>The full source code of <strong>Kirchhoff Arcade</strong> is publicly available on GitHub: <a href="https://github.com/fisicagames/kirchhoff-arcade" target="_blank" rel="noopener noreferrer">github.com/fisicagames/kirchhoff-arcade</a>. The project invites educators and developers to explore, modify, and extend the simulation for their own teaching contexts.</p>
+<p>The project adopts a licensing model structured by content type:</p>
+<ul>
+<li><strong>Source code:</strong> licensed under the <strong>MIT License</strong>, allowing free use, modification, and redistribution, including commercial purposes, provided that attribution to the original author is preserved.</li>
+<li><strong>Visual assets</strong> created by the author: licensed under <strong>Creative Commons Attribution 4.0 International (CC BY 4.0)</strong>.</li>
+<li><strong>Audio (music and sound effects):</strong> sourced from <a href="https://pixabay.com/" target="_blank" rel="noopener noreferrer">Pixabay</a> under the <a href="https://pixabay.com/service/license-summary/" target="_blank" rel="noopener noreferrer">Pixabay Content License</a>, which allows free use including for commercial purposes.</li>
+</ul>
+<h4>Third-Party Libraries Notice</h4>
+<p>This project uses the following third-party libraries, whose licenses must be respected:</p>
+<ul>
+<li><strong>Vite.js</strong> — Licensed under the <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT License</a>.</li>
+</ul>
+<p>Copyright © 2026 Rafael João Ribeiro.</p>
+<h3>Author</h3>
+<p>This project was developed by:</p>
+<p><strong>Prof. Dr. Rafael João Ribeiro</strong><br />Federal Institute of Paraná (IFPR)<br /><a href="https://fisicagames.com.br/" target="_blank" rel="noopener noreferrer">www.fisicagames.com.br</a></p>
+</div>
+<p><script><br />
+(function() {<br />
+  'use strict';<br />
+  var STORAGE_KEY = 'fg_lang_pref';<br />
+  var SUPPORTED = ['pt', 'en'];<br />
+  var DEFAULT = 'pt';<br />
+  function detectLang() {<br />
+    try { var saved = localStorage.getItem(STORAGE_KEY); if (saved && SUPPORTED.indexOf(saved) !== -1) return saved; } catch (e) {}<br />
+    var nav = (navigator.language || navigator.userLanguage || '').toLowerCase();<br />
+    if (nav.indexOf('pt') === 0) return 'pt';<br />
+    if (nav.indexOf('en') === 0) return 'en';<br />
+    return DEFAULT;<br />
+  }<br />
+  function applyLang(lang) {<br />
+    if (SUPPORTED.indexOf(lang) === -1) lang = DEFAULT;<br />
+    var blocks = document.querySelectorAll('.fg-lang-content');<br />
+    for (var i = 0; i < blocks.length; i++) {
+      if (blocks[i].getAttribute('data-fg-content') === lang) blocks[i].removeAttribute('hidden');
+      else blocks[i].setAttribute('hidden', '');
+    }
+    var buttons = document.querySelectorAll('.fg-lang-toggle button');
+    for (var j = 0; j < buttons.length; j++) {
+      if (buttons[j].getAttribute('data-fg-lang') === lang) { buttons[j].classList.add('fg-lang-active'); buttons[j].setAttribute('aria-pressed', 'true'); }
+      else { buttons[j].classList.remove('fg-lang-active'); buttons[j].setAttribute('aria-pressed', 'false'); }
+    }
+    try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) {}
+  }
+  applyLang(detectLang());
+  var buttons = document.querySelectorAll('.fg-lang-toggle button');
+  for (var k = 0; k < buttons.length; k++) {
+    buttons[k].addEventListener('click', function() { applyLang(this.getAttribute('data-fg-lang')); });
+  }
+})();
+</script></p>
