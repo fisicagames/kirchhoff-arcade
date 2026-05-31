@@ -150,7 +150,8 @@ function analyzeComponent(compCells: CompCell[]): GameAction[] {
         const nx = x + dx, ny = y + dy;
         if (nx >= 0 && nx < COLS && ny >= 0 && ny < ROWS) {
           const nb = state.grid[ny][nx];
-          if (nb?.type === 'block') adjIds.add(nb.pieceId);
+          // Blocks AND burned debris (lixo) clear when next to a closed circuit.
+          if (nb && (nb.type === 'block' || nb.type === 'burned')) adjIds.add(nb.pieceId);
         }
       }
     }

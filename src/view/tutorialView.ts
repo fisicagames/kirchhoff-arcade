@@ -93,16 +93,6 @@ export function setupPauseButton(): void {
   });
 }
 
-export function setupLimparButton(onClear: () => void): void {
-  document.getElementById('btnLimpar')?.addEventListener('click', () => {
-    if (!state.gameStarted || state.gameOver || state.analyzingMode || state.isPaused || state.hasUsedLimpar) return;
-    state.hasUsedLimpar = true;
-    const btn = document.getElementById('btnLimpar');
-    if (btn) { btn.style.cursor = 'not-allowed'; btn.style.opacity = '0.38'; }
-    onClear();
-  });
-}
-
 export function setupSoundButton(): void {
   const btn = document.getElementById('btnSound');
   if (!btn) return;

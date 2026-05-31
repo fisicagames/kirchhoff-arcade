@@ -25,7 +25,6 @@ export interface GameState {
   isPaused:           boolean;   // manual pause (also stops music)
   helpOpen:           boolean;   // help/tutorial open → freeze game, keep music
   hasUsedPause:       boolean;
-  hasUsedLimpar:      boolean;
   currentBag:         PieceTemplate[];
 }
 
@@ -57,7 +56,6 @@ export const state: GameState = {
   isPaused:           false,
   helpOpen:           false,
   hasUsedPause:       false,
-  hasUsedLimpar:      false,
   currentBag:         [],
 };
 
@@ -83,6 +81,5 @@ export function resetState(): void {
   state.isPaused           = false;
   state.helpOpen           = false;
   state.hasUsedPause       = false;
-  state.hasUsedLimpar      = false;
   state.currentBag         = [];
 }

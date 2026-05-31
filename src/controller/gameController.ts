@@ -1,4 +1,4 @@
-import { COLS, ROWS } from '../core/constants';
+import { COLS } from '../core/constants';
 import { audio, updateMusicPlayback } from '../core/audioManager';
 import { state, resetState } from '../model/gameState';
 import { rndPiece, blockPiece } from '../model/pieceBag';
@@ -16,9 +16,6 @@ export function init(): void {
 
   const btnPause = document.getElementById('btnPause');
   if (btnPause) { btnPause.style.cssText = ''; btnPause.textContent = 'PAUSA'; }
-
-  const btnLimpar = document.getElementById('btnLimpar');
-  if (btnLimpar) { btnLimpar.style.cssText = ''; btnLimpar.textContent = 'LIMPAR'; }
 
   state.nextPiece = rndPiece();
   spawn();
@@ -129,7 +126,8 @@ export function applyActions(): void {
     if (action.type === 'burn') {
       const { x, y } = action.cell;
       if (!state.grid[y][x]) continue;
-      state.grid[y][x] = { type: 'burned', value: null, ports: { N: 0, E: 0, W: 0, S: 0 } };
+      // Give debris a unique id so it can later be cleared when adjacent to a circuit.
+      state.grid[y][x] = { type: 'burned', value: null, ports: { N: 0, E: 0, W: 0, S: 0 }, pieceId: state.pieceIdCounter++, pieceType: 'burned' };
       state.animatingCells.push({ x, y, cell: null, timer: 300, atype: 'burn' });
 
     } else if (action.type === 'light') {
@@ -157,14 +155,6 @@ export function endGame(): void {
   showGameOverOverlay();
 }
 
-export function clearBoard(): void {
-  state.grid           = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
-  state.dropCounter    = 0;
-  state.animatingCells = [];
-  state.waitingToSpawn = false;
-  state.spawnTimer     = 0;
-  draw();
-}
 
 export function handleGameInput(action: string): void {
   if (action === 'restart') { init(); return; }
