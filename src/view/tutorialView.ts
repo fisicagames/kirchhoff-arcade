@@ -1,3 +1,4 @@
+import { resolveAnalyzing } from '../controller/gameController';
 import { state } from '../model/gameState';
 import { updateMusicPlayback, toggleMute, isMuted } from '../core/audioManager';
 
@@ -51,7 +52,14 @@ export function setupTutorialNav(onInit: () => void): void {
   });
 
   // Tutorial button (opens panel mid-game)
-  document.getElementById('btnHelp')?.addEventListener('click', () => showTutorial());
+  document.getElementById('btnHelp')?.addEventListener('click', () => {
+    // Resolve qualquer circuito pendente (adiciona os pontos e fecha o overlay)
+    resolveAnalyzing(); 
+    
+    // Exibe o tutorial
+    state.helpOpen = true; 
+    showTutorial();
+  });
 
   // Reiniciar
   document.getElementById('btnRestart')?.addEventListener('click', () => {

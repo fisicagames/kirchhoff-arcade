@@ -11,6 +11,11 @@ import { updateUI } from '../view/hud';
 import { showStatusOverlay, hideStatusOverlay, showGameOverOverlay, hideGameOverOverlay } from '../view/overlayManager';
 
 export function init(): void {
+
+  if (state.analyzingMode) {
+    resolveAnalyzing();
+  }
+  
   resetState();
   updateMusicPlayback();
 
@@ -20,7 +25,9 @@ export function init(): void {
   state.nextPiece = rndPiece();
   spawn();
   updateUI();
+
   hideGameOverOverlay();
+  hideStatusOverlay();
 }
 
 export function spawn(): void {
@@ -206,13 +213,7 @@ export function handleGameInput(action: string): void {
 
   if (state.analyzingMode) {
     if (action === 'drop') {
-      applyActions();
-      hideStatusOverlay();
-      state.analyzingMode  = false;
-      state.pendingActions = [];
-      state.waitingToSpawn = true;
-      state.spawnTimer     = 400;
-      updateMusicPlayback();
+      resolveAnalyzing();
     }
     return;
   }
@@ -270,4 +271,17 @@ export function loop(time = 0): void {
 
   draw();
   requestAnimationFrame(loop);
+}
+
+export function resolveAnalyzing(): void {
+  if (!state.analyzingMode) return;
+  
+  applyActions();
+  hideStatusOverlay();
+  
+  state.analyzingMode  = false;
+  state.pendingActions = [];
+  state.waitingToSpawn = true;
+  state.spawnTimer     = 400;
+  updateMusicPlayback();
 }
