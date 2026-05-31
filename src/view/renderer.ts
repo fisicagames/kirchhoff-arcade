@@ -21,6 +21,22 @@ export function draw(): void {
     }
   }
 
+  // Hard-drop speed trails (motion blur), drawn behind the animations
+  if (state.dropTrails.length) {
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    for (const t of state.dropTrails) {
+      const k = Math.max(0, t.timer / t.life);     // 1 → 0
+      const grad = ctx.createLinearGradient(0, t.yTop, 0, t.yBot);
+      grad.addColorStop(0,    `rgba(${t.rgb},0)`);
+      grad.addColorStop(0.85, `rgba(${t.rgb},${0.45 * k})`);
+      grad.addColorStop(1,    `rgba(${t.rgb},${0.10 * k})`);
+      ctx.fillStyle = grad;
+      ctx.fillRect(t.px + 3, t.yTop, CELL - 6, t.yBot - t.yTop);
+    }
+    ctx.restore();
+  }
+
   // Animations
   for (const a of state.animatingCells) {
     const total     = a.atype === 'lit' ? 500 : 300;

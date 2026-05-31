@@ -75,6 +75,16 @@ export interface AnimatingCell {
   isActLit?: boolean;
 }
 
+/** Vertical "speed line" left behind by a hard drop, in canvas pixels. */
+export interface DropTrail {
+  px:    number;   // left edge (px)
+  yTop:  number;   // streak start (px)
+  yBot:  number;   // streak end   (px)
+  rgb:   string;   // "r,g,b"
+  timer: number;   // ms remaining
+  life:  number;   // total ms
+}
+
 export interface BurnAction {
   type: 'burn';
   cell: { x: number; y: number };

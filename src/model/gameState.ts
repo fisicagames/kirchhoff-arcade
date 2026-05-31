@@ -1,5 +1,5 @@
 import { COLS, ROWS } from '../core/constants';
-import type { Piece, GridCell, AnimatingCell, GameAction, PieceTemplate } from './types';
+import type { Piece, GridCell, AnimatingCell, DropTrail, GameAction, PieceTemplate } from './types';
 
 export interface GameState {
   grid:               (GridCell | null)[][];
@@ -15,6 +15,7 @@ export interface GameState {
   dropInterval:       number;
   lastTime:           number;
   animatingCells:     AnimatingCell[];
+  dropTrails:         DropTrail[];
   waitingToSpawn:     boolean;
   spawnTimer:         number;
   pieceIdCounter:     number;
@@ -46,6 +47,7 @@ export const state: GameState = {
   dropInterval:       1600,
   lastTime:           0,
   animatingCells:     [],
+  dropTrails:         [],
   waitingToSpawn:     false,
   spawnTimer:         0,
   pieceIdCounter:     0,

@@ -1,4 +1,4 @@
-import { COLS } from '../core/constants';
+import { COLS, CELL } from '../core/constants';
 import { audio, updateMusicPlayback } from '../core/audioManager';
 import { state, resetState } from '../model/gameState';
 import { rndPiece, blockPiece } from '../model/pieceBag';
@@ -73,10 +73,55 @@ export function rotate(): void {
   }
 }
 
+// Representative streak colour (r,g,b) for the falling piece.
+function trailColor(p: typeof state.currentPiece): string {
+  if (!p) return '200,225,255';
+  if (p.type === 'led') {
+    if (p.value === 'red')    return '255,80,110';
+    if (p.value === 'green')  return '90,255,150';
+    if (p.value === 'yellow') return '255,235,90';
+  }
+  if (p.type === 'source') {
+    if (p.value === 3) return '90,210,255';
+    if (p.value === 5) return '255,210,80';
+    return '200,120,255';
+  }
+  if (p.type === 'resistor') return '230,200,150';
+  if (p.type === 'block')    return '170,180,210';
+  return '200,225,255'; // wire / default
+}
+
+function spawnDropTrails(p: NonNullable<typeof state.currentPiece>, startY: number, endY: number): void {
+  if (endY <= startY) return;
+  const rgb  = trailColor(p);
+  const life = 240;
+  // Topmost cell per column → one streak per column from start to landing.
+  const topByCol = new Map<number, number>();
+  for (const c of p.cells) {
+    const col = c.x + p.x;
+    const cur = topByCol.get(col);
+    if (cur === undefined || c.y < cur) topByCol.set(col, c.y);
+  }
+  for (const [col, cy] of topByCol) {
+    state.dropTrails.push({
+      px:    col * CELL,
+      yTop:  (cy + startY) * CELL,
+      yBot:  (cy + endY) * CELL + CELL,
+      rgb,
+      timer: life,
+      life,
+    });
+  }
+}
+
 export function hardDrop(): void {
   audio.dropSfx.currentTime = 0;
   audio.dropSfx.play().catch(() => {});
+  const p = state.currentPiece;
+  if (!p) return;
+  const startY = p.y;
   while (move(0, 1)) {}
+  spawnDropTrails(p, startY, p.y);
   lockPiece();
 }
 
@@ -216,6 +261,11 @@ export function loop(time = 0): void {
   for (let i = state.animatingCells.length - 1; i >= 0; i--) {
     state.animatingCells[i].timer -= dt;
     if (state.animatingCells[i].timer <= 0) state.animatingCells.splice(i, 1);
+  }
+
+  for (let i = state.dropTrails.length - 1; i >= 0; i--) {
+    state.dropTrails[i].timer -= dt;
+    if (state.dropTrails[i].timer <= 0) state.dropTrails.splice(i, 1);
   }
 
   draw();
