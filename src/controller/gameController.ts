@@ -35,8 +35,8 @@ export function spawn(): void {
   const oldLevel = state.level;
   state.piecesSpawnedCount++;
 
-  state.level        = Math.floor(state.piecesSpawnedCount / 20) + 1;
-  state.dropInterval = Math.max(200, 1600 - (state.level - 1) * 100);
+  state.level        = Math.floor(state.piecesSpawnedCount / 10) + 1;
+  state.dropInterval = Math.max(200, 1600 - (state.level - 1) * 50);
 
   if (state.level === 5 && oldLevel < 5) state.currentBag = [];
 
