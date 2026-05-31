@@ -2,6 +2,7 @@ import { COLS, ROWS, DIRECTIONS } from '../core/constants';
 import { state } from './gameState';
 import { isConnected, floodFill } from './gridOps';
 import { buildAndSolveMNA } from './mnaSolver';
+import { t, fmtNum } from '../core/i18n';
 import type { GameAction, CompCell, MNAResistor, MNAVoltageSource, MNALed } from './types';
 
 function getKey(x: number, y: number): string { return `${x},${y}`; }
@@ -110,11 +111,11 @@ function analyzeComponent(compCells: CompCell[]): GameAction[] {
     const I_mA = finalI[idx] * 1000;
     if (I_mA > 28) {
       shouldBurn = true; burnedIds.add(led.pieceId);
-      burnR.push(`Corrente no LED (${I_mA.toFixed(1)} mA) excedeu 28 mA`);
+      burnR.push(t('reason.ledBurn', { i: fmtNum(I_mA) }));
     } else if (I_mA >= 1) {
       litCount++; litIds.add(led.pieceId);
       activePieceIds.add(led.pieceId); // LED com corrente
-      succR.push(`LED acendeu com ${I_mA.toFixed(1)} mA`);
+      succR.push(t('reason.ledLit', { i: fmtNum(I_mA) }));
     }
   }
 
@@ -122,10 +123,10 @@ function analyzeComponent(compCells: CompCell[]): GameAction[] {
     const I = Math.abs(finalI[i]);
     if (I > 1.0) {
       shouldBurn = true; burnedIds.add(realSources[i].pieceId!);
-      burnR.push(`Curto! Fonte com ${I.toFixed(1)} A`);
+      burnR.push(t('reason.sourceShort', { i: fmtNum(I) }));
     } else if (I > 0.001) {
       activePieceIds.add(realSources[i].pieceId!); // Fonte com corrente
-      succR.push(`Fonte ${realSources[i].value} V — ${(I * 1000).toFixed(1)} mA`);
+      succR.push(t('reason.sourceActive', { v: realSources[i].value, i: fmtNum(I * 1000) }));
     }
   }
 
@@ -134,10 +135,10 @@ function analyzeComponent(compCells: CompCell[]): GameAction[] {
     const I_mA = (V / r.value) * 1000;
     if (I_mA > 50) {
       shouldBurn = true; burnedIds.add(r.pieceId);
-      burnR.push(`Corrente no Resistor ${r.value} Ω (${I_mA.toFixed(1)} mA) excedeu 50 mA`);
+      burnR.push(t('reason.resBurn', { v: r.value, i: fmtNum(I_mA) }));
     } else if (V > 0.01) {
       activePieceIds.add(r.pieceId); // Resistor com corrente
-      succR.push(`Resistor ${r.value} Ω — ${V.toFixed(1)} V e ${I_mA.toFixed(1)} mA`);
+      succR.push(t('reason.resActive', { v: r.value, volt: fmtNum(V), i: fmtNum(I_mA) }));
     }
   }
 

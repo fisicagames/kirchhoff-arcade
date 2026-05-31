@@ -1,18 +1,19 @@
 import { state } from '../model/gameState';
+import { t } from '../core/i18n';
 import { drawLegendPieces } from './legendView';
 
-// Rank shown on the start menu, derived from the all-time high score.
+// Rank thresholds → i18n key, derived from the all-time high score.
 const RANKS: [number, string][] = [
-  [3500, 'Kirchhoff ⚡'],
-  [2500,  'Engenheiro ⚡'],
-  [1500,  'Técnico ⚡'],
-  [500,  'Aprendiz ⚡'],
-  [0,    'Iniciante ⚡'],
+  [3500, 'rank.master'],
+  [2500, 'rank.engineer'],
+  [1500, 'rank.technician'],
+  [500,  'rank.apprentice'],
+  [0,    'rank.beginner'],
 ];
 
 function rankFor(score: number): string {
-  for (const [min, label] of RANKS) if (score >= min) return label;
-  return 'Iniciante ⚡';
+  for (const [min, key] of RANKS) if (score >= min) return t(key);
+  return t('rank.beginner');
 }
 
 export function updateUI(): void {

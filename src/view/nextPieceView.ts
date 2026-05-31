@@ -1,23 +1,18 @@
 import { CELL } from '../core/constants';
 import { nctx, nextCanvas } from '../core/canvasSetup';
 import { state } from '../model/gameState';
+import { t } from '../core/i18n';
 import { drawCell } from './drawUtils';
-
-const LED_NAMES: Record<string, string> = {
-  red:    'LED Vermelho',
-  green:  'LED Verde',
-  yellow: 'LED Amarelo',
-};
 
 /** Returns [name, detail] describing the upcoming piece. */
 function describePiece(): [string, string] {
   const p = state.nextPiece!;
   switch (p.type) {
-    case 'led':      return [LED_NAMES[p.value as string] ?? 'LED', 'Queda 2 V · máx 28 mA'];
-    case 'resistor': return [`Resistor ${p.value} Ω`,               'Corrente máx 50 mA'];
-    case 'source':   return [`Fonte ${p.value} V`,                  'Curto-circuito 1 A'];
-    case 'wire3':    return ['Fio Condutor',                        'Conduz energia'];
-    case 'block':    return ['Bloco',                               'Isolante (não conduz)'];
+    case 'led':      return [t(`piece.led.${p.value}`), t('piece.led.detail')];
+    case 'resistor': return [t('piece.resistor', { v: p.value }), t('piece.resistor.detail')];
+    case 'source':   return [t('piece.source',   { v: p.value }), t('piece.source.detail')];
+    case 'wire3':    return [t('piece.wire'),  t('piece.wire.detail')];
+    case 'block':    return [t('piece.block'), t('piece.block.detail')];
     default:         return ['', ''];
   }
 }

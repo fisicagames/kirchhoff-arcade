@@ -587,19 +587,19 @@
         <!-- Stats -->
         <div id="statsRow">
           <div class="stat-item">
-            <span class="stat-label">Pontos</span>
+            <span class="stat-label" data-i18n="stat.points">Pontos</span>
             <span class="stat-value" id="score">0</span>
           </div>
           <div class="stat-item stat-narrow">
-            <span class="stat-label">Nível</span>
+            <span class="stat-label" data-i18n="stat.level">Nível</span>
             <span class="stat-value" id="level">1</span>
           </div>
           <div class="stat-item stat-narrow">
-            <span class="stat-label">Circ.</span>
+            <span class="stat-label" data-i18n="stat.circuits">Circ.</span>
             <span class="stat-value" id="lines">0</span>
           </div>
           <div class="stat-item">
-            <span class="stat-label">Recorde</span>
+            <span class="stat-label" data-i18n="stat.record">Recorde</span>
             <span class="stat-value stat-rec" id="highScoreDisplay">0</span>
           </div>
         </div>
@@ -607,7 +607,7 @@
         <!-- Next piece — full width, readable description -->
         <div id="nextRow">
           <div id="nextPreview">
-            <span class="next-label">Próxima</span>
+            <span class="next-label" data-i18n="next.label">Próxima</span>
             <canvas id="nextCanvas" width="90" height="30"></canvas>
           </div>
           <div id="nextPieceSpecs"></div>
@@ -615,10 +615,10 @@
 
         <!-- Action buttons -->
         <div id="actionRow">
-          <button id="btnRestart" class="act-btn">REINICIAR</button>
-          <button id="btnPause"   class="act-btn">PAUSA</button>
-          <button id="btnHelp"    class="act-btn">TUTORIAL</button>
-          <button id="btnSound"   class="act-btn act-muted">SOM</button>
+          <button id="btnRestart" class="act-btn" data-i18n="btn.restart">REINICIAR</button>
+          <button id="btnPause"   class="act-btn" data-i18n="btn.pause">PAUSA</button>
+          <button id="btnHelp"    class="act-btn" data-i18n="btn.tutorial">TUTORIAL</button>
+          <button id="btnSound"   class="act-btn act-muted" data-i18n="btn.sound">SOM</button>
         </div>
 
       </div><!-- /header -->
@@ -632,7 +632,7 @@
 
           <!-- Top bar (padrão série: Música + ENGLISH) -->
           <div id="menuTopBar">
-            <button id="btnMusica" class="menu-top-btn" type="button">Música: <span id="musicaIcon">🔊</span></button>
+            <button id="btnMusica" class="menu-top-btn" type="button"><span data-i18n="menu.music">Música:</span> <span id="musicaIcon">🔊</span></button>
             <button id="btnEnglish" class="menu-top-btn menu-english" type="button">ENGLISH</button>
           </div>
 
@@ -641,17 +641,11 @@
             <!-- ░░ Página 1 — Menu inicial (padrão fisicagames) ░░ -->
             <div id="tutorialPage1">
               <h1 class="menu-title">KIRCHHOFF<br/>ARCADE</h1>
-              <p class="menu-objetivo">
-                <b>Objetivo:</b> conecte os componentes que caem para formar
-                <b class="hl">circuitos elétricos!</b> Para acender um
-                LED, use a polaridade correta e um <b class="hl">resistor</b>
-                para limitar a corrente. Quanto mais componentes houver no circuito,
-                <b class="hl">maior será a pontuação!</b>
-              </p>
+              <p class="menu-objetivo" data-i18n-html="menu.objective"></p>
 
               <div class="menu-best">
-                <div class="menu-best-label">Melhor resultado:</div>
-                <div class="menu-best-value"><span id="menuHighScore">0</span> pts</div>
+                <div class="menu-best-label" data-i18n="menu.bestLabel">Melhor resultado:</div>
+                <div class="menu-best-value"><span id="menuHighScore">0</span> <span data-i18n="menu.pts">pts</span></div>
                 <div class="menu-best-rank" id="menuRank">Iniciante ⚡</div>
               </div>
 
@@ -664,180 +658,124 @@
 
             <!-- ░ Página 2 — Como funciona ░ -->
             <div id="tutorialPage2" style="display:none;">
-              <h2 class="tut-h">Como Funciona</h2>
-              <p class="tut-p">
-                A energia só circula em um <b>circuito fechado</b>: um caminho
-                contínuo que sai do polo <b>(+)</b> da fonte e volta ao polo
-                <b>(−)</b>. Monte esse caminho com as peças que caem.
-              </p>
+              <h2 class="tut-h" data-i18n="tut.p2.h">Como Funciona</h2>
+              <p class="tut-p" data-i18n-html="tut.p2.intro"></p>
               <div class="tut-card good">
                 <canvas id="ill_ok" class="ill" width="220" height="130"></canvas>
-                <div class="tut-cap ok">✓ Circuito completo</div>
-                <div class="tut-sub">Fonte → resistor → LED → volta à fonte</div>
+                <div class="tut-cap ok" data-i18n="tut.p2.capOk">✓ Circuito completo</div>
+                <div class="tut-sub" data-i18n="tut.p2.subOk">Fonte → resistor → LED → volta à fonte</div>
               </div>
-              <p class="tut-p">
-                Neste exemplo a corrente passa pelo <b>resistor</b> (que a
-                limita) e acende o <b class="ok">LED</b> com segurança. Cada
-                circuito fechado vale pontos!
-              </p>
+              <p class="tut-p" data-i18n-html="tut.p2.note"></p>
             </div>
 
             <!-- ░ Página 3 — Fontes e fios ░ -->
             <div id="tutorialPage3" style="display:none;">
-              <h2 class="tut-h">Fontes e Fios</h2>
-              <p class="tut-p">
-                As <b>fontes ideais </b>, baterias sem resistência interna, empurram a corrente. Quanto maior a
-                tensão, mais "força" — e mais cuidado é preciso.
-              </p>
+              <h2 class="tut-h" data-i18n="tut.p3.h">Fontes e Fios</h2>
+              <p class="tut-p" data-i18n-html="tut.p3.p1"></p>
               <div class="tut-legend">
                 <div><canvas id="lg_s3" width="90" height="30"></canvas><span style="color:#44ccff">3 V</span></div>
                 <div><canvas id="lg_s5" width="90" height="30"></canvas><span style="color:#ffcc00">5 V</span></div>            
               </div>
-              <p class="tut-p">
-                Cada fonte tem um polo <b style="color:#e63946">(+)</b> e um
-                <b style="color:#457b9d">(−)</b>. A corrente sai do (+) e precisa
-                retornar ao (−).
-              </p>
+              <p class="tut-p" data-i18n-html="tut.p3.p2"></p>
               <div class="tut-legend">
-                <div><canvas id="lg_w" width="90" height="30"></canvas><span>Fio</span></div>
-                <div><canvas id="lg_b" width="30" height="30"></canvas><span>Bloco</span></div>
+                <div><canvas id="lg_w" width="90" height="30"></canvas><span data-i18n="tut.lbl.wire">Fio</span></div>
+                <div><canvas id="lg_b" width="30" height="30"></canvas><span data-i18n="tut.lbl.block">Bloco</span></div>
               </div>
-              <p class="tut-p">
-                O <b>fio</b> conduz a corrente livremente para fechar o caminho.
-                O <b>bloco</b> é isolante: não conduz, serve só para preencher
-                espaços.
-              </p>
+              <p class="tut-p" data-i18n-html="tut.p3.p3"></p>
             </div>
 
             <!-- ░ Página 4 — LEDs e resistores ░ -->
             <div id="tutorialPage4" style="display:none;">
-              <h2 class="tut-h">LEDs e Resistores</h2>
-              <p class="tut-p">
-                O <b>LED</b> é a lâmpada do jogo que aparece a partir do nível 5. Ele acende quando recebe entre
-                <b class="ok">1 e 28 mA</b>. Pouca corrente: não acende. Corrente
-                demais: <b class="no">queima!</b>
-              </p>
+              <h2 class="tut-h" data-i18n="tut.p4.h">LEDs e Resistores</h2>
+              <p class="tut-p" data-i18n-html="tut.p4.p1"></p>
               <div class="tut-legend">
-                <div><canvas id="lg_lr" width="90" height="30"></canvas><span style="color:#ff4466">Vermelho</span></div>
-                <div><canvas id="lg_lg" width="90" height="30"></canvas><span style="color:#44ff88">Verde</span></div>
+                <div><canvas id="lg_lr" width="90" height="30"></canvas><span style="color:#ff4466" data-i18n="tut.lbl.red">Vermelho</span></div>
+                <div><canvas id="lg_lg" width="90" height="30"></canvas><span style="color:#44ff88" data-i18n="tut.lbl.green">Verde</span></div>
               </div>
-              <p class="tut-p">
-                O <b>resistor</b> é o protetor: ele <b>limita a corrente</b> para
-                o LED não queimar. Valores maiores (Ω) limitam mais.
-              </p>
+              <p class="tut-p" data-i18n-html="tut.p4.p2"></p>
               <div class="tut-legend">
                 <div><canvas id="lg_r1" width="90" height="30"></canvas><span>100 Ω</span></div>
                 <div><canvas id="lg_r4" width="90" height="30"></canvas><span>470 Ω</span></div>
               </div>
-              <p class="tut-p">
-                O próprio <b>resistor</b> também tem limite: acima de
-                <b class="no">50 mA</b> ele <b>queima</b>.
-              </p>
+              <p class="tut-p" data-i18n-html="tut.p4.p3"></p>
             </div>
 
             <!-- ░ Página 5 — Curto-circuito ░ -->
             <div id="tutorialPage5" style="display:none;">
-              <h2 class="tut-h">⚡ Curto-circuito</h2>
-              <p class="tut-p">
-                Ligar o <b style="color:#e63946">(+)</b> direto no
-                <b style="color:#457b9d">(−)</b> só com fios, <b>sem nada que
-                limite a corrente</b>, cria um <b class="no">curto-circuito</b>.
-              </p>
+              <h2 class="tut-h" data-i18n="tut.p5.h">⚡ Curto-circuito</h2>
+              <p class="tut-p" data-i18n-html="tut.p5.p1"></p>
               <div class="tut-card bad">
                 <canvas id="ill_short" class="ill" width="220" height="130"></canvas>
-                <div class="tut-cap no">✗ Curto-circuito</div>
-                <div class="tut-sub">Corrente enorme — a fonte queima!</div>
+                <div class="tut-cap no" data-i18n="tut.p5.cap">✗ Curto-circuito</div>
+                <div class="tut-sub" data-i18n="tut.p5.sub">Corrente enorme — a fonte queima!</div>
               </div>
-              <p class="tut-p">
-                Sem resistência, a corrente dispara (mais de <b>1 A</b>) e a
-                fonte é destruída, deixando <b class="no">lixo</b> no tabuleiro.
-                Sempre coloque um resistor ou um LED no caminho!
-              </p>
+              <p class="tut-p" data-i18n-html="tut.p5.p2"></p>
             </div>
 
             <!-- ░ Página 6 — Erros com LED ░ -->
             <div id="tutorialPage6" style="display:none;">
-              <h2 class="tut-h">Erros Comuns com LED</h2>
+              <h2 class="tut-h" data-i18n="tut.p6.h">Erros Comuns com LED</h2>
               <div class="tut-card bad">
                 <canvas id="ill_burn" class="ill" width="220" height="130"></canvas>
-                <div class="tut-cap no">✗ LED sem resistor</div>
-                <div class="tut-sub">9 V direto no LED → mais de 28 mA → queima</div>
+                <div class="tut-cap no" data-i18n="tut.p6.cap1">✗ LED sem resistor</div>
+                <div class="tut-sub" data-i18n="tut.p6.sub1">9 V direto no LED → mais de 28 mA → queima</div>
               </div>
-              <p class="tut-p">
-                Ligar o LED <b>direto na fonte</b>, sem um resistor limitando,
-                deixa passar corrente demais e ele <b class="no">queima</b>.
-              </p>
+              <p class="tut-p" data-i18n-html="tut.p6.p1"></p>
               <div class="tut-card bad">
                 <canvas id="ill_rev" class="ill" width="220" height="130"></canvas>
-                <div class="tut-cap no">✗ Polaridade invertida</div>
-                <div class="tut-sub">(−) ligado onde deveria ser (+)</div>
+                <div class="tut-cap no" data-i18n="tut.p6.cap2">✗ Polaridade invertida</div>
+                <div class="tut-sub" data-i18n="tut.p6.sub2">(−) ligado onde deveria ser (+)</div>
               </div>
-              <p class="tut-p">
-                O LED só funciona em <b>um sentido</b>. Se o lado (+) e o (−)
-                estiverem trocados, ele <b class="no">não acende</b> — gire a
-                peça para corrigir.
-              </p>
+              <p class="tut-p" data-i18n-html="tut.p6.p2"></p>
             </div>
 
             <!-- ░ Página 7 — Combinações seguras ░ -->
             <div id="tutorialPage7" style="display:none;">
-              <h2 class="tut-h">Combinações Seguras</h2>
-              <p class="tut-p">
-                Use a <b>Lei de Ohm</b> para escolher o resistor certo:
-                <b style="font-family:var(--font-mono)">I = V / R</b>
-                (corrente = tensão / resistência).
-              </p>
+              <h2 class="tut-h" data-i18n="tut.p7.h">Combinações Seguras</h2>
+              <p class="tut-p" data-i18n-html="tut.p7.p1"></p>
               <div class="safe-list">
-                <div style="color:#5fe39a">✓&nbsp; 3 V / 100 Ω → acende</div>
-                <div style="color:#5fe39a">✓&nbsp; 5 V / 220 Ω → acende</div>
-                <div style="color:#5fe39a">✓&nbsp; 9 V / 470 Ω → acende</div>
-                <div style="color:#ff6a86;margin-top:6px;">✗&nbsp; 9 V / 100 Ω → resistor queima</div>
-                <div style="color:#ff6a86;">✗&nbsp; LED direto no 5 V → LED queima</div>
+                <div style="color:#5fe39a" data-i18n-html="tut.p7.ok1">✓&nbsp; 3 V / 100 Ω → acende</div>
+                <div style="color:#5fe39a" data-i18n-html="tut.p7.ok2">✓&nbsp; 5 V / 220 Ω → acende</div>
+                <div style="color:#5fe39a" data-i18n-html="tut.p7.ok3">✓&nbsp; 9 V / 470 Ω → acende</div>
+                <div style="color:#ff6a86;margin-top:6px;" data-i18n-html="tut.p7.no1">✗&nbsp; 9 V / 100 Ω → resistor queima</div>
+                <div style="color:#ff6a86;" data-i18n-html="tut.p7.no2">✗&nbsp; LED direto no 5 V → LED queima</div>
               </div>
-              <p class="tut-p" style="margin-top:13px;">
-                Dica: tensão alta pede resistor maior. Na dúvida, prefira o
-                <b>470 Ω</b>.
-              </p>
+              <p class="tut-p" style="margin-top:13px;" data-i18n-html="tut.p7.tip"></p>
             </div>
 
             <!-- ░ Página 8 — Controles ░ -->
             <div id="tutorialPage8" style="display:none;">
-              <h2 class="tut-h">Controles</h2>
+              <h2 class="tut-h" data-i18n="tut.p8.h">Controles</h2>
               <div class="ctrl-list">
-                <div><span class="ctrl-key">← →</span><span class="ctrl-desc">Mover a peça</span></div>
-                <div><span class="ctrl-key">↑</span><span class="ctrl-desc">Girar a peça</span></div>
-                <div><span class="ctrl-key">↓</span><span class="ctrl-desc">Acelerar a queda</span></div>
-                <div><span class="ctrl-key sm">ESPAÇO<br/>ou ENTER</span><span class="ctrl-desc">Queda imediata (hard drop)</span></div>
-                <div><span class="ctrl-key">R</span><span class="ctrl-desc">Reiniciar a partida</span></div>
+                <div><span class="ctrl-key">← →</span><span class="ctrl-desc" data-i18n="tut.p8.move">Mover a peça</span></div>
+                <div><span class="ctrl-key">↑</span><span class="ctrl-desc" data-i18n="tut.p8.rotate">Girar a peça</span></div>
+                <div><span class="ctrl-key">↓</span><span class="ctrl-desc" data-i18n="tut.p8.down">Acelerar a queda</span></div>
+                <div><span class="ctrl-key sm" data-i18n-html="tut.p8.dropKey">ESPAÇO<br/>ou ENTER</span><span class="ctrl-desc" data-i18n="tut.p8.drop">Queda imediata (hard drop)</span></div>
+                <div><span class="ctrl-key">R</span><span class="ctrl-desc" data-i18n="tut.p8.restart">Reiniciar a partida</span></div>
               </div>
-              <p class="tut-p" style="text-align:center;margin-top:14px;">
-                No celular, use os <b>botões na tela</b> ou
-                <b>toque/arraste</b> direto no tabuleiro.
-              </p>
-              <p class="tut-p" style="text-align:center;font-weight:800;color:#5fe39a;">
-                Boa sorte!
-              </p>
+              <p class="tut-p" style="text-align:center;margin-top:14px;" data-i18n-html="tut.p8.mobile"></p>
+              <p class="tut-p" style="text-align:center;font-weight:800;color:#5fe39a;" data-i18n="tut.p8.gl">Boa sorte!</p>
             </div>
 
           </div><!-- /tutorialScrollContent -->
 
           <div id="tutorialFooter">
             <div class="tut-nav">
-              <button id="btnPrevTutorial" class="tut-nav-btn" style="visibility:hidden;">◄ Anterior</button>
+              <button id="btnPrevTutorial" class="tut-nav-btn" style="visibility:hidden;" data-i18n="tut.prev">◄ Anterior</button>
               <span id="tutorialPageIndicator" style="color:var(--acc-hi);font-size:12px;font-weight:700;">1/8</span>
-              <button id="btnNextTutorial" class="tut-nav-btn">Próxima ►</button>
+              <button id="btnNextTutorial" class="tut-nav-btn" data-i18n="tut.next">Próxima ►</button>
             </div>
-            <button id="btnIniciar">Iniciar</button>
+            <button id="btnIniciar" data-i18n="tut.start">Iniciar</button>
           </div>
         </div><!-- /tutorialScreen -->
 
         <!-- Game Over -->
         <div id="message" class="overlay">
-          <h2 style="font-size:18px;">CURTO-CIRCUITO!</h2>
-          <p style="margin-bottom:4px;">O tabuleiro encheu de componentes.</p>
-          <div class="final-score">Pontuação: <span id="finalScore">0</span></div>
-          <div style="font-size:13px;color:var(--acc-hi);margin-bottom:14px;font-family:var(--font-mono);">Recorde: <span id="finalHighScore">0</span></div>
-          <p><b style="color:var(--acc-hi)">R</b> ou <b style="color:var(--acc-hi)">REINICIAR</b> para jogar novamente</p>
+          <h2 style="font-size:18px;" data-i18n="over.title">CURTO-CIRCUITO!</h2>
+          <p style="margin-bottom:4px;" data-i18n="over.desc">O tabuleiro encheu de componentes.</p>
+          <div class="final-score"><span data-i18n="over.score">Pontuação:</span> <span id="finalScore">0</span></div>
+          <div style="font-size:13px;color:var(--acc-hi);margin-bottom:14px;font-family:var(--font-mono);"><span data-i18n="over.record">Recorde:</span> <span id="finalHighScore">0</span></div>
+          <p data-i18n-html="over.again"></p>
         </div>
 
         <!-- Circuit Result -->
@@ -845,7 +783,7 @@
           <h2 id="statusTitle"></h2>
           <div id="statusReasons" style="font-size:12px;color:#ddd;line-height:1.5;display:flex;flex-direction:column;gap:2px;text-align:center;"></div>
           <p style="color:#8898c4;animation:blink 1.5s infinite;font-size:11px;margin-top:8px;font-weight:600;letter-spacing:0.5px;">
-            DROP para continuar
+            <span data-i18n="status.continue">DROP para continuar</span>
           </p>
         </div>
       </div><!-- /canvasWrapper -->
@@ -855,25 +793,25 @@
         <div class="touch-row">
           <button id="btnTouchLeft" class="touch-btn">
             <span class="btn-icon">◄</span>
-            <span class="btn-label">Esquerda</span>
+            <span class="btn-label" data-i18n="touch.left">Esquerda</span>
           </button>
           <button id="btnTouchRotate" class="touch-btn">
             <span class="btn-icon">↻</span>
-            <span class="btn-label">Girar</span>
+            <span class="btn-label" data-i18n="touch.rotate">Girar</span>
           </button>
           <button id="btnTouchRight" class="touch-btn">
             <span class="btn-icon">►</span>
-            <span class="btn-label">Direita</span>
+            <span class="btn-label" data-i18n="touch.right">Direita</span>
           </button>
         </div>
         <div class="touch-row">
           <button id="btnTouchDown" class="touch-btn">
             <span class="btn-icon">▼</span>
-            <span class="btn-label">Descer</span>
+            <span class="btn-label" data-i18n="touch.down">Descer</span>
           </button>
           <button id="btnTouchDrop" class="touch-btn touch-btn-drop">
             <span class="drop-main">DROP</span>
-            <span class="drop-key"><span class="key-cap">ESPAÇO / ENTER</span></span>
+            <span class="drop-key"><span class="key-cap" data-i18n="touch.dropKey">ESPAÇO / ENTER</span></span>
           </button>
         </div>
       </div>

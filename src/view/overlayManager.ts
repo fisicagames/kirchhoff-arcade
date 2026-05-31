@@ -1,5 +1,6 @@
 import { state } from '../model/gameState';
 import { audio, updateMusicPlayback } from '../core/audioManager';
+import { t } from '../core/i18n';
 import type { GameAction } from '../model/types';
 
 export function showStatusOverlay(actions: GameAction[]): void {
@@ -20,7 +21,7 @@ export function showStatusOverlay(actions: GameAction[]): void {
   const reasonsEl = document.getElementById('statusReasons');
 
   if (titleEl) {
-    titleEl.textContent = isBurn ? 'Circuito Queimou!' : 'Circuito Fechado!';
+    titleEl.textContent = isBurn ? t('status.burned') : t('status.closed');
     titleEl.style.color = isBurn ? '#ff4444' : '#55ee88';
   }
   if (overlayEl) {

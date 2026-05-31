@@ -1,6 +1,7 @@
 import { resolveAnalyzing } from '../controller/gameController';
 import { state } from '../model/gameState';
 import { updateMusicPlayback, toggleMute, isMuted } from '../core/audioManager';
+import { t, toggleLang, applyI18n } from '../core/i18n';
 
 let currentPage = 1;
 const TOTAL_PAGES = 8;
@@ -24,7 +25,7 @@ export function showTutorial(): void {
   // Mid-game help freezes the board (music keeps playing).
   if (state.gameStarted && !state.gameOver) state.helpOpen = true;
   const btn = document.getElementById('btnIniciar');
-  if (btn) btn.textContent = state.gameStarted ? 'Continuar' : 'Iniciar';
+  if (btn) btn.textContent = state.gameStarted ? t('tut.continue') : t('tut.start');
   document.getElementById('tutorialScreen')?.classList.add('show');
 }
 
@@ -75,10 +76,38 @@ export function setupTutorialNav(onInit: () => void): void {
     if (musicaIcon) musicaIcon.textContent = isMuted() ? '🔇' : '🔊';
   });
 
-  // ENGLISH — i18n fica para uma etapa futura
+  // Language toggle — switches PT ⇄ EN and re-applies every translation.
   document.getElementById('btnEnglish')?.addEventListener('click', () => {
-    /* placeholder */
+    toggleLang();
+    refreshLanguage();
   });
+}
+
+/** Re-render all language-dependent text (static DOM + dynamic widgets). */
+export function refreshLanguage(): void {
+  applyI18n();
+  syncPauseButton();
+  syncSoundButton();
+  // Iniciar/Continuar label depends on game state.
+  const ini = document.getElementById('btnIniciar');
+  if (ini) ini.textContent = state.gameStarted ? t('tut.continue') : t('tut.start');
+  refreshDynamic?.();
+}
+
+// Allows main.tsx to register a callback that redraws HUD + next-piece text.
+let refreshDynamic: (() => void) | null = null;
+export function onLanguageRefresh(cb: () => void): void { refreshDynamic = cb; }
+
+function syncPauseButton(): void {
+  const btn = document.getElementById('btnPause');
+  if (!btn) return;
+  btn.textContent = state.isPaused ? t('btn.resume') : t('btn.pause');
+}
+
+function syncSoundButton(): void {
+  const btn = document.getElementById('btnSound');
+  if (!btn) return;
+  btn.textContent = isMuted() ? t('btn.soundOff') : t('btn.sound');
 }
 
 export function setupPauseButton(): void {
@@ -92,10 +121,10 @@ export function setupPauseButton(): void {
     const btn = document.getElementById('btnPause');
     if (!btn) return;
     if (state.isPaused) {
-      btn.textContent = 'RETOMAR';
+      btn.textContent = t('btn.resume');
       btn.style.color = '#55ee88';
     } else {
-      btn.textContent = 'PAUSA';
+      btn.textContent = t('btn.pause');
       btn.style.color = '';
     }
   });
@@ -106,7 +135,7 @@ export function setupSoundButton(): void {
   if (!btn) return;
 
   const update = (): void => {
-    btn.textContent = isMuted() ? 'SOM OFF' : 'SOM';
+    btn.textContent = isMuted() ? t('btn.soundOff') : t('btn.sound');
     btn.style.color = isMuted() ? '#cc4466' : '';
   };
 

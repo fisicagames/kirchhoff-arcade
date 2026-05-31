@@ -16,7 +16,13 @@
       "Bash(node -e \"const s=require\\('fs'\\).readFileSync\\('src/view/legendView.ts','utf8'\\); console.log\\('strokeRect:', \\(s.match\\(/strokeRect/g\\)||[]\\).length, '| spark:', \\(s.match\\(/spark/g\\)||[]\\).length\\);\")",
       "Bash(node -e \"const s=require\\('fs'\\).readFileSync\\('src/view/hud.ts','utf8'\\); console.log\\(s.includes\\('1200'\\) && s.includes\\('Kirchhoff'\\) ? 'ranks OK' : 'CHECK'\\); console.log\\('rankFor used:', \\(s.match\\(/rankFor/g\\)||[]\\).length\\);\")",
       "Bash(node -e \"const s=require\\('fs'\\).readFileSync\\('src/model/gameState.ts','utf8'\\); const lines=s.split\\('\\\\n'\\); lines.forEach\\(\\(l,i\\)=>{ if\\(l.includes\\('hasUsedLimpar'\\)||l.includes\\('hasUsedPause'\\)\\) console.log\\(\\(i+1\\)+': '+l\\); }\\);\")",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(awk 'NR>=520 && NR<=620' index.html)",
+      "Bash(awk 'NR>=620 && NR<=900' index.html)",
+      "Bash(npx tsc *)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(node_modules/.bin/tsc --noEmit)",
+      "Read(//tmp/**)"
     ]
   }
 }
