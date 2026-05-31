@@ -97,6 +97,7 @@ export interface LightAction {
   litCount: number;
   litPieceIds: string[];
   reasons: string[];
+  activeCount: number;
 }
 
 export type GameAction = BurnAction | LightAction;

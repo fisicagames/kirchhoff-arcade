@@ -99,6 +99,7 @@ function analyzeComponent(compCells: CompCell[]): GameAction[] {
   let litCount   = 0;
   const burnedIds = new Set<string>();
   const litIds    = new Set<string>();
+  const activePieceIds = new Set<string>();
   const burnR:  string[] = [];
   const succR:  string[] = [];
 
@@ -112,6 +113,7 @@ function analyzeComponent(compCells: CompCell[]): GameAction[] {
       burnR.push(`Corrente no LED (${I_mA.toFixed(1)} mA) excedeu 28 mA`);
     } else if (I_mA >= 1) {
       litCount++; litIds.add(led.pieceId);
+      activePieceIds.add(led.pieceId); // LED com corrente
       succR.push(`LED acendeu com ${I_mA.toFixed(1)} mA`);
     }
   }
@@ -122,6 +124,7 @@ function analyzeComponent(compCells: CompCell[]): GameAction[] {
       shouldBurn = true; burnedIds.add(realSources[i].pieceId!);
       burnR.push(`Curto! Fonte com ${I.toFixed(1)} A`);
     } else if (I > 0.001) {
+      activePieceIds.add(realSources[i].pieceId!); // Fonte com corrente
       succR.push(`Fonte ${realSources[i].value} V — ${(I * 1000).toFixed(1)} mA`);
     }
   }
@@ -133,6 +136,7 @@ function analyzeComponent(compCells: CompCell[]): GameAction[] {
       shouldBurn = true; burnedIds.add(r.pieceId);
       burnR.push(`Corrente no Resistor ${r.value} Ω (${I_mA.toFixed(1)} mA) excedeu 50 mA`);
     } else if (V > 0.01) {
+      activePieceIds.add(r.pieceId); // Resistor com corrente
       succR.push(`Resistor ${r.value} Ω — ${V.toFixed(1)} V e ${I_mA.toFixed(1)} mA`);
     }
   }
@@ -159,7 +163,14 @@ function analyzeComponent(compCells: CompCell[]): GameAction[] {
     for (let y = 0; y < ROWS; y++) for (let x = 0; x < COLS; x++) {
       if (state.grid[y][x] && adjIds.has(state.grid[y][x]!.pieceId)) toRemove.push([x, y]);
     }
-    actions.push({ type: 'light', cells: toRemove, litCount, litPieceIds: [...litIds], reasons: [...new Set(succR)] });
+    actions.push({ 
+      type: 'light', 
+      cells: toRemove, 
+      litCount, 
+      litPieceIds: [...litIds], 
+      reasons: [...new Set(succR)],
+      activeCount: activePieceIds.size
+    });
   }
 
   return actions;

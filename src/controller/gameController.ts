@@ -35,7 +35,7 @@ export function spawn(): void {
   const oldLevel = state.level;
   state.piecesSpawnedCount++;
 
-  state.level        = Math.floor(state.piecesSpawnedCount / 10) + 1;
+  state.level        = Math.floor(state.piecesSpawnedCount / 20) + 1;
   state.dropInterval = Math.max(200, 1600 - (state.level - 1) * 100);
 
   if (state.level === 5 && oldLevel < 5) state.currentBag = [];
@@ -209,9 +209,11 @@ export function applyActions(): void {
         state.animatingCells.push({ x, y, cell: { ...cell }, timer: 500, atype: 'lit', isActLit });
         state.grid[y][x] = null;
       }
-      state.score += action.litCount > 0
-        ? 100 * action.litCount + (action.litCount > 1 ? 200 : 0)
-        : 50;
+      
+      // Pontuação;  Soma = 10 * numComponentes
+      const activeCount = action.activeCount || 0;
+      state.score += (10 * activeCount) * activeCount;
+      
       state.lines++;
     }
   }
