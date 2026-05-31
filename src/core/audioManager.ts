@@ -1,10 +1,15 @@
 import { state } from '../model/gameState';
 
+import bgMusicSrc from '../assets/melodyayresgriffiths.mp3';
+import rotateSfxSrc from '../assets/rotate.mp3';
+import dropSfxSrc from '../assets/drop.mp3';
+import sparkSfxSrc from '../assets/spark.mp3';
+
 export const audio = {
-  bgMusic:   new Audio('./src/assets/melodyayresgriffiths.mp3?v=2'),
-  rotateSfx: new Audio('./src/assets/rotate.mp3?v=2'),
-  dropSfx:   new Audio('./src/assets/drop.mp3?v=3'),
-  sparkSfx:  new Audio('./src/assets/spark.mp3?v=2'),
+  bgMusic:   new Audio(bgMusicSrc),
+  rotateSfx: new Audio(rotateSfxSrc),
+  dropSfx:   new Audio(dropSfxSrc),
+  sparkSfx:  new Audio(sparkSfxSrc),
 };
 
 audio.bgMusic.loop   = true;
