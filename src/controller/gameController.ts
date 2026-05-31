@@ -43,12 +43,30 @@ export function spawn(): void {
   state.nextPiece = state.piecesSpawnedCount % 3 === 2 ? blockPiece() : rndPiece();
 
   const w = Math.max(...state.currentPiece!.cells.map(c => c.x)) + 1;
-  state.currentPiece!.x = Math.floor((COLS - w) / 2);
+  
+  // 1. Descobrir todas as posições horizontais (X) que não causam colisão imediata
+  const validXs: number[] = [];
+  for (let candidateX = 0; candidateX <= COLS - w; candidateX++) {
+    if (!collides(state.currentPiece!, candidateX, 0)) {
+      validXs.push(candidateX);
+    }
+  }
+
+  // 2. Se houver posições válidas, sorteia uma. Se não, deixa no centro para forçar o Game Over.
+  if (validXs.length > 0) {
+    const randomIndex = Math.floor(Math.random() * validXs.length);
+    state.currentPiece!.x = validXs[randomIndex];
+  } else {
+    state.currentPiece!.x = Math.floor((COLS - w) / 2);
+  }
+  
   state.currentPiece!.y = 0;
 
+  // 3. Verificação de Game Over (se a peça colidir na posição final escolhida)
   if (collides(state.currentPiece!, state.currentPiece!.x, state.currentPiece!.y)) {
     endGame();
   }
+  
   drawNext();
 }
 
