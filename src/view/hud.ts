@@ -3,10 +3,10 @@ import { drawLegendPieces } from './legendView';
 
 // Rank shown on the start menu, derived from the all-time high score.
 const RANKS: [number, string][] = [
-  [6000, 'Mestre ⚡'],
-  [3000, 'Engenheiro ⚡'],
-  [1500, 'Técnico ⚡'],
-  [500,  'Aprendiz ⚡'],
+  [1200, 'Kirchhoff ⚡'],
+  [800,  'Engenheiro ⚡'],
+  [400,  'Técnico ⚡'],
+  [200,  'Aprendiz ⚡'],
   [0,    'Iniciante ⚡'],
 ];
 

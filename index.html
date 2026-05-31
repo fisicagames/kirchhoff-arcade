@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>Kirchhoff Arcade</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
     <style>
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -28,7 +31,7 @@
         --muted:    #8290bf;
         --danger:   #d84070;
         --success:  #35c070;
-        --font-ui:  system-ui, -apple-system, 'Segoe UI', sans-serif;
+        --font-ui:  'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
         --font-mono:'SF Mono', 'Fira Code', 'Consolas', 'Courier New', monospace;
       }
 
@@ -266,10 +269,105 @@
       #tutorialScrollContent {
         flex: 1;
         overflow-y: auto;
-        padding: 12px 14px 6px;
+        padding: 14px 16px 8px;
         scrollbar-width: thin;
         scrollbar-color: var(--border) transparent;
+        font-size: 15.5px;
+        color: #c6d0ee;
       }
+
+      /* ── Tutorial content (larger, friendlier) ── */
+      .tut-h {
+        font-size: 21px;
+        font-weight: 800;
+        color: var(--acc-hi);
+        text-align: center;
+        margin-bottom: 12px;
+        letter-spacing: 0.3px;
+        text-shadow: 0 0 12px rgba(122,159,255,0.35);
+      }
+      .tut-p {
+        font-size: 15.5px;
+        line-height: 1.6;
+        color: #c6d0ee;
+        margin-bottom: 13px;
+      }
+      .tut-p b   { color: #ffffff; font-weight: 800; }
+      .tut-p .ok { color: #5fe39a; font-weight: 800; }
+      .tut-p .no { color: #ff6a86; font-weight: 800; }
+      .tut-card {
+        background: #06091a;
+        border: 1px solid rgba(91,127,255,0.28);
+        border-radius: 10px;
+        padding: 12px;
+        margin-bottom: 14px;
+      }
+      .tut-card.bad  { border-color: rgba(216,64,112,0.55); background: #160a12; }
+      .tut-card.good { border-color: rgba(53,192,112,0.45); background: #07140d; }
+      .ill {
+        display: block;
+        margin: 4px auto 2px;
+        width: 100%;
+        max-width: 230px;
+        height: auto;
+        image-rendering: auto;
+      }
+      .tut-cap {
+        text-align: center;
+        font-size: 14px;
+        font-weight: 700;
+        margin-top: 6px;
+      }
+      .tut-cap.ok { color: #5fe39a; }
+      .tut-cap.no { color: #ff6a86; }
+      .tut-sub {
+        text-align: center;
+        font-size: 13px;
+        color: #9aa6cf;
+        margin-top: 2px;
+      }
+      .tut-legend {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-end;
+        gap: 6px;
+        background: #06091a;
+        border: 1px solid rgba(91,127,255,0.22);
+        border-radius: 8px;
+        padding: 10px 8px;
+        margin-bottom: 13px;
+      }
+      .tut-legend > div { text-align: center; }
+      .tut-legend span { font-size: 12px; font-weight: 700; }
+      .tut-legend canvas { display: block; margin: 0 auto 3px; }
+      .safe-list {
+        background: #06091a;
+        border: 1px solid rgba(91,127,255,0.28);
+        border-radius: 10px;
+        padding: 13px 14px;
+        font-family: var(--font-mono);
+        font-size: 14.5px;
+        line-height: 2.05;
+        text-align: left;
+      }
+      .ctrl-list {
+        background: #06091a;
+        border: 1px solid rgba(91,127,255,0.28);
+        border-radius: 10px;
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 13px;
+      }
+      .ctrl-list > div { display: flex; align-items: center; gap: 12px; font-size: 15px; color: #c6d0ee; }
+      .ctrl-key {
+        color: #ffd24a;
+        font-weight: 800;
+        min-width: 42px;
+        text-align: center;
+        font-size: 19px;
+      }
+      .ctrl-key.sm { font-size: 14px; }
       #tutorialFooter {
         flex-shrink: 0;
         padding: 7px 12px 11px;
@@ -561,65 +659,164 @@
               </div>
             </div>
 
+            <!-- ░ Página 2 — Como funciona ░ -->
             <div id="tutorialPage2" style="display:none;">
-              <h3 style="margin-bottom:8px;font-size:13px;">Exemplo de Ligação</h3>
-              <div style="background:#06091a;padding:8px;border:1px solid rgba(91,127,255,0.3);border-radius:6px;margin-bottom:14px;">
-                <p style="font-size:11px;color:#aabbff;margin-bottom:5px;font-weight:600;">Circuito fechado correto:</p>
-                <canvas id="tutorialCanvas" width="200" height="110" style="display:block;margin:0 auto;"></canvas>
-              </div>
-              <h3 style="margin-bottom:10px;font-size:13px;">Fontes de Tensão e Fios</h3>
-              <div style="display:flex;justify-content:space-around;margin-bottom:10px;background:#06091a;padding:8px;border-radius:5px;border:1px solid rgba(91,127,255,0.2);" class="legend">
-                <div style="text-align:center"><canvas id="lg_s3" width="90" height="30"></canvas><br/><span style="font-size:10px;color:#44ccff">3 V</span></div>
-                <div style="text-align:center"><canvas id="lg_s5" width="90" height="30"></canvas><br/><span style="font-size:10px;color:#ffcc00">5 V</span></div>
-                <div style="text-align:center"><canvas id="lg_s9" width="90" height="30"></canvas><br/><span style="font-size:10px;color:#bb33ff">9 V</span></div>
-              </div>
-              <p style="font-size:12px;text-align:left;line-height:1.5;margin-bottom:10px;color:#b0bbdd;">
-                <b style="color:#fff">Fontes</b> fornecem energia. Ligar (+) e (−) diretamente sem resistência causa <span style="color:#ff5577;font-weight:700">curto-circuito!</span>
+              <h2 class="tut-h">Como Funciona</h2>
+              <p class="tut-p">
+                A energia só circula em um <b>circuito fechado</b>: um caminho
+                contínuo que sai do polo <b>(+)</b> da fonte e volta ao polo
+                <b>(−)</b>. Monte esse caminho com as peças que caem.
               </p>
-              <div style="display:flex;justify-content:space-around;background:#06091a;padding:8px;border-radius:5px;border:1px solid rgba(91,127,255,0.2);" class="legend">
-                <div style="text-align:center"><canvas id="lg_w" width="90" height="30"></canvas><br/><span style="font-size:10px">Fio condutor</span></div>
-                <div style="text-align:center"><canvas id="lg_b" width="30" height="30"></canvas><br/><span style="font-size:10px">Bloco isolante</span></div>
+              <div class="tut-card good">
+                <canvas id="ill_ok" class="ill" width="220" height="130"></canvas>
+                <div class="tut-cap ok">✓ Circuito completo</div>
+                <div class="tut-sub">Fonte → resistor → LED → volta à fonte</div>
               </div>
+              <p class="tut-p">
+                Neste exemplo a corrente passa pelo <b>resistor</b> (que a
+                limita) e acende o <b class="ok">LED</b> com segurança. Cada
+                circuito fechado vale pontos!
+              </p>
             </div>
 
+            <!-- ░ Página 3 — Fontes e fios ░ -->
             <div id="tutorialPage3" style="display:none;">
-              <h3 style="margin-bottom:10px;font-size:13px;">LEDs e Resistores</h3>
-              <div style="display:flex;justify-content:space-around;margin-bottom:8px;background:#06091a;padding:8px;border-radius:5px;border:1px solid rgba(91,127,255,0.2);" class="legend">
-                <div style="text-align:center"><canvas id="lg_lr" width="90" height="30"></canvas><br/><span style="font-size:10px;color:#ff4466">Vermelho</span></div>
-                <div style="text-align:center"><canvas id="lg_lg" width="90" height="30"></canvas><br/><span style="font-size:10px;color:#44ff88">Verde</span></div>
-                <div style="text-align:center"><canvas id="lg_ly" width="90" height="30"></canvas><br/><span style="font-size:10px;color:#ffee44">Amarelo</span></div>
+              <h2 class="tut-h">Fontes e Fios</h2>
+              <p class="tut-p">
+                As <b>fontes (baterias)</b> empurram a corrente. Quanto maior a
+                tensão, mais "força" — e mais cuidado é preciso.
+              </p>
+              <div class="tut-legend">
+                <div><canvas id="lg_s3" width="90" height="30"></canvas><span style="color:#44ccff">3 V</span></div>
+                <div><canvas id="lg_s5" width="90" height="30"></canvas><span style="color:#ffcc00">5 V</span></div>
+                <div><canvas id="lg_s9" width="90" height="30"></canvas><span style="color:#bb33ff">9 V</span></div>
               </div>
-              <p style="font-size:12px;text-align:left;line-height:1.5;margin-bottom:10px;color:#b0bbdd;"><b style="color:#fff">LEDs:</b> precisam de 1–28 mA. Acima disso <b style="color:#ff5555">queimam</b> e viram lixo no tabuleiro!</p>
-              <div style="display:flex;justify-content:space-around;margin-bottom:8px;background:#06091a;padding:8px;border-radius:5px;border:1px solid rgba(91,127,255,0.2);" class="legend">
-                <div style="text-align:center"><canvas id="lg_r1" width="90" height="30"></canvas><br/><span style="font-size:10px">100 Ω</span></div>
-                <div style="text-align:center"><canvas id="lg_r2" width="90" height="30"></canvas><br/><span style="font-size:10px">220 Ω</span></div>
-                <div style="text-align:center"><canvas id="lg_r4" width="90" height="30"></canvas><br/><span style="font-size:10px">470 Ω</span></div>
+              <p class="tut-p">
+                Cada fonte tem um polo <b style="color:#e63946">(+)</b> e um
+                <b style="color:#457b9d">(−)</b>. A corrente sai do (+) e precisa
+                retornar ao (−).
+              </p>
+              <div class="tut-legend">
+                <div><canvas id="lg_w" width="90" height="30"></canvas><span>Fio</span></div>
+                <div><canvas id="lg_b" width="30" height="30"></canvas><span>Bloco</span></div>
               </div>
-              <p style="font-size:12px;text-align:left;line-height:1.5;color:#b0bbdd;"><b style="color:#fff">Resistores:</b> limitam a corrente. Suportam até 50 mA.</p>
+              <p class="tut-p">
+                O <b>fio</b> conduz a corrente livremente para fechar o caminho.
+                O <b>bloco</b> é isolante: não conduz, serve só para preencher
+                espaços.
+              </p>
             </div>
 
+            <!-- ░ Página 4 — LEDs e resistores ░ -->
             <div id="tutorialPage4" style="display:none;">
-              <h3 style="margin-bottom:10px;font-size:13px;">Combinações Seguras</h3>
-              <p style="font-size:12px;text-align:left;line-height:1.5;margin-bottom:10px;color:#b0bbdd;">Lei de Ohm: <b style="color:#fff;font-family:var(--font-mono)">I = V ÷ R</b></p>
-              <div style="background:#06091a;padding:12px;border-radius:6px;border:1px solid rgba(91,127,255,0.3);text-align:left;font-size:13px;line-height:2.1;font-family:var(--font-mono);">
-                <div style="color:#55ee88">✓  3 V + 100 Ω → LED acende</div>
-                <div style="color:#55ee88">✓  5 V + 220 Ω → LED acende</div>
-                <div style="color:#55ee88">✓  9 V + 470 Ω → LED acende</div>
-                <div style="color:#ff4455;margin-top:4px;">✗  9 V + 100 Ω → Resistor queima!</div>
-                <div style="color:#ff4455;">✗  LED direto no 5 V → LED queima!</div>
+              <h2 class="tut-h">LEDs e Resistores</h2>
+              <p class="tut-p">
+                O <b>LED</b> é a lâmpada do jogo. Ele acende quando recebe entre
+                <b class="ok">1 e 28 mA</b>. Pouca corrente: não acende. Corrente
+                demais: <b class="no">queima!</b>
+              </p>
+              <div class="tut-legend">
+                <div><canvas id="lg_lr" width="90" height="30"></canvas><span style="color:#ff4466">Vermelho</span></div>
+                <div><canvas id="lg_lg" width="90" height="30"></canvas><span style="color:#44ff88">Verde</span></div>
+                <div><canvas id="lg_ly" width="90" height="30"></canvas><span style="color:#ffee44">Amarelo</span></div>
               </div>
+              <p class="tut-p">
+                O <b>resistor</b> é o protetor: ele <b>limita a corrente</b> para
+                o LED não queimar. Valores maiores (Ω) limitam mais.
+              </p>
+              <div class="tut-legend">
+                <div><canvas id="lg_r1" width="90" height="30"></canvas><span>100 Ω</span></div>
+                <div><canvas id="lg_r2" width="90" height="30"></canvas><span>220 Ω</span></div>
+                <div><canvas id="lg_r4" width="90" height="30"></canvas><span>470 Ω</span></div>
+              </div>
+              <p class="tut-p">
+                O próprio resistor também tem limite: acima de
+                <b class="no">50 mA</b> ele queima.
+              </p>
             </div>
 
+            <!-- ░ Página 5 — Curto-circuito ░ -->
             <div id="tutorialPage5" style="display:none;">
-              <h3 style="margin-bottom:12px;font-size:13px;">Controles</h3>
-              <div style="background:#06091a;padding:14px;border-radius:6px;border:1px solid rgba(91,127,255,0.3);display:flex;flex-direction:column;gap:11px;font-size:12px;color:#b0bbdd;text-align:left;">
-                <div style="display:flex;align-items:center;gap:10px;"><span style="color:#ffcc00;font-size:18px;width:32px;text-align:center;">← →</span><span>Mover a peça</span></div>
-                <div style="display:flex;align-items:center;gap:10px;"><span style="color:#ffcc00;font-size:18px;width:32px;text-align:center;">↑</span><span>Girar a peça</span></div>
-                <div style="display:flex;align-items:center;gap:10px;"><span style="color:#ffcc00;font-size:18px;width:32px;text-align:center;">↓</span><span>Acelerar queda</span></div>
-                <div style="display:flex;align-items:center;gap:10px;"><span style="color:#ffcc00;font-size:13px;font-weight:700;width:32px;text-align:center;">SPC</span><span>Hard drop (queda imediata)</span></div>
-                <div style="display:flex;align-items:center;gap:10px;"><span style="color:#ffcc00;font-size:13px;font-weight:700;width:32px;text-align:center;">R</span><span>Reiniciar a partida</span></div>
+              <h2 class="tut-h">⚡ Curto-circuito</h2>
+              <p class="tut-p">
+                Ligar o <b style="color:#e63946">(+)</b> direto no
+                <b style="color:#457b9d">(−)</b> só com fios, <b>sem nada que
+                limite a corrente</b>, cria um <b class="no">curto-circuito</b>.
+              </p>
+              <div class="tut-card bad">
+                <canvas id="ill_short" class="ill" width="220" height="130"></canvas>
+                <div class="tut-cap no">✗ Curto-circuito</div>
+                <div class="tut-sub">Corrente enorme — a fonte queima!</div>
               </div>
-              <p style="margin-top:14px;font-size:13px;font-weight:700;color:#55ee88;text-align:center;">Boa Sorte!</p>
+              <p class="tut-p">
+                Sem resistência, a corrente dispara (mais de <b>1 A</b>) e a
+                fonte é destruída, deixando <b class="no">lixo</b> no tabuleiro.
+                Sempre coloque um resistor ou um LED no caminho!
+              </p>
+            </div>
+
+            <!-- ░ Página 6 — Erros com LED ░ -->
+            <div id="tutorialPage6" style="display:none;">
+              <h2 class="tut-h">Erros Comuns com LED</h2>
+              <div class="tut-card bad">
+                <canvas id="ill_burn" class="ill" width="220" height="130"></canvas>
+                <div class="tut-cap no">✗ LED sem resistor</div>
+                <div class="tut-sub">9 V direto no LED → mais de 28 mA → queima</div>
+              </div>
+              <p class="tut-p">
+                Ligar o LED <b>direto na fonte</b>, sem um resistor limitando,
+                deixa passar corrente demais e ele <b class="no">queima</b>.
+              </p>
+              <div class="tut-card bad">
+                <canvas id="ill_rev" class="ill" width="220" height="130"></canvas>
+                <div class="tut-cap no">✗ Polaridade invertida</div>
+                <div class="tut-sub">(−) ligado onde deveria ser (+)</div>
+              </div>
+              <p class="tut-p">
+                O LED só funciona em <b>um sentido</b>. Se o lado (+) e o (−)
+                estiverem trocados, ele <b class="no">não acende</b> — gire a
+                peça para corrigir.
+              </p>
+            </div>
+
+            <!-- ░ Página 7 — Combinações seguras ░ -->
+            <div id="tutorialPage7" style="display:none;">
+              <h2 class="tut-h">Combinações Seguras</h2>
+              <p class="tut-p">
+                Use a <b>Lei de Ohm</b> para escolher o resistor certo:
+                <b style="font-family:var(--font-mono)">I = V ÷ R</b>
+                (corrente = tensão ÷ resistência).
+              </p>
+              <div class="safe-list">
+                <div style="color:#5fe39a">✓&nbsp; 3 V + 100 Ω → acende</div>
+                <div style="color:#5fe39a">✓&nbsp; 5 V + 220 Ω → acende</div>
+                <div style="color:#5fe39a">✓&nbsp; 9 V + 470 Ω → acende</div>
+                <div style="color:#ff6a86;margin-top:6px;">✗&nbsp; 9 V + 100 Ω → resistor queima</div>
+                <div style="color:#ff6a86;">✗&nbsp; LED direto no 5 V → LED queima</div>
+              </div>
+              <p class="tut-p" style="margin-top:13px;">
+                Dica: tensão alta pede resistor maior. Na dúvida, prefira o
+                <b>470 Ω</b>.
+              </p>
+            </div>
+
+            <!-- ░ Página 8 — Controles ░ -->
+            <div id="tutorialPage8" style="display:none;">
+              <h2 class="tut-h">Controles</h2>
+              <div class="ctrl-list">
+                <div><span class="ctrl-key">← →</span><span>Mover a peça</span></div>
+                <div><span class="ctrl-key">↑</span><span>Girar a peça</span></div>
+                <div><span class="ctrl-key">↓</span><span>Acelerar a queda</span></div>
+                <div><span class="ctrl-key sm">ESPAÇO</span><span>Queda imediata (hard drop)</span></div>
+                <div><span class="ctrl-key sm">R</span><span>Reiniciar a partida</span></div>
+              </div>
+              <p class="tut-p" style="text-align:center;margin-top:14px;">
+                No celular, use os <b>botões na tela</b> ou
+                <b>toque/arraste</b> direto no tabuleiro.
+              </p>
+              <p class="tut-p" style="text-align:center;font-weight:800;color:#5fe39a;">
+                Boa sorte! ⚡
+              </p>
             </div>
 
           </div><!-- /tutorialScrollContent -->
@@ -627,7 +824,7 @@
           <div id="tutorialFooter">
             <div class="tut-nav">
               <button id="btnPrevTutorial" class="tut-nav-btn" style="visibility:hidden;">◄ Anterior</button>
-              <span id="tutorialPageIndicator" style="color:var(--acc-hi);font-size:12px;font-weight:700;">1/5</span>
+              <span id="tutorialPageIndicator" style="color:var(--acc-hi);font-size:12px;font-weight:700;">1/8</span>
               <button id="btnNextTutorial" class="tut-nav-btn">Próxima ►</button>
             </div>
             <button id="btnIniciar">Iniciar</button>

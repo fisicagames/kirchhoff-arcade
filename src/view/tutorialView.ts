@@ -2,7 +2,7 @@ import { state } from '../model/gameState';
 import { updateMusicPlayback, toggleMute, isMuted } from '../core/audioManager';
 
 let currentPage = 1;
-const TOTAL_PAGES = 5;
+const TOTAL_PAGES = 8;
 
 function updatePage(): void {
   for (let i = 1; i <= TOTAL_PAGES; i++) {

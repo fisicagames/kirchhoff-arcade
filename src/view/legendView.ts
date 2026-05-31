@@ -55,28 +55,86 @@ export function drawLegendPieces(): void {
   }
 }
 
+// ─────────────────────────────────────────────────────────────
+// Tutorial circuit illustrations (schematic 3×3 loops)
+// ─────────────────────────────────────────────────────────────
+
+type LedColor = 'red' | 'green' | 'yellow';
+
+interface ScenarioCfg {
+  sourceV:    number;
+  left:       'resistor' | 'wire';
+  resistorV?: number;
+  bottom:     'led-ok' | 'led-burn' | 'led-rev' | 'wire';
+  ledColor?:  LedColor;
+  spark?:     boolean;   // ⚡ over the loop
+}
+
+function drawScenario(id: string, cfg: ScenarioCfg): void {
+  const canvas = document.getElementById(id) as HTMLCanvasElement | null;
+  if (!canvas) return;
+  const cx = canvas.getContext('2d')!;
+  cx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const s    = CELL;
+  const ox   = Math.round((canvas.width - 3 * s) / 2);
+  const topY = 14;
+  const midY = topY + s;
+  const botY = topY + 2 * s;
+  const wire = '#aaaaaa';
+
+  // Side wires (connect top row down to bottom row)
+  cx.fillStyle = wire;
+  cx.fillRect(ox + s / 2 - 2,         midY, 4, s); // left
+  cx.fillRect(ox + 2 * s + s / 2 - 2, midY, 4, s); // right
+
+  // Top row: voltage source  (+  body  −)
+  drawCell(cx, ox,         topY, { type: 'source', value: cfg.sourceV, t: '+', idx: 0, ports: { S: 1 } });
+  drawCell(cx, ox + s,     topY, { type: 'source', value: cfg.sourceV, idx: 1, ports: {} });
+  drawCell(cx, ox + 2 * s, topY, { type: 'source', value: cfg.sourceV, t: '-', idx: 2, ports: { S: 1 } });
+
+  // Left middle: resistor (or leave the plain wire)
+  if (cfg.left === 'resistor') {
+    cx.fillStyle = '#060921';
+    cx.fillRect(ox - 4, midY, s + 8, s);            // erase wire behind
+    drawCell(cx, ox, midY, { type: 'resistor', value: cfg.resistorV ?? 220, idx: 1, vertical: true, ports: { N: 1, S: 1 } });
+  }
+
+  // Bottom row
+  if (cfg.bottom === 'wire') {
+    cx.fillStyle = wire;
+    cx.fillRect(ox + s / 2, botY + s / 2 - 2, 2 * s, 4); // straight short
+  } else {
+    const lit    = cfg.bottom === 'led-ok';
+    const leftT  = cfg.bottom === 'led-rev' ? '-' : '+';
+    const rightT = cfg.bottom === 'led-rev' ? '+' : '-';
+    const color  = cfg.ledColor ?? 'green';
+    drawCell(cx, ox,         botY, { type: 'led', value: color, t: leftT,  idx: 0, ports: { N: 1 } }, { lit });
+    drawCell(cx, ox + s,     botY, { type: 'led', value: color, idx: 1, ports: {} }, { lit });
+    drawCell(cx, ox + 2 * s, botY, { type: 'led', value: color, t: rightT, idx: 2, ports: { N: 1 } }, { lit });
+
+    if (cfg.bottom === 'led-burn') {
+      cx.fillStyle = 'rgba(255,60,40,0.40)';
+      cx.fillRect(ox - 2, botY - 2, 3 * s + 4, s + 4);
+      cx.fillStyle = '#ff5533';
+      cx.font = 'bold 22px system-ui, sans-serif';
+      cx.textAlign = 'center'; cx.textBaseline = 'middle';
+      cx.fillText('✕', ox + 1.5 * s, botY + s / 2);
+    }
+  }
+
+  // Spark over the loop (warning is conveyed by the red card + caption)
+  if (cfg.spark) {
+    cx.fillStyle = '#ffd24a';
+    cx.font = 'bold 22px system-ui, sans-serif';
+    cx.textAlign = 'center'; cx.textBaseline = 'middle';
+    cx.fillText('⚡', ox + 1.5 * s, midY + s / 2);
+  }
+}
+
 export function drawTutorial(): void {
-  const tCanvas = document.getElementById('tutorialCanvas') as HTMLCanvasElement | null;
-  if (!tCanvas) return;
-
-  const tctx = tCanvas.getContext('2d')!;
-  tctx.clearRect(0, 0, tCanvas.width, tCanvas.height);
-
-  const s = CELL, oy = 10, ox = 55;
-
-  drawCell(tctx, ox,       oy, { type: 'source', value: 9, t: '+', ports: { S: 1 } });
-  drawCell(tctx, ox + s,   oy, { type: 'source', value: 9, idx: 1, ports: {} });
-  drawCell(tctx, ox + s*2, oy, { type: 'source', value: 9, t: '-', idx: 2, ports: { S: 1 } });
-
-  tctx.fillStyle = '#aaaaaa';
-  tctx.fillRect(ox + s/2 - 2, oy + s/2, 4, s*2);
-  tctx.fillRect(ox + s*2 + s/2 - 2, oy + s/2, 4, s*2);
-
-  drawCell(tctx, ox,       oy + s*2, { type: 'led', value: 'green', t: '+', ports: { N: 1 } },       { lit: true });
-  drawCell(tctx, ox + s,   oy + s*2, { type: 'led', value: 'green', idx: 1, ports: {} },              { lit: true });
-  drawCell(tctx, ox + s*2, oy + s*2, { type: 'led', value: 'green', t: '-', idx: 2, ports: { N: 1 } }, { lit: true });
-
-  tctx.fillStyle = '#0a1035';
-  tctx.fillRect(ox - 5, oy + s*0.8, s + 10, s*1.4);
-  drawCell(tctx, ox, oy + s, { type: 'resistor', value: 220, idx: 1, vertical: true, ports: { N: 1, S: 1 } });
+  drawScenario('ill_ok',    { sourceV: 5, left: 'resistor', resistorV: 220, bottom: 'led-ok',   ledColor: 'green' });
+  drawScenario('ill_short', { sourceV: 9, left: 'wire',                    bottom: 'wire',      spark: true });
+  drawScenario('ill_burn',  { sourceV: 9, left: 'wire',                    bottom: 'led-burn',  ledColor: 'red' });
+  drawScenario('ill_rev',   { sourceV: 5, left: 'resistor', resistorV: 220, bottom: 'led-rev',  ledColor: 'green' });
 }
