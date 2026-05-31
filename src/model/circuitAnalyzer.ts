@@ -131,7 +131,7 @@ function analyzeComponent(compCells: CompCell[]): GameAction[] {
     const I_mA = (V / r.value) * 1000;
     if (I_mA > 50) {
       shouldBurn = true; burnedIds.add(r.pieceId);
-      burnR.push(`Resistor ${r.value} Ω com ${I_mA.toFixed(1)} mA`);
+      burnR.push(`Corrente no Resistor ${r.value} Ω (${I_mA.toFixed(1)} mA) excedeu 50 mA`);
     } else if (V > 0.01) {
       succR.push(`Resistor ${r.value} Ω — ${V.toFixed(1)} V e ${I_mA.toFixed(1)} mA`);
     }
