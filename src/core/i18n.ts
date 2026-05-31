@@ -152,7 +152,7 @@ const DICT: Record<Lang, Record<string, string>> = {
     'tut.p6.p2':     'O LED só funciona em <b>um sentido</b>. Se o lado (+) e o (−) estiverem trocados, ele <b class="no">não acende</b> — gire a peça para corrigir.',
 
     // ── Tutorial: page 7 ──
-    'tut.p7.h':    'Combinações Seguras',
+    'tut.p7.h':    'Dicas de Combinações',
     'tut.p7.p1':   'Use a <b>Lei de Ohm</b> para escolher o resistor certo: <b style="font-family:var(--font-mono)">I = V / R</b> (corrente = tensão / resistência).',
     'tut.p7.ok1':  '✓&nbsp; 3 V / 100 Ω → acende',
     'tut.p7.ok2':  '✓&nbsp; 5 V / 220 Ω → acende',
@@ -264,7 +264,7 @@ const DICT: Record<Lang, Record<string, string>> = {
 
     // ── Tutorial: page 3 ──
     'tut.p3.h':    'Sources and Wires',
-    'tut.p3.p1':   '<b>Ideal sources</b>, batteries with no internal resistance, push the current. The higher the voltage, the more "force" — and the more care needed.',
+    'tut.p3.p1':   '<b>Ideal sources</b>, batteries with no internal resistance, push the current. The higher the voltage, the more "force" — and the more care you need.',
     'tut.p3.p2':   'Each source has a <b style="color:#e63946">(+)</b> pole and a <b style="color:#457b9d">(−)</b> pole. Current leaves (+) and must return to (−).',
     'tut.p3.p3':   'The <b>wire</b> carries current freely to close the path. The <b>block</b> is an insulator: it does not conduct, it only fills gaps.',
     'tut.lbl.wire':  'Wire',
@@ -272,8 +272,8 @@ const DICT: Record<Lang, Record<string, string>> = {
 
     // ── Tutorial: page 4 ──
     'tut.p4.h':  'LEDs and Resistors',
-    'tut.p4.p1': 'The <b>LED</b> is the game\'s lamp, appearing from level 5 on. It lights up with between <b class="ok">1 and 28 mA</b>. Too little: it stays off. Too much: <b class="no">it burns out!</b>',
-    'tut.p4.p2': 'The <b>resistor</b> is the protector: it <b>limits the current</b> so the LED won\'t burn. Larger values (Ω) limit more.',
+    'tut.p4.p1': 'The <b>LED</b> is the game\'s lamp, which appears from level 5 onward. It lights up with a current between <b class="ok">1 and 28 mA</b>. Too little: it stays off. Too much: <b class="no">it burns out!</b>',
+    'tut.p4.p2': 'The <b>resistor</b> is the protector: it <b>limits the current</b> so the LED won\'t burn out. Larger values (Ω) limit more.',
     'tut.p4.p3': 'The <b>resistor</b> itself has a limit too: above <b class="no">50 mA</b> it <b>burns out</b>.',
     'tut.lbl.red':    'Red',
     'tut.lbl.green':  'Green',
@@ -295,13 +295,13 @@ const DICT: Record<Lang, Record<string, string>> = {
     'tut.p6.p2':     'The LED only works in <b>one direction</b>. If (+) and (−) are swapped it <b class="no">won\'t light</b> — rotate the piece to fix it.',
 
     // ── Tutorial: page 7 ──
-    'tut.p7.h':    'Safe Combinations',
+    'tut.p7.h':    'Circuit Pairing Tips',
     'tut.p7.p1':   'Use <b>Ohm\'s Law</b> to pick the right resistor: <b style="font-family:var(--font-mono)">I = V / R</b> (current = voltage / resistance).',
-    'tut.p7.ok1':  '✓&nbsp; 3 V / 100 Ω → lights',
-    'tut.p7.ok2':  '✓&nbsp; 5 V / 220 Ω → lights',
-    'tut.p7.ok3':  '✓&nbsp; 9 V / 470 Ω → lights',
-    'tut.p7.no1':  '✗&nbsp; 9 V / 100 Ω → resistor burns',
-    'tut.p7.no2':  '✗&nbsp; LED straight to 5 V → LED burns',
+    'tut.p7.ok1':  '✓&nbsp; 3 V / 100 Ω → lights up',
+    'tut.p7.ok2':  '✓&nbsp; 5 V / 220 Ω → lights up',
+    'tut.p7.ok3':  '✓&nbsp; 9 V / 470 Ω → lights up',
+    'tut.p7.no1':  '✗&nbsp; 9 V / 100 Ω → resistor burns out',
+    'tut.p7.no2':  '✗&nbsp; LED straight to 5 V → LED burns out',
     'tut.p7.tip':  'Tip: higher voltage needs a bigger resistor. When unsure, go with <b>470 Ω</b>.',
 
     // ── Tutorial: page 8 ──
@@ -330,7 +330,7 @@ const DICT: Record<Lang, Record<string, string>> = {
 
     // ── Circuit status overlay ──
     'status.closed':   'Circuit Closed!',
-    'status.burned':   'Circuit Burned!',
+    'status.burned':   'Circuit Burned Out!',
     'status.continue': 'DROP to continue',
 
     // ── Touch buttons ──
@@ -344,7 +344,7 @@ const DICT: Record<Lang, Record<string, string>> = {
     'piece.led.red':    'Red LED',
     'piece.led.green':  'Green LED',
     'piece.led.yellow': 'Yellow LED',
-    'piece.led.detail': 'Drop 2 V · max 28 mA',
+    'piece.led.detail': '2 V drop · max 28 mA',
     'piece.resistor':       '{v} Ω Resistor',
     'piece.resistor.detail':'Max current 50 mA',
     'piece.source':        '{v} V Source',
@@ -356,10 +356,10 @@ const DICT: Record<Lang, Record<string, string>> = {
 
     // ── Circuit reasons ──
     'reason.ledBurn':      'LED current ({i} mA) exceeded 28 mA',
-    'reason.ledLit':       'LED lit with {i} mA',
+    'reason.ledLit':       'LED lit up with {i} mA',
     'reason.sourceShort':  'Short! Source at {i} A',
     'reason.sourceActive': '{v} V source — {i} mA',
-    'reason.resBurn':      'Resistor {v} Ω current ({i} mA) exceeded 50 mA',
+    'reason.resBurn':      '{v} Ω resistor current ({i} mA) exceeded 50 mA',
     'reason.resActive':    '{v} Ω resistor — {volt} V and {i} mA',
   },
 };
