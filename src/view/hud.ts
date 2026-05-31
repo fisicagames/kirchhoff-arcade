@@ -4,10 +4,10 @@ import { drawLegendPieces } from './legendView';
 
 // Rank thresholds → i18n key, derived from the all-time high score.
 const RANKS: [number, string][] = [
-  [3500, 'rank.master'],
-  [2500, 'rank.engineer'],
-  [1500, 'rank.technician'],
-  [500,  'rank.apprentice'],
+  [4000, 'rank.master'],
+  [3000, 'rank.engineer'],
+  [2000, 'rank.technician'],
+  [1000,  'rank.apprentice'],
   [0,    'rank.beginner'],
 ];
 

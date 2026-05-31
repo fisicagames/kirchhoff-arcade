@@ -183,7 +183,7 @@ const DICT: Record<Lang, Record<string, string>> = {
     'over.desc':    'O tabuleiro encheu de componentes.',
     'over.score':   'Pontuação:',
     'over.record':  'Recorde:',
-    'over.again':   '<b style="color:var(--acc-hi)">R</b> ou <b style="color:var(--acc-hi)">REINICIAR</b> para jogar novamente',
+    'over.again':   'color:var(--acc-hi)">ENTER</b>, <b style="color:var(--acc-hi)">R</b> ou <b style="color:var(--acc-hi)">REINICIAR</b> para jogar novamente',
 
     // ── Circuit status overlay ──
     'status.closed':   'Circuito Fechado!',
@@ -326,7 +326,7 @@ const DICT: Record<Lang, Record<string, string>> = {
     'over.desc':    'The board filled up with components.',
     'over.score':   'Score:',
     'over.record':  'Record:',
-    'over.again':   '<b style="color:var(--acc-hi)">R</b> or <b style="color:var(--acc-hi)">RESTART</b> to play again',
+    'over.again':   'color:var(--acc-hi)">ENTER</b>, <b style="color:var(--acc-hi)">R</b> or <b style="color:var(--acc-hi)">RESTART</b> to play again',
 
     // ── Circuit status overlay ──
     'status.closed':   'Circuit Closed!',

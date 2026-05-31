@@ -264,6 +264,12 @@
       }
       /* Hide the stretched game board behind the full-screen menu. */
       #container:has(#tutorialScreen.show) #game { visibility: hidden; }
+
+      #container:has(#tutorialScreen.show) #message,
+      #container:has(#tutorialScreen.show) #statusOverlay {
+        display: none !important;
+      }
+
       /* Square off the panel's own rounding when it fills the screen. */
       #container:has(#tutorialScreen.show) #tutorialScreen { border-radius: 0; }
       #tutorialScrollContent {

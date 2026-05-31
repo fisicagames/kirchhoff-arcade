@@ -238,6 +238,13 @@ export function handleGameInput(action: string): void {
     return;
   }
 
+  if (state.gameOver) {
+    if (action === 'drop') {
+      init();
+    }
+    return;
+  }
+
   if (!state.gameStarted) {
     if (action === 'drop') {
       state.gameStarted = true;
@@ -247,7 +254,7 @@ export function handleGameInput(action: string): void {
     return;
   }
 
-  if (state.gameOver || state.isPaused || state.helpOpen) return;
+  if (state.isPaused || state.helpOpen) return;
 
   switch (action) {
     case 'left':   move(-1, 0); break;
