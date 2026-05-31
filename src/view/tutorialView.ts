@@ -20,6 +20,8 @@ function updatePage(): void {
 }
 
 export function showTutorial(): void {
+  // Mid-game help freezes the board (music keeps playing).
+  if (state.gameStarted && !state.gameOver) state.helpOpen = true;
   const btn = document.getElementById('btnIniciar');
   if (btn) btn.textContent = state.gameStarted ? 'Continuar' : 'Iniciar';
   document.getElementById('tutorialScreen')?.classList.add('show');
@@ -44,6 +46,7 @@ export function setupTutorialNav(onInit: () => void): void {
       state.gameStarted = true;
       updateMusicPlayback();
     }
+    state.helpOpen = false;   // resume the board
     hideTutorial();
   });
 
@@ -72,9 +75,9 @@ export function setupTutorialNav(onInit: () => void): void {
 
 export function setupPauseButton(): void {
   document.getElementById('btnPause')?.addEventListener('click', () => {
-    if (!state.gameStarted || state.gameOver || state.analyzingMode) return;
-    if (!state.isPaused && state.hasUsedPause) return;
+    if (!state.gameStarted || state.gameOver || state.analyzingMode || state.helpOpen) return;
 
+    // Free toggle — no per-session limit.
     state.isPaused = !state.isPaused;
     updateMusicPlayback();
 
@@ -84,11 +87,8 @@ export function setupPauseButton(): void {
       btn.textContent = 'RETOMAR';
       btn.style.color = '#55ee88';
     } else {
-      state.hasUsedPause = true;
-      btn.textContent    = 'PAUSA';
-      btn.style.color    = '';
-      btn.style.cursor   = 'not-allowed';
-      btn.style.opacity  = '0.38';
+      btn.textContent = 'PAUSA';
+      btn.style.color = '';
     }
   });
 }

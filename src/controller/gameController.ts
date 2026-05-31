@@ -191,7 +191,7 @@ export function handleGameInput(action: string): void {
     return;
   }
 
-  if (state.gameOver || state.isPaused) return;
+  if (state.gameOver || state.isPaused || state.helpOpen) return;
 
   switch (action) {
     case 'left':   move(-1, 0); break;
@@ -206,7 +206,7 @@ export function loop(time = 0): void {
   const dt = time - state.lastTime;
   state.lastTime = time;
 
-  if (state.gameStarted && !state.gameOver && !state.waitingToSpawn && !state.isPaused) {
+  if (state.gameStarted && !state.gameOver && !state.waitingToSpawn && !state.isPaused && !state.helpOpen) {
     state.dropCounter += dt;
     if (state.dropCounter > state.dropInterval) {
       if (state.currentPiece && !move(0, 1)) lockPiece();
@@ -214,7 +214,7 @@ export function loop(time = 0): void {
     }
   }
 
-  if (state.gameStarted && state.waitingToSpawn && !state.isPaused) {
+  if (state.gameStarted && state.waitingToSpawn && !state.isPaused && !state.helpOpen) {
     state.spawnTimer -= dt;
     if (state.spawnTimer <= 0) {
       state.waitingToSpawn = false;
