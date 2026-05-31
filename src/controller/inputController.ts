@@ -6,7 +6,7 @@ import { COLS } from '../core/constants';
 
 export function setupKeyboard(): void {
   document.addEventListener('keydown', (e: KeyboardEvent) => {
-    if ([' ', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowUp'].includes(e.key)) {
+    if ([' ', 'Enter', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowUp'].includes(e.key)) {
       e.preventDefault();
     }
     switch (e.key) {
@@ -15,6 +15,7 @@ export function setupKeyboard(): void {
       case 'ArrowDown':  handleGameInput('down');    break;
       case 'ArrowUp':    handleGameInput('rotate');  break;
       case ' ':          handleGameInput('drop');    break;
+      case 'Enter':      handleGameInput('drop');    break;
       case 'r': case 'R': handleGameInput('restart'); break;
     }
   });

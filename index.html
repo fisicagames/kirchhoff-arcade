@@ -359,15 +359,19 @@
         flex-direction: column;
         gap: 13px;
       }
-      .ctrl-list > div { display: flex; align-items: center; gap: 12px; font-size: 15px; color: #c6d0ee; }
+      .ctrl-list > div { display: flex; align-items: center; gap: 12px; }
       .ctrl-key {
+        flex: 0 0 68px;          /* fixed key column — keeps rows aligned */
         color: #ffd24a;
         font-weight: 800;
-        min-width: 42px;
         text-align: center;
         font-size: 19px;
+        line-height: 1.15;
+        white-space: normal;     /* long labels wrap instead of overlapping */
+        word-break: keep-all;
       }
-      .ctrl-key.sm { font-size: 14px; }
+      .ctrl-key.sm { font-size: 12.5px; letter-spacing: 0.2px; }
+      .ctrl-desc { flex: 1; min-width: 0; font-size: 15px; color: #c6d0ee; line-height: 1.3; }
       #tutorialFooter {
         flex-shrink: 0;
         padding: 7px 12px 11px;
@@ -611,9 +615,9 @@
 
         <!-- Action buttons -->
         <div id="actionRow">
-          <button id="btnPause"   class="act-btn">PAUSA</button>
-          <button id="btnHelp"    class="act-btn">AJUDA</button>
           <button id="btnRestart" class="act-btn">REINICIAR</button>
+          <button id="btnPause"   class="act-btn">PAUSA</button>
+          <button id="btnHelp"    class="act-btn">TUTORIAL</button>
           <button id="btnSound"   class="act-btn act-muted">SOM</button>
         </div>
 
@@ -803,11 +807,11 @@
             <div id="tutorialPage8" style="display:none;">
               <h2 class="tut-h">Controles</h2>
               <div class="ctrl-list">
-                <div><span class="ctrl-key">← →</span><span>Mover a peça</span></div>
-                <div><span class="ctrl-key">↑</span><span>Girar a peça</span></div>
-                <div><span class="ctrl-key">↓</span><span>Acelerar a queda</span></div>
-                <div><span class="ctrl-key sm">ESPAÇO</span><span>Queda imediata (hard drop)</span></div>
-                <div><span class="ctrl-key sm">R</span><span>Reiniciar a partida</span></div>
+                <div><span class="ctrl-key">← →</span><span class="ctrl-desc">Mover a peça</span></div>
+                <div><span class="ctrl-key">↑</span><span class="ctrl-desc">Girar a peça</span></div>
+                <div><span class="ctrl-key">↓</span><span class="ctrl-desc">Acelerar a queda</span></div>
+                <div><span class="ctrl-key sm">ESPAÇO<br/>ou ENTER</span><span class="ctrl-desc">Queda imediata (hard drop)</span></div>
+                <div><span class="ctrl-key">R</span><span class="ctrl-desc">Reiniciar a partida</span></div>
               </div>
               <p class="tut-p" style="text-align:center;margin-top:14px;">
                 No celular, use os <b>botões na tela</b> ou
@@ -844,7 +848,7 @@
           <h2 id="statusTitle"></h2>
           <div id="statusReasons" style="font-size:12px;color:#ddd;line-height:1.5;display:flex;flex-direction:column;gap:2px;text-align:center;"></div>
           <p style="color:#8898c4;animation:blink 1.5s infinite;font-size:11px;margin-top:8px;font-weight:600;letter-spacing:0.5px;">
-            ESPAÇO ou DROP para continuar
+            DROP para continuar
           </p>
         </div>
       </div><!-- /canvasWrapper -->
@@ -872,7 +876,7 @@
           </button>
           <button id="btnTouchDrop" class="touch-btn touch-btn-drop">
             <span class="drop-main">DROP</span>
-            <span class="drop-key"><span class="key-cap">ESPAÇO</span></span>
+            <span class="drop-key"><span class="key-cap">ESPAÇO / ENTER</span></span>
           </button>
         </div>
       </div>
