@@ -52,6 +52,12 @@ function compute(): void {
 
   const gameW = Math.max(MIN_W, Math.min(MAX_W, widthLimit, heightLimit));
   document.documentElement.style.setProperty('--game-w', Math.floor(gameW) + 'px');
+
+  // Tutorial/menu UI scale. Anchored to the same gameW the board uses, but
+  // capped at 1 so it never grows past the design size (no inflation on wide
+  // desktops) and shrinks together with the board under browser zoom.
+  const ts = Math.max(0.6, Math.min(1, gameW / 300));
+  document.documentElement.style.setProperty('--ts', ts.toFixed(3));
 }
 
 export function setupLayout(): void {

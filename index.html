@@ -35,6 +35,11 @@
          */
         --game-w: min(300px, 96svw, calc(66.6svh - 167px));
 
+        /* Tutorial/menu text scale. Computed in JS (layout.ts) from the small
+           viewport height so the panel keeps a stable on-screen size under
+           browser zoom. This value is only a fallback if JS hasn't run yet. */
+        --ts: 1;
+
         --bg:       #08091b;
         --card:     #141a3a;
         --card-hi:  #1c2350;
@@ -293,13 +298,13 @@
         padding: 14px 16px 8px;
         scrollbar-width: thin;
         scrollbar-color: var(--border) transparent;
-        font-size: 15.5px;
+        font-size: clamp(12px, calc(15.5px * var(--ts)), 15.5px);
         color: #c6d0ee;
       }
 
       /* ── Tutorial content (larger, friendlier) ── */
       .tut-h {
-        font-size: 21px;
+        font-size: clamp(15px, calc(21px * var(--ts)), 21px);
         font-weight: 800;
         color: var(--acc-hi);
         text-align: center;
@@ -308,7 +313,7 @@
         text-shadow: 0 0 12px rgba(122,159,255,0.35);
       }
       .tut-p {
-        font-size: 15.5px;
+        font-size: clamp(12px, calc(15.5px * var(--ts)), 15.5px);
         line-height: 1.6;
         color: #c6d0ee;
         margin-bottom: 13px;
@@ -335,7 +340,7 @@
       }
       .tut-cap {
         text-align: center;
-        font-size: 14px;
+        font-size: clamp(11px, calc(14px * var(--ts)), 14px);
         font-weight: 700;
         margin-top: 6px;
       }
@@ -343,7 +348,7 @@
       .tut-cap.no { color: #ff6a86; }
       .tut-sub {
         text-align: center;
-        font-size: 15px;
+        font-size: clamp(11px, calc(15px * var(--ts)), 15px);
         color: #9aa6cf;
         margin-top: 2px;
       }
@@ -359,7 +364,7 @@
         margin-bottom: 13px;
       }
       .tut-legend > div { text-align: center; }
-      .tut-legend span { font-size: 12px; font-weight: 700; }
+      .tut-legend span { font-size: clamp(9.5px, calc(12px * var(--ts)), 12px); font-weight: 700; }
       .tut-legend canvas { display: block; margin: 0 auto 3px; }
       .safe-list {
         background: #06091a;
@@ -367,7 +372,7 @@
         border-radius: 10px;
         padding: 13px 14px;
         font-family: var(--font-dev);
-        font-size: 14.5px;
+        font-size: clamp(11px, calc(14.5px * var(--ts)), 14.5px);
         line-height: 2.05;
         text-align: left;
       }
@@ -386,13 +391,13 @@
         color: #ffd24a;
         font-weight: 800;
         text-align: center;
-        font-size: 19px;
+        font-size: clamp(13px, calc(19px * var(--ts)), 19px);
         line-height: 1.15;
         white-space: normal;     /* long labels wrap instead of overlapping */
         word-break: keep-all;
       }
-      .ctrl-key.sm { font-size: 12.5px; letter-spacing: 0.2px; }
-      .ctrl-desc { flex: 1; min-width: 0; font-size: 15px; color: #c6d0ee; line-height: 1.3; }
+      .ctrl-key.sm { font-size: clamp(9.5px, calc(12.5px * var(--ts)), 12.5px); letter-spacing: 0.2px; }
+      .ctrl-desc { flex: 1; min-width: 0; font-size: clamp(11.5px, calc(15px * var(--ts)), 15px); color: #c6d0ee; line-height: 1.3; }
       #tutorialFooter {
         flex-shrink: 0;
         padding: 7px 12px 11px;
@@ -410,7 +415,7 @@
         padding: 6px 13px;
         border-radius: 6px;
         cursor: pointer;
-        font-size: 12px;
+        font-size: clamp(10px, calc(12px * var(--ts)), 12px);
         font-weight: 700;
         font-family: var(--font-ui);
       }
@@ -422,7 +427,7 @@
         border: none;
         border-radius: 9px;
         color: #fff;
-        font-size: 17px;
+        font-size: clamp(13px, calc(17px * var(--ts)), 17px);
         font-weight: 700;
         letter-spacing: 1px;
         cursor: pointer;
@@ -446,19 +451,19 @@
         border: none;
         color: var(--muted);
         font-family: var(--font-ui);
-        font-size: 12px;
+        font-size: clamp(10px, calc(12px * var(--ts)), 12px);
         font-weight: 600;
         cursor: pointer;
         padding: 4px 4px;
       }
-      #musicaIcon { font-size: 15px; }
+      #musicaIcon { font-size: clamp(12px, calc(15px * var(--ts)), 15px); }
       .menu-english {
         background: #2a3470;
         color: #cdd6ff;
         border-radius: 6px;
         letter-spacing: 1px;
         font-weight: 700;
-        font-size: 11px;
+        font-size: clamp(9px, calc(11px * var(--ts)), 11px);
         padding: 5px 11px;
       }
       .menu-english:active { background: var(--border-hi); }
@@ -478,7 +483,7 @@
       }
       .menu-objetivo {
         text-align: center;
-        font-size: 15px;
+        font-size: clamp(11.5px, calc(15px * var(--ts)), 15px);
         line-height: 1.55;
         color: #b8c2e6;
         margin: 0 1px 5px;
@@ -487,20 +492,20 @@
       .menu-objetivo .hl { color: #8fb0ff; }
 
       .menu-best { text-align: center; margin: 4px 0 20px; }
-      .menu-best-label { font-size: 15px; color: #b8c2e6; margin-bottom: 5px; }
+      .menu-best-label { font-size: clamp(11.5px, calc(15px * var(--ts)), 15px); color: #b8c2e6; margin-bottom: 5px; }
       .menu-best-value {
         font-family: var(--font-mono);
-        font-size: 27px;
+        font-size: clamp(18px, calc(27px * var(--ts)), 27px);
         font-weight: 700;
         color: #fff;
         line-height: 1.1;
       }
-      .menu-best-rank { font-size: 12px; color: var(--muted); margin-top: 4px; }
+      .menu-best-rank { font-size: clamp(9.5px, calc(12px * var(--ts)), 12px); color: var(--muted); margin-top: 4px; }
 
       .menu-credits {
         text-align: center;
         color: var(--muted);
-        font-size: 14px;
+        font-size: clamp(11px, calc(14px * var(--ts)), 14px);
         line-height: 1.75;
         margin-top: 4px;
         padding-top: 12px;
