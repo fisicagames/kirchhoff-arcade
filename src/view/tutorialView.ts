@@ -4,7 +4,7 @@ import { updateMusicPlayback, toggleMute, isMuted } from '../core/audioManager';
 import { t, toggleLang, applyI18n } from '../core/i18n';
 
 let currentPage = 1;
-const TOTAL_PAGES = 8;
+const TOTAL_PAGES = 9;
 
 function updatePage(): void {
   for (let i = 1; i <= TOTAL_PAGES; i++) {

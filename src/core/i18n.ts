@@ -172,6 +172,15 @@ const DICT: Record<Lang, Record<string, string>> = {
     'tut.p8.mobile':  'No celular, use os <b>botões na tela</b> ou <b>toque/arraste</b> direto no tabuleiro.',
     'tut.p8.gl':      'Boa sorte!',
 
+    // ── Tutorial: page 9 (ranks) ──
+    'tut.p9.h':  'Ranks de Pontuação',
+    'tut.p9.p1': 'Seu <b>recorde</b> define seu título. Forme circuitos com mais componentes para pontuar mais e subir de nível!',
+    'tut.p9.r1': '&lt; 1000 → <b>Iniciante ⚡</b>',
+    'tut.p9.r2': '1000 → <b>Estudante ⚡</b>',
+    'tut.p9.r3': '2000 → <b>Técnico ⚡</b>',
+    'tut.p9.r4': '3000 → <b>Engenheiro ⚡</b>',
+    'tut.p9.r5': '4000+ → <b>Kirchhoff ⚡</b>',
+
     // ── Tutorial footer ──
     'tut.prev':     '◄ Anterior',
     'tut.next':     'Próxima ►',
@@ -314,6 +323,15 @@ const DICT: Record<Lang, Record<string, string>> = {
     'tut.p8.restart': 'Restart the game',
     'tut.p8.mobile':  'On mobile, use the <b>on-screen buttons</b> or <b>tap/drag</b> directly on the board.',
     'tut.p8.gl':      'Good luck!',
+
+    // ── Tutorial: page 9 (ranks) ──
+    'tut.p9.h':  'Score Ranks',
+    'tut.p9.p1': 'Your <b>high score</b> sets your title. Build circuits with more components to score higher and rank up!',
+    'tut.p9.r1': '&lt; 1000 → <b>Beginner ⚡</b>',
+    'tut.p9.r2': '1000 → <b>Student ⚡</b>',
+    'tut.p9.r3': '2000 → <b>Technician ⚡</b>',
+    'tut.p9.r4': '3000 → <b>Engineer ⚡</b>',
+    'tut.p9.r5': '4000+ → <b>Kirchhoff ⚡</b>',
 
     // ── Tutorial footer ──
     'tut.prev':     '◄ Previous',

@@ -25,7 +25,8 @@
       "Read(//tmp/**)",
       "Bash(cat exemplos/post.html | tail -c 14600 | head -c 14600 > /tmp/posttail.txt; wc -l /tmp/posttail.txt; echo \"===START===\"; cat /tmp/posttail.txt)",
       "Bash(node -e \"const p=require\\('./package.json'\\); const d={...p.dependencies,...p.devDependencies}; console.log\\('vite', d.vite\\); console.log\\('typescript', d.typescript\\); console.log\\('@types/node', d['@types/node']\\);\")",
-      "Bash(pnpm -v)"
+      "Bash(pnpm -v)",
+      "Bash(echo \"BUILD_EXIT:$?\")"
     ],
     "additionalDirectories": [
       "/tmp"
