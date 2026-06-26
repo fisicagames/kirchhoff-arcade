@@ -1,16 +1,22 @@
-<p><!-- ============================================================
+<!-- ============================================================
      MULTILINGUAL POST — Kirchhoff Arcade
-     ============================================================ --></p>
-<p><style>
-.fg-lang-toggle { display: flex; gap: 8px; justify-content: flex-end; align-items: center; margin: 0 0 20px 0; padding: 8px 0; border-bottom: 1px solid #e0e0e0; }<br />
-.fg-lang-toggle .fg-lang-label { font-size: 0.85em; color: #666; margin-right: 4px; }<br />
-.fg-lang-toggle button { padding: 4px 10px; font-size: 0.85em; border: 1px solid #ccc; background: #f5f5f5; color: #333; border-radius: 4px; cursor: pointer; font-family: inherit; transition: all 0.15s ease; }<br />
-.fg-lang-toggle button:hover { background: #e0e0e0; border-color: #999; }<br />
-.fg-lang-toggle button.fg-lang-active { background: #0073aa; color: white; border-color: #0073aa; font-weight: 600; }<br />
-.fg-lang-content[hidden] { display: none !important; }<br />
-</style></p>
-<div class="fg-lang-toggle" role="group" aria-label="Language selector"><span class="fg-lang-label">🌐</span> <button class="fg-lang-active" type="button" data-fg-lang="pt" aria-pressed="true">Português</button> <button type="button" data-fg-lang="en" aria-pressed="false">English</button></div>
-<p><!-- PORTUGUESE --></p>
+     ============================================================ -->
+<style>
+.fg-lang-toggle { display: flex; gap: 8px; justify-content: flex-end; align-items: center; margin: 0 0 20px 0; padding: 8px 0; border-bottom: 1px solid #e0e0e0; }
+.fg-lang-toggle .fg-lang-label { font-size: 0.85em; color: #666; margin-right: 4px; }
+.fg-lang-toggle button { padding: 4px 10px; font-size: 0.85em; border: 1px solid #ccc; background: #f5f5f5; color: #333; border-radius: 4px; cursor: pointer; font-family: inherit; transition: all 0.15s ease; }
+.fg-lang-toggle button:hover { background: #e0e0e0; border-color: #999; }
+.fg-lang-toggle button.fg-lang-active { background: #0073aa; color: white; border-color: #0073aa; font-weight: 600; }
+.fg-lang-content[hidden] { display: none !important; }
+</style>
+
+<div class="fg-lang-toggle" role="group" aria-label="Language selector">
+  <span class="fg-lang-label">🌐</span> 
+  <button class="fg-lang-active" type="button" data-fg-lang="pt" aria-pressed="true">Português</button> 
+  <button type="button" data-fg-lang="en" aria-pressed="false">English</button>
+</div>
+
+<!-- PORTUGUESE -->
 <div class="fg-lang-content" lang="pt-BR" data-fg-content="pt">
 <p><strong><em>Você gostou deste jogo?</em></strong> Dê sua opinião escolhendo um<em> número de estrelas:</em> [ratings]</p>
 <h3>Descrição</h3>
@@ -40,7 +46,7 @@
 </ul>
 <h3>Como Jogar</h3>
 <ul>
-<li><strong>Objetivo:</strong> Conectar os componentes que caem para formar circuitos elétricos fechados. Para acender um LED com segurança, use a polaridade correta e um resistor para limitar a corrente.</li>
+<li><strong>Objetivo:</strong> Conectar os componentes que caem para formar circuitos elétricos fechados. Para acender um LED com segurança, use a correta polaridade e um resistor para limitar a corrente.</li>
 <li><strong>Desafios:</strong> Nunca ligue o polo (+) de uma fonte diretamente ao (−) — isso causa um curto-circuito. Tensões altas exigem resistores maiores; na dúvida, prefira o de 470 Ω. Fechar um circuito ao lado de lixo queimado ou blocos isolantes também os remove do tabuleiro.</li>
 <li><strong>Controles:</strong></li>
 </ul>
@@ -96,7 +102,8 @@
 <p>Este projeto foi desenvolvido por:</p>
 <p><strong>Prof. Dr. Rafael João Ribeiro</strong><br />Instituto Federal do Paraná (IFPR)<br /><a href="https://fisicagames.com.br/" target="_blank" rel="noopener noreferrer">www.fisicagames.com.br</a></p>
 </div>
-<p><!-- ENGLISH --></p>
+
+<!-- ENGLISH -->
 <div class="fg-lang-content" lang="en" hidden="" data-fg-content="en">
 <p><strong><em>Did you enjoy this game?</em></strong> Share your feedback by choosing a<em> star rating:</em> [ratings]</p>
 <h3>Description</h3>
@@ -182,37 +189,60 @@
 <p>This project was developed by:</p>
 <p><strong>Prof. Dr. Rafael João Ribeiro</strong><br />Federal Institute of Paraná (IFPR)<br /><a href="https://fisicagames.com.br/" target="_blank" rel="noopener noreferrer">www.fisicagames.com.br</a></p>
 </div>
-<p><script><br />
-(function() {<br />
-  'use strict';<br />
-  var STORAGE_KEY = 'fg_lang_pref';<br />
-  var SUPPORTED = ['pt', 'en'];<br />
-  var DEFAULT = 'pt';<br />
-  function detectLang() {<br />
-    try { var saved = localStorage.getItem(STORAGE_KEY); if (saved && SUPPORTED.indexOf(saved) !== -1) return saved; } catch (e) {}<br />
-    var nav = (navigator.language || navigator.userLanguage || '').toLowerCase();<br />
-    if (nav.indexOf('pt') === 0) return 'pt';<br />
-    if (nav.indexOf('en') === 0) return 'en';<br />
-    return DEFAULT;<br />
-  }<br />
-  function applyLang(lang) {<br />
-    if (SUPPORTED.indexOf(lang) === -1) lang = DEFAULT;<br />
-    var blocks = document.querySelectorAll('.fg-lang-content');<br />
+
+<script>
+(function() {
+  'use strict';
+  var STORAGE_KEY = 'fg_lang_pref';
+  var SUPPORTED = ['pt', 'en'];
+  var DEFAULT = 'pt';
+  function detectLang() {
+    try {
+      var saved = localStorage.getItem(STORAGE_KEY);
+      if (saved && SUPPORTED.indexOf(saved) !== -1) return saved;
+    } catch (e) {}
+    var nav = (navigator.language || navigator.userLanguage || '').toLowerCase();
+    if (nav.indexOf('pt') === 0) return 'pt';
+    if (nav.indexOf('en') === 0) return 'en';
+    return DEFAULT;
+  }
+  function applyLang(lang) {
+    if (SUPPORTED.indexOf(lang) === -1) lang = DEFAULT;
+    var blocks = document.querySelectorAll('.fg-lang-content');
     for (var i = 0; i < blocks.length; i++) {
-      if (blocks[i].getAttribute('data-fg-content') === lang) blocks[i].removeAttribute('hidden');
-      else blocks[i].setAttribute('hidden', '');
+      if (blocks[i].getAttribute('data-fg-content') === lang) {
+        blocks[i].removeAttribute('hidden');
+      } else {
+        blocks[i].setAttribute('hidden', '');
+      }
     }
     var buttons = document.querySelectorAll('.fg-lang-toggle button');
     for (var j = 0; j < buttons.length; j++) {
-      if (buttons[j].getAttribute('data-fg-lang') === lang) { buttons[j].classList.add('fg-lang-active'); buttons[j].setAttribute('aria-pressed', 'true'); }
-      else { buttons[j].classList.remove('fg-lang-active'); buttons[j].setAttribute('aria-pressed', 'false'); }
+      if (buttons[j].getAttribute('data-fg-lang') === lang) {
+        buttons[j].classList.add('fg-lang-active');
+        buttons[j].setAttribute('aria-pressed', 'true');
+      } else {
+        buttons[j].classList.remove('fg-lang-active');
+        buttons[j].setAttribute('aria-pressed', 'false');
+      }
     }
     try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) {}
   }
-  applyLang(detectLang());
-  var buttons = document.querySelectorAll('.fg-lang-toggle button');
-  for (var k = 0; k < buttons.length; k++) {
-    buttons[k].addEventListener('click', function() { applyLang(this.getAttribute('data-fg-lang')); });
+  
+  function init() {
+    applyLang(detectLang());
+    var buttons = document.querySelectorAll('.fg-lang-toggle button');
+    for (var k = 0; k < buttons.length; k++) {
+      buttons[k].addEventListener('click', function() {
+        applyLang(this.getAttribute('data-fg-lang'));
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
   }
 })();
-</script></p>
+</script>
